@@ -20,68 +20,70 @@ public class JumpAndRun {
      * runs the minigame JumpAndRun
      */
     public static void start() {
+        // get the player int the arena from the waiting list
         playerInArena = waitingListMinigame.getFirst();
         World w = playerInArena.getWorld();
         Location location = new Location(playerInArena.getWorld(), 93d, 75d, 81d);
         playerInArena.teleport(location);
         Minigame.startMessage(playerInArena, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
 
-        new BukkitRunnable() {
-            public void run() {
-                checkIfPlayerLost(playerInArena, 74);
-                checkIfPlayerWon(playerInArena, 81);
-            }
-        }.runTaskTimerAsynchronously(getPlugin(Main.class), 0, 20);
-
-
-        // the location to place the first block on
+        // get the location and place the first block
         int x = 93;
         int y = 74;
         int z = 81;
         Location nextBlock = new Location(location.getWorld(), x, y, z);
         nextBlock.getBlock().setType(Material.GREEN_CONCRETE);
 
-        int _x = 0;
-        int _y = playerInArena.getLocation().getBlockY();
-        int _z = 0;
-        Bukkit.broadcastMessage(playerInArena.getName());
-
-        // check if the player is standing on green concrete, if true place the next block
-        Bukkit.broadcastMessage("Check if player is on concrete, if true place then next block");
-        if (checkIfOnConcrete(playerInArena)) {
-            // randomizer for coordinates and prefix
-                _x = randomizer(1, 4);
-                _z = randomizer(1, 4);
-            int randomNum = randomizer(1, 4);
-            if(randomNum == 1) {
-                // _x & _z negative
-                _x = _x * -1;
-                _z = _z * -1;
-                Bukkit.broadcastMessage("Case 1");
-            } else if (randomNum == 2) {
-                // _x & _z positive
-                Bukkit.broadcastMessage("Case 2");
-            }   else if (randomNum == 3) {
-                // _x negative & _z positive
-                Bukkit.broadcastMessage("Case 3");
-                _x = _x * -1;
-            } else if (randomNum == 4) {
-                // _x positive & _z negative
-                Bukkit.broadcastMessage("Case 4");
-                _z = _z * -1;
+        // check asynchronously if the player looses or wins, false run the generator of the parkour
+        new BukkitRunnable() {
+            public void run() {
+                if(checkIfPlayerWon(playerInArena, 81) || checkIfPlayerLost(playerInArena, 73)) {
+                 cancel();
+                }
+                else {
+                    // check if the player is standing on green concrete, if true place the next block
+                    int _x = 0;
+                    int _y = playerInArena.getLocation().getBlockY();
+                    int _z = 0;
+                    Bukkit.broadcastMessage("Check if player is on concrete");
+                    if (checkIfOnConcrete(playerInArena) && !woolPlaced) {
+                        // randomizer for coordinates and prefix
+                        _x = randomizer(1, 4);
+                        _z = randomizer(1, 4);
+                        int randomNum = randomizer(1, 4);
+                        if(randomNum == 1) {
+                            // _x & _z negative
+                            _x = _x * -1;
+                            _z = _z * -1;
+                            Bukkit.broadcastMessage("Case 1");
+                        } else if (randomNum == 2) {
+                            // _x & _z positive
+                            Bukkit.broadcastMessage("Case 2");
+                        }   else if (randomNum == 3) {
+                            // _x negative & _z positive
+                            Bukkit.broadcastMessage("Case 3");
+                            _x = _x * -1;
+                        } else if (randomNum == 4) {
+                            // _x positive & _z negative
+                            Bukkit.broadcastMessage("Case 4");
+                            _z = _z * -1;
+                        }
+                        _x = playerInArena.getLocation().getBlockX() + _x;
+                        _z = playerInArena.getLocation().getBlockZ() + _z;
+                        nextBlock.set(_x, _y, _z);
+                        nextBlock.getBlock().setType(Material.GREEN_WOOL);
+                        woolPlaced = true;
+                        Bukkit.broadcastMessage("Green wool was placed at " + nextBlock.toString());
+                    }
+                    else {
+                        // replace the placed wool with concrete if the player is standing on it
+                        replaceWoolWithConcrete(playerInArena);
+                    }
+                }
             }
-            _x = playerInArena.getLocation().getBlockX() + _x;
-            _z = playerInArena.getLocation().getBlockZ() + _z;
-            nextBlock.set(_x, _y, _z);
-            nextBlock.getBlock().setType(Material.GREEN_WOOL);
-            Bukkit.broadcastMessage("Green wool was placed at " + nextBlock.toString());
-
-            replaceWoolWithConcrete(playerInArena);
-        }
+        }.runTaskTimer(getPlugin(Main.class), 0, 20);
 
         Bukkit.broadcastMessage("End");
-        // check if the player is 2 blocks under the recently placed block, if true let him fail the minigame
-
     }
 
     /**
@@ -119,9 +121,10 @@ public class JumpAndRun {
      * @return              true if he reaches that height or higher, false if he does not reach that height
      */
     private static boolean checkIfPlayerWon(Player player, int heightToWin) {
-        if (player.getLocation().getBlockY() <= heightToWin && checkIfOnWool(player) == true) {
+        if (player.getLocation().getBlockY() >= heightToWin && checkIfOnWool(player) == true) {
             Minigame.winMessage(player);
             Minigame.spawnChestWithInv(player);
+            woolPlaced = false;
             return true;
         }
         else {
@@ -139,6 +142,7 @@ public class JumpAndRun {
         if (player.getLocation().getBlockY() <= heightToLose) {
             Minigame.loseMessage(player);
             Minigame.dropInv(player);
+            woolPlaced = false;
             return true;
         }
         else {
@@ -159,6 +163,7 @@ public class JumpAndRun {
                     block.setY(block.getBlockY() - 1);
                     block.getBlock().setType(Material.GREEN_CONCRETE);
                     Bukkit.broadcastMessage("Green wool changed to green concrete");
+                    woolPlaced = false;
                     cancel();
                 }
             }
@@ -181,4 +186,6 @@ public class JumpAndRun {
             return false;
         }
     }
+
+    private static boolean woolPlaced = false;
 }
