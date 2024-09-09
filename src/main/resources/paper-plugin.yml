@@ -1,0 +1,9 @@
+name: DeathMinigames
+version: '1.0-SNAPSHOT'
+main: org.example.DeathMinigames.deathMinigames.Main
+api-version: '1.21'
+
+commands:
+
+  TestCommand:
+     description: Dieses Command ist zum testen da
