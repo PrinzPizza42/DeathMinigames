@@ -16,11 +16,6 @@ import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 import static org.example.DeathMinigames.Listeners.DeathListener.*;
 
 public class JumpAndRun {
-
-
-a, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
-
-        // the location to place the first block on
     /**
      * runs the minigame JumpAndRun
      */
@@ -29,7 +24,17 @@ a, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
         World w = playerInArena.getWorld();
         Location location = new Location(playerInArena.getWorld(), 93d, 75d, 81d);
         playerInArena.teleport(location);
-        Minigame.startMessage(playerInAren
+        Minigame.startMessage(playerInArena, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
+
+        new BukkitRunnable() {
+            public void run() {
+                checkIfPlayerLost(playerInArena, 74);
+                checkIfPlayerWon(playerInArena, 81);
+            }
+        }.runTaskTimerAsynchronously(getPlugin(Main.class), 0, 20);
+
+
+        // the location to place the first block on
         int x = 93;
         int y = 74;
         int z = 81;
@@ -40,17 +45,6 @@ a, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
         int _y = playerInArena.getLocation().getBlockY();
         int _z = 0;
         Bukkit.broadcastMessage(playerInArena.getName());
-
-        Bukkit.broadcastMessage("Check if player won");
-        if(checkIfPlayerWon(playerInArena, 81)) {
-            Bukkit.broadcastMessage("Player won");
-            Minigame.winMessage(playerInArena);
-            Minigame.spawnChestWithInv(playerInArena);
-        }
-        else {
-            Bukkit.broadcastMessage("Player did not win");
-        }
-
 
         // check if the player is standing on green concrete, if true place the next block
         Bukkit.broadcastMessage("Check if player is on concrete, if true place then next block");
@@ -83,8 +77,6 @@ a, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
             Bukkit.broadcastMessage("Green wool was placed at " + nextBlock.toString());
 
             replaceWoolWithConcrete(playerInArena);
-
-            checkIfPlayerLost(playerInArena, 73);
         }
 
         Bukkit.broadcastMessage("End");
@@ -109,22 +101,6 @@ a, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
         }
     }
 
-    /**
-     * checks if the given player is standing on green wool
-     * @param player    the given player
-     * @return          true or false
-     */
-    private static boolean checkIfOnWool(Player player) {
-        Location block = player.getLocation();
-        block.setY(block.getBlockY() - 1);
-        if (block.getBlock().getType() == Material.GREEN_WOOL) {
-            Bukkit.broadcastMessage("check wool true");
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
 
     /**
      * gives back a random number between min and max
@@ -143,7 +119,7 @@ a, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
      * @return              true if he reaches that height or higher, false if he does not reach that height
      */
     private static boolean checkIfPlayerWon(Player player, int heightToWin) {
-        if (player.getLocation().getBlockY() <= heightToWin) {
+        if (player.getLocation().getBlockY() <= heightToWin && checkIfOnWool(player) == true) {
             Minigame.winMessage(player);
             Minigame.spawnChestWithInv(player);
             return true;
@@ -160,7 +136,7 @@ a, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
      * @return              true if he lost, false if he did not lose
      */
     private static boolean checkIfPlayerLost(Player player, int heightToLose) {
-        if (player.getLocation().getBlockY() <= heightToLose - 2) {
+        if (player.getLocation().getBlockY() <= heightToLose) {
             Minigame.loseMessage(player);
             Minigame.dropInv(player);
             return true;
@@ -178,7 +154,7 @@ a, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (checkIfOnWool(player)) {
+                if (checkIfOnWool(player) == true) {
                     Location block = player.getLocation();
                     block.setY(block.getBlockY() - 1);
                     block.getBlock().setType(Material.GREEN_CONCRETE);
@@ -186,6 +162,23 @@ a, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
                     cancel();
                 }
             }
-        }.runTaskTimer(Main.getPlugin(), 20, 20);
+        }.runTaskTimer(Main.getPlugin(), 0, 20);
+    }
+
+    /**
+     * checks if the given player is standing on green wool
+     * @param player    the given player
+     * @return          true or false
+     */
+    private static boolean checkIfOnWool(Player player) {
+        Location block = player.getLocation();
+        block.setY(block.getBlockY() - 1);
+        if (block.getBlock().getType() == Material.GREEN_WOOL) {
+            Bukkit.broadcastMessage("check wool true");
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
