@@ -1,19 +1,15 @@
-package org.example.DeathMinigames.Minigames;
+package org.example.DeathMinigames.minigames;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.example.DeathMinigames.deathMinigames.Main;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.bukkit.Bukkit.getServer;
 import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
-import static org.example.DeathMinigames.Listeners.DeathListener.*;
+import static org.example.DeathMinigames.listeners.DeathListener.*;
 
 public class JumpAndRun {
     /**
@@ -45,10 +41,10 @@ public class JumpAndRun {
                     int _x = 0;
                     int _y = playerInArena.getLocation().getBlockY();
                     int _z = 0;
-                    Bukkit.broadcastMessage("Check if player is on concrete");
+                    Bukkit.broadcastMessage("Check if player is on concrete"); //TODO: replace deprecated method
                     if (checkIfOnConcrete(playerInArena) && !woolPlaced) {
                         // randomizer for coordinates and prefix
-                        _x = randomizer(1, 4);
+                        _x = randomizer(1, 3);
                         _z = randomizer(1, 4);
                         int randomNum = randomizer(1, 4);
                         if(randomNum == 1) {
@@ -95,7 +91,7 @@ public class JumpAndRun {
         Location block = player.getLocation();
         block.setY(block.getBlockY() - 1);
         if (block.getBlock().getType() == Material.GREEN_CONCRETE) {
-            Bukkit.broadcastMessage("check concrete true");
+            Bukkit.broadcast(Component.text("check concrete true"));
             return true;
         }
         else {

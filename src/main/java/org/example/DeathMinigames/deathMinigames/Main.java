@@ -3,11 +3,11 @@ package org.example.DeathMinigames.deathMinigames;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.example.DeathMinigames.Listeners.ChatListener;
-import org.example.DeathMinigames.Listeners.DeathListener;
-import org.example.DeathMinigames.Listeners.RespawnListener;
-import org.example.DeathMinigames.Listeners.SnowballHitListener;
-import org.example.DeathMinigames.Minigames.JumpAndRun;
+import org.example.DeathMinigames.listeners.ChatListener;
+import org.example.DeathMinigames.listeners.DeathListener;
+import org.example.DeathMinigames.listeners.RespawnListener;
+import org.example.DeathMinigames.listeners.SnowballHitListener;
+import org.example.DeathMinigames.minigames.JumpAndRun;
 
 import java.util.concurrent.ThreadLocalRandom;
 
