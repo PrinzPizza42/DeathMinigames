@@ -2,16 +2,21 @@ package org.example.DeathMinigames.minigames;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.example.DeathMinigames.deathMinigames.Main;
 
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 import static org.example.DeathMinigames.listeners.DeathListener.*;
 
 public class JumpAndRun {
+    private static ArrayList<Block> blocksToDelete = new ArrayList<Block> ();
+    private static boolean woolPlaced = false;
+    private static boolean goldPlaced = false;
     /**
      * runs the minigame JumpAndRun
      */
@@ -33,7 +38,7 @@ public class JumpAndRun {
         // check asynchronously if the player looses or wins, false run the generator of the parkour
         new BukkitRunnable() {
             public void run() {
-                if(checkIfPlayerWon(playerInArena, 81) || checkIfPlayerLost(playerInArena, 73)) {
+                if(checkIfPlayerWon(playerInArena) || checkIfPlayerLost(playerInArena, 73)) {
                  cancel();
                 }
                 else {
@@ -67,9 +72,20 @@ public class JumpAndRun {
                         _x = playerInArena.getLocation().getBlockX() + _x;
                         _z = playerInArena.getLocation().getBlockZ() + _z;
                         nextBlock.set(_x, _y, _z);
-                        nextBlock.getBlock().setType(Material.GREEN_WOOL);
-                        woolPlaced = true;
-                        Bukkit.broadcastMessage("Green wool was placed at " + nextBlock.toString());
+
+                        // check if it is the last block, if true place a gold block
+                        if(_y == 81 && !goldPlaced) {
+                            nextBlock.getBlock().setType(Material.GOLD_BLOCK);
+                            blocksToDelete.add(nextBlock.getBlock());
+                            goldPlaced = true;
+                            woolPlaced = true;
+                        }
+                        else {
+                            nextBlock.getBlock().setType(Material.GREEN_WOOL);
+                            woolPlaced = true;
+                            Bukkit.broadcastMessage("Green wool was placed at " + nextBlock.toString());
+                            blocksToDelete.add(nextBlock.getBlock());
+                        }
                     }
                     else {
                         // replace the placed wool with concrete if the player is standing on it
@@ -113,14 +129,19 @@ public class JumpAndRun {
     /**
      * checks if the player has reached the height, at which he would have won
      * @param player        the player in question
-     * @param heightToWin   the height at which he would have won
      * @return              true if he reaches that height or higher, false if he does not reach that height
      */
-    private static boolean checkIfPlayerWon(Player player, int heightToWin) {
-        if (player.getLocation().getBlockY() >= heightToWin && checkIfOnWool(player) == true) {
+    private static boolean checkIfPlayerWon(Player player) {
+        if (checkIfOnGold(player) == true) {
             Minigame.winMessage(player);
             Minigame.spawnChestWithInv(player);
             woolPlaced = false;
+            for (Block block : blocksToDelete) {
+                player.getWorld().setType(block.getLocation(), Material.AIR);
+            }
+            blocksToDelete.clear();
+            Location loc = new Location(player.getWorld(), 93, 74, 81);
+            player.getWorld().setType(loc, Material.AIR);
             return true;
         }
         else {
@@ -139,6 +160,12 @@ public class JumpAndRun {
             Minigame.loseMessage(player);
             Minigame.dropInv(player);
             woolPlaced = false;
+            for (Block block : blocksToDelete) {
+                player.getWorld().setType(block.getLocation(), Material.AIR);
+            }
+            blocksToDelete.clear();
+            Location loc = new Location(player.getWorld(), 93, 74, 81);
+            player.getWorld().setType(loc, Material.AIR);
             return true;
         }
         else {
@@ -183,5 +210,20 @@ public class JumpAndRun {
         }
     }
 
-    private static boolean woolPlaced = false;
+    /**
+     * checks if the given player is standing on green wool
+     * @param player    the given player
+     * @return          true or false
+     */
+    private static boolean checkIfOnGold(Player player) {
+        Location block = player.getLocation();
+        block.setY(block.getBlockY() - 1);
+        if (block.getBlock().getType() == Material.GOLD_BLOCK) {
+            Bukkit.broadcastMessage("check gold true");
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
