@@ -21,7 +21,7 @@ public class RespawnListener implements Listener {
             TextComponent ignoreMinigame = new TextComponent("nicht um deine Items spielen");
             TextComponent middlePart = new TextComponent(" / ");
 
-            player.sendMessage("Entscheide dich, möchtest du ein Minispiel um deine Items spielen oder deine Items an deiner Todesstelle gedroppt bekommen?");
+            player.sendMessage("§6Entscheide dich, möchtest du ein Minispiel um deine Items spielen oder deine Items an deiner Todesstelle gedroppt bekommen?");
 
             startMinigame.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/game start"));
             startMinigame.setColor(net.md_5.bungee.api.ChatColor.GREEN);

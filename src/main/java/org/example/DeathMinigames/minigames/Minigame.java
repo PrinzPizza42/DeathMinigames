@@ -1,16 +1,11 @@
 package org.example.DeathMinigames.minigames;
 
-import com.destroystokyo.paper.ParticleBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.example.DeathMinigames.deathMinigames.Main;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
 
 import static org.example.DeathMinigames.listeners.DeathListener.*;
 
@@ -32,8 +27,8 @@ public class Minigame {
      * @param player    the player who lost the game
      */
     public static void loseMessage(Player player) {
-        player.sendMessage("Du hast verloren");
-        player.sendMessage("Dein Inventar wird an deinen Todesort " + "(X: " + deaths.get(player.getUniqueId()).getBlockX() + " Y: " + deaths.get(player.getUniqueId()).getBlockY() + " Z: " + deaths.get(player.getUniqueId()).getBlockZ() + ") gedroppt");
+        player.sendMessage("§6Du hast verloren");
+        player.sendMessage("§6Dein Inventar wird an deinen Todesort " + "(§cX: " + deaths.get(player.getUniqueId()).getBlockX() + " Y: " + deaths.get(player.getUniqueId()).getBlockY() + " Z: " + deaths.get(player.getUniqueId()).getBlockZ() + "§6) gedroppt");
     }
 
     /**
@@ -41,8 +36,6 @@ public class Minigame {
      * @param player    the player whose inventory is to be droopped
      */
     public static void dropInv(Player player) {
-        Main.getPlugin().getLogger().info("playerDeathInventory: " + Arrays.stream(playerDeathInventory.getContents()).toList().toString());
-        Main.getPlugin().getLogger().info("inventories: " + Arrays.stream(inventories.get(player.getUniqueId()).getContents()).toList().toString());
         for(int i = 0; i < playerDeathInventory.getSize(); i++) {
             if(playerDeathInventory.getItem(i) == null) continue;
             assert playerDeathInventory.getItem(i) != null;
@@ -62,7 +55,7 @@ public class Minigame {
      * @param player    the player who won the minigame
      */
     public static void winMessage(Player player) {
-        player.sendMessage("Du hast gewonnen, du bekommst jetzt deine Items");
+        player.sendMessage("§6Du hast gewonnen, du bekommst jetzt deine Items");
     }
 
     /**
@@ -77,7 +70,7 @@ public class Minigame {
      * @param player    the play to open the inventory to
      */
     public static void spawnChestWithInv(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 45, "Deine Items");
+        Inventory inventory = Bukkit.createInventory(null, 45, "§6Deine Items");
         inventory.setContents(playerDeathInventory.getContents());
 
         if(player.getRespawnLocation() == null) {
@@ -85,7 +78,6 @@ public class Minigame {
         } else player.teleport(player.getRespawnLocation());
 
         player.openInventory(inventory);
-        player.sendMessage("Inventar wird geöffnet");
         Minigame.playSoundAtLocation(player.getLocation(), 1F, Sound.ITEM_TOTEM_USE);
 
         playerDeathInventory.clear();

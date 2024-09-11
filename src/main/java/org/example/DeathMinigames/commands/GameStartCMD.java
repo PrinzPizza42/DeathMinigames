@@ -16,7 +16,7 @@ public class GameStartCMD implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player player) {
             if (inventories.containsKey(player.getUniqueId())) {
-                player.sendMessage("Starte Minispiel...");
+                player.sendMessage("§6§oStarte Minispiel...");
                 Location loc = new Location(player.getWorld(), 93, 73, 73);
                 player.teleport(loc);
                 waitingListMinigame.addLast(player);

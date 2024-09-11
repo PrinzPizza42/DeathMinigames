@@ -14,7 +14,7 @@ public class GameIgnoreCMD implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player player) {
             if(!waitingListMinigame.contains(player) && inventories.containsKey(player.getUniqueId())) {
-                player.sendMessage("Dein Inventar wird an deinen Todesort " + "(X: " + deaths.get(player.getUniqueId()).getBlockX() + " Y: " + deaths.get(player.getUniqueId()).getBlockY() + " Z: " + deaths.get(player.getUniqueId()).getBlockZ() + ") gedroppt");
+                player.sendMessage("§6Dein Inventar wird an deinen Todesort " + "(X: " + deaths.get(player.getUniqueId()).getBlockX() + " Y: " + deaths.get(player.getUniqueId()).getBlockY() + " Z: " + deaths.get(player.getUniqueId()).getBlockZ() + ") gedroppt");
                 for(int i = 0; i < inventories.get(player.getUniqueId()).getSize(); i++) {
                     if(inventories.get(player.getUniqueId()).getItem(i) == null) continue;
                     player.getWorld().dropItem(deaths.get(player.getUniqueId()), inventories.get(player.getUniqueId()).getItem(i));

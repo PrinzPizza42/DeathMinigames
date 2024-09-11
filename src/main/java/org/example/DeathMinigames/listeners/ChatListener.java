@@ -21,7 +21,7 @@ public class ChatListener implements Listener {
         if (inventories.containsKey(player.getUniqueId())) {
             if (event.getMessage().equalsIgnoreCase("/game start")) {
                     event.setCancelled(true);
-                    player.sendMessage("Starte Minispiel...");
+                    player.sendMessage("§6§oStarte Minispiel...");
                     Location loc = new Location(player.getWorld(), 93, 73, 73);
                     player.teleport(loc);
                     waitingListMinigame.addFirst(player);
@@ -30,7 +30,7 @@ public class ChatListener implements Listener {
             } else if (event.getMessage().equalsIgnoreCase("/game ignore")) {
                 if(!waitingListMinigame.contains(player) && inventories.containsKey(player.getUniqueId())) {
                     event.setCancelled(true);
-                    player.sendMessage("Dein Inventar wird an deinen Todesort " + "(X: " + deaths.get(player.getUniqueId()).getBlockX() + " Y: " + deaths.get(player.getUniqueId()).getBlockY() + " Z: " + deaths.get(player.getUniqueId()).getBlockZ() + ") gedroppt");
+                    player.sendMessage("§6Dein Inventar wird an deinen Todesort " + "($cX: " + deaths.get(player.getUniqueId()).getBlockX() + " Y: " + deaths.get(player.getUniqueId()).getBlockY() + " Z: " + deaths.get(player.getUniqueId()).getBlockZ() + "§6) gedroppt");
                     for(int i = 0; i < inventories.get(player.getUniqueId()).getSize(); i++) {
                         if(inventories.get(player.getUniqueId()).getItem(i) == null) continue;
                         player.getWorld().dropItem(deaths.get(player.getUniqueId()), inventories.get(player.getUniqueId()).getItem(i));

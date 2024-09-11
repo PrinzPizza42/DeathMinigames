@@ -40,7 +40,6 @@ public final class Main extends JavaPlugin {
     public static void minigameStart(Player player) {
         // get a random number, to start a random minigame
         int randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-        player.sendMessage("Random number is " + randomNum);
         switch (randomNum) {
             case 1:
                 JumpAndRun.start();

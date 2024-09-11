@@ -1,6 +1,5 @@
 package org.example.DeathMinigames.minigames;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -17,6 +16,7 @@ public class JumpAndRun {
     private static ArrayList<Block> blocksToDelete = new ArrayList<Block> ();
     private static boolean woolPlaced = false;
     private static boolean goldPlaced = false;
+
     /**
      * runs the minigame JumpAndRun
      */
@@ -26,7 +26,7 @@ public class JumpAndRun {
         World w = playerInArena.getWorld();
         Location location = new Location(playerInArena.getWorld(), 93d, 75d, 81d);
         playerInArena.teleport(location);
-        Minigame.startMessage(playerInArena, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
+        Minigame.startMessage(playerInArena, "§6Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
 
         // get the location and place the first block
         int x = 93;
@@ -46,7 +46,6 @@ public class JumpAndRun {
                     int _x = 0;
                     int _y = playerInArena.getLocation().getBlockY();
                     int _z = 0;
-                    Bukkit.broadcastMessage("Check if player is on concrete"); //TODO: replace deprecated method
                     if (checkIfOnConcrete(playerInArena) && !woolPlaced) {
                         // randomizer for coordinates and prefix
                         _x = randomizer(1, 3);
@@ -56,17 +55,13 @@ public class JumpAndRun {
                             // _x & _z negative
                             _x = _x * -1;
                             _z = _z * -1;
-                            Bukkit.broadcastMessage("Case 1");
                         } else if (randomNum == 2) {
                             // _x & _z positive
-                            Bukkit.broadcastMessage("Case 2");
                         }   else if (randomNum == 3) {
                             // _x negative & _z positive
-                            Bukkit.broadcastMessage("Case 3");
                             _x = _x * -1;
                         } else if (randomNum == 4) {
                             // _x positive & _z negative
-                            Bukkit.broadcastMessage("Case 4");
                             _z = _z * -1;
                         }
                         _x = playerInArena.getLocation().getBlockX() + _x;
@@ -87,7 +82,6 @@ public class JumpAndRun {
                             Minigame.playSoundAtLocation(nextBlock, 2F, Sound.BLOCK_AMETHYST_BLOCK_HIT);
                             Minigame.spawnParticles(playerInArena, nextBlock, Particle.GLOW);
                             woolPlaced = true;
-                            Bukkit.broadcastMessage("Green wool was placed at " + nextBlock.toString());
                             blocksToDelete.add(nextBlock.getBlock());
                         }
                     }
@@ -97,9 +91,7 @@ public class JumpAndRun {
                     }
                 }
             }
-        }.runTaskTimer(getPlugin(Main.class), 0, 20);
-
-        Bukkit.broadcastMessage("End");
+        }.runTaskTimer(getPlugin(Main.class), 0, 10);
     }
 
     /**
@@ -111,7 +103,6 @@ public class JumpAndRun {
         Location block = player.getLocation();
         block.setY(block.getBlockY() - 1);
         if (block.getBlock().getType() == Material.GREEN_CONCRETE) {
-            Bukkit.broadcast(Component.text("check concrete true"));
             return true;
         }
         else {
@@ -191,12 +182,11 @@ public class JumpAndRun {
                     Location block = player.getLocation();
                     block.setY(block.getBlockY() - 1);
                     block.getBlock().setType(Material.GREEN_CONCRETE);
-                    Bukkit.broadcastMessage("Green wool changed to green concrete");
                     woolPlaced = false;
                     cancel();
                 }
             }
-        }.runTaskTimer(Main.getPlugin(), 0, 20);
+        }.runTaskTimer(Main.getPlugin(), 0, 5);
     }
 
     /**
@@ -208,7 +198,6 @@ public class JumpAndRun {
         Location block = player.getLocation();
         block.setY(block.getBlockY() - 1);
         if (block.getBlock().getType() == Material.GREEN_WOOL) {
-            Bukkit.broadcastMessage("check wool true");
             return true;
         }
         else {
@@ -225,7 +214,6 @@ public class JumpAndRun {
         Location block = player.getLocation();
         block.setY(block.getBlockY() - 1);
         if (block.getBlock().getType() == Material.GOLD_BLOCK) {
-            Bukkit.broadcastMessage("check gold true");
             return true;
         }
         else {

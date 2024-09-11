@@ -23,7 +23,6 @@ public class DeathListener implements Listener {
         Player player = event.getPlayer();
         Inventory inventory = Bukkit.createInventory(null, 45);
         inventory.setContents(event.getPlayer().getInventory().getContents());
-        Main.getPlugin().getLogger().info("Inventory inventory: " + Arrays.stream(inventory.getContents()).toList().toString());
         Location deathpoint = event.getPlayer().getLocation();
 
         if (!deaths.containsKey(player.getUniqueId())) {
@@ -31,9 +30,9 @@ public class DeathListener implements Listener {
         }
 
         if (inventory.isEmpty()) {
-            player.sendMessage("Inventar wurde nicht gespeichert, da es leer war");
+            player.sendMessage("§6§oInventar wurde nicht gespeichert, da es leer war");
         } else if (!inventories.containsKey(player.getUniqueId())){
-            player.sendMessage("Inventar wurde gespeichert");
+            player.sendMessage("§6§oInventar wurde gespeichert");
             inventories.put(player.getUniqueId(), inventory);
         }
 
