@@ -1,9 +1,14 @@
 package org.example.DeathMinigames.minigames;
 
+import com.destroystokyo.paper.ParticleBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.example.DeathMinigames.deathMinigames.Main;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -81,9 +86,24 @@ public class Minigame {
 
         player.openInventory(inventory);
         player.sendMessage("Inventar wird geöffnet");
+        Minigame.playSoundAtLocation(player.getLocation(), 1F, Sound.ITEM_TOTEM_USE);
 
         playerDeathInventory.clear();
         inventories.remove(player.getUniqueId());
         deaths.remove(player.getUniqueId());
+    }
+
+    /**
+     * Plays a sound at a location
+     * @param location  the location to play the sound at
+     * @param volume    how loud the
+     * @param sound     the sound to play
+     */
+    public static void playSoundAtLocation(Location location, Float volume, Sound sound) {
+        location.getWorld().playSound(location, sound, volume, 1F);
+    }
+
+    public static void spawnParticles(Player player, Location location, Particle particle) {
+        player.getWorld().spawnParticle(particle, location, 20, 1, 1, 1);
     }
 }

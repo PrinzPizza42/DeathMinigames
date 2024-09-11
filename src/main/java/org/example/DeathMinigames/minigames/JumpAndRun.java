@@ -76,12 +76,16 @@ public class JumpAndRun {
                         // check if it is the last block, if true place a gold block
                         if(_y == 81 && !goldPlaced) {
                             nextBlock.getBlock().setType(Material.GOLD_BLOCK);
+                            Minigame.playSoundAtLocation(nextBlock, 2F, Sound.BLOCK_AMETHYST_BLOCK_HIT);
+                            Minigame.spawnParticles(playerInArena, nextBlock, Particle.GLOW);
                             blocksToDelete.add(nextBlock.getBlock());
                             goldPlaced = true;
                             woolPlaced = true;
                         }
                         else {
                             nextBlock.getBlock().setType(Material.GREEN_WOOL);
+                            Minigame.playSoundAtLocation(nextBlock, 2F, Sound.BLOCK_AMETHYST_BLOCK_HIT);
+                            Minigame.spawnParticles(playerInArena, nextBlock, Particle.GLOW);
                             woolPlaced = true;
                             Bukkit.broadcastMessage("Green wool was placed at " + nextBlock.toString());
                             blocksToDelete.add(nextBlock.getBlock());
@@ -136,6 +140,7 @@ public class JumpAndRun {
             Minigame.winMessage(player);
             Minigame.spawnChestWithInv(player);
             woolPlaced = false;
+            goldPlaced = false;
             for (Block block : blocksToDelete) {
                 player.getWorld().setType(block.getLocation(), Material.AIR);
             }
@@ -160,6 +165,7 @@ public class JumpAndRun {
             Minigame.loseMessage(player);
             Minigame.dropInv(player);
             woolPlaced = false;
+            goldPlaced = false;
             for (Block block : blocksToDelete) {
                 player.getWorld().setType(block.getLocation(), Material.AIR);
             }

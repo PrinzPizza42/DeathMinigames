@@ -19,6 +19,9 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         getLogger().info("Plugin enabled");
         plugin = this;
+
+        //getCommand("game start").setExecutor(new gameStartCMD());
+        //getCommand("game ignore").setExecutor(new gameIgnoreCMD());
         getServer().getPluginManager().registerEvents(new SnowballHitListener(), this);
         getServer().getPluginManager().registerEvents(new DeathListener(), this);
         getServer().getPluginManager().registerEvents(new RespawnListener(), this);
