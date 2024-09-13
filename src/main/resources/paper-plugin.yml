@@ -7,3 +7,5 @@ commands:
 
   TestCommand:
      description: Dieses Command ist zum testen da
+  game:
+    description: all commands around the minigames

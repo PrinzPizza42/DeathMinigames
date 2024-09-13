@@ -23,6 +23,7 @@ public class RespawnListener implements Listener {
 
             player.sendMessage("§6Entscheide dich, möchtest du ein Minispiel um deine Items spielen oder deine Items an deiner Todesstelle gedroppt bekommen?");
 
+            //TODO: replace deprecated code
             startMinigame.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/game start"));
             startMinigame.setColor(net.md_5.bungee.api.ChatColor.GREEN);
             startMinigame.setItalic(true);
