@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import org.example.DeathMinigames.deathMinigames.Main;
+import org.example.DeathMinigames.minigames.Minigame;
 
 import java.util.Arrays;
 
@@ -19,12 +20,14 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         Main.getPlugin().getLogger().info(player.getName());
         if (inventories.containsKey(player.getUniqueId())) {
-            if (event.getMessage().equalsIgnoreCase("/game start")) {
+            /*if (event.getMessage().equalsIgnoreCase("/game start")) {
                     event.setCancelled(true);
                     player.sendMessage("§6§oStarte Minispiel...");
                     Location loc = new Location(player.getWorld(), 93, 73, 73);
+                    Location locOfBox = new Location(player.getWorld(), 93, 73, 93);
                     player.teleport(loc);
                     waitingListMinigame.addFirst(player);
+                    Minigame.teleportPlayerInBox(player, locOfBox);
                     Main.getPlugin().getLogger().info(waitingListMinigame.getFirst().getName());
                     Main.minigameStart(waitingListMinigame.getFirst());
             } else if (event.getMessage().equalsIgnoreCase("/game ignore")) {
@@ -38,7 +41,7 @@ public class ChatListener implements Listener {
                     inventories.remove(player.getUniqueId());
                 }
 
-            }
+            }*/
 
         }
     }

@@ -11,11 +11,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 import static org.example.DeathMinigames.listeners.DeathListener.*;
+import static org.example.DeathMinigames.minigames.Minigame.checkIfWaitinglistIsEmpty;
 
 public class JumpAndRun {
     private static ArrayList<Block> blocksToDelete = new ArrayList<Block> ();
     private static boolean woolPlaced = false;
     private static boolean goldPlaced = false;
+    private static int _x = 0;
+    private static int _y = 0;
+    private static int _z = 0;
 
     /**
      * runs the minigame JumpAndRun
@@ -23,10 +27,11 @@ public class JumpAndRun {
     public static void start() {
         // get the player int the arena from the waiting list
         playerInArena = waitingListMinigame.getFirst();
+
         World w = playerInArena.getWorld();
-        Location location = new Location(playerInArena.getWorld(), 93d, 75d, 81d);
+        Location location = new Location(playerInArena.getWorld(), 93.5d, 75.5d, 81.5d);
         playerInArena.teleport(location);
-        Minigame.startMessage(playerInArena, "§6Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
+        Minigame.startMessage(playerInArena, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
 
         // get the location and place the first block
         int x = 93;
@@ -39,32 +44,41 @@ public class JumpAndRun {
         new BukkitRunnable() {
             public void run() {
                 if(checkIfPlayerWon(playerInArena) || checkIfPlayerLost(playerInArena, 73)) {
-                 cancel();
+                    if(!checkIfWaitinglistIsEmpty()) {
+                        Main.minigameStart(waitingListMinigame.getFirst());
+                    }
+                    cancel();
                 }
                 else {
                     // check if the player is standing on green concrete, if true place the next block
-                    int _x = 0;
-                    int _y = playerInArena.getLocation().getBlockY();
-                    int _z = 0;
                     if (checkIfOnConcrete(playerInArena) && !woolPlaced) {
                         // randomizer for coordinates and prefix
-                        _x = randomizer(1, 3);
-                        _z = randomizer(1, 4);
+                        _x = randomizer(2, 3);
+                        _z = randomizer(2, 3);
                         int randomNum = randomizer(1, 4);
-                        if(randomNum == 1) {
-                            // _x & _z negative
-                            _x = _x * -1;
-                            _z = _z * -1;
-                        } else if (randomNum == 2) {
-                            // _x & _z positive
-                        }   else if (randomNum == 3) {
-                            // _x negative & _z positive
-                            _x = _x * -1;
-                        } else if (randomNum == 4) {
-                            // _x positive & _z negative
-                            _z = _z * -1;
+                        switch(randomNum) {
+                            case 1:
+                                // _x & _z negative
+                                _x = _x * -1;
+                                _z = _z * -1;
+                                break;
+                            case 2:
+                                // _x & _z positive
+                                break;
+                            case 3:
+                                // _x negative & _z positive
+                                _x = _x * -1;
+                                break;
+                            case 4:
+                                // _x positive & _z negative
+                                _z = _z * -1;
+                                break;
+                            case 5:
+                                // Block with ladder jump
+                                break;
                         }
                         _x = playerInArena.getLocation().getBlockX() + _x;
+                        _y = playerInArena.getLocation().getBlockY();
                         _z = playerInArena.getLocation().getBlockZ() + _z;
                         nextBlock.set(_x, _y, _z);
 
@@ -89,9 +103,12 @@ public class JumpAndRun {
                         // replace the placed wool with concrete if the player is standing on it
                         replaceWoolWithConcrete(playerInArena);
                     }
+                    /*if(_x <= 103 && _x >= 83 && _z <= 91 && _z >= 71) {
+                        Bukkit.broadcast(Component.text("Wool will be placed").color(NamedTextColor.GREEN));
+                    }*/
                 }
             }
-        }.runTaskTimer(getPlugin(Main.class), 0, 10);
+        }.runTaskTimer(getPlugin(Main.class), 0, 5);
     }
 
     /**
@@ -138,6 +155,7 @@ public class JumpAndRun {
             blocksToDelete.clear();
             Location loc = new Location(player.getWorld(), 93, 74, 81);
             player.getWorld().setType(loc, Material.AIR);
+            playerInArena = null;
             return true;
         }
         else {
@@ -163,6 +181,7 @@ public class JumpAndRun {
             blocksToDelete.clear();
             Location loc = new Location(player.getWorld(), 93, 74, 81);
             player.getWorld().setType(loc, Material.AIR);
+            playerInArena = null;
             return true;
         }
         else {

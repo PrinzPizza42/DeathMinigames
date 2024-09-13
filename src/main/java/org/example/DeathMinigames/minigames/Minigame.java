@@ -1,23 +1,21 @@
 package org.example.DeathMinigames.minigames;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import static org.example.DeathMinigames.listeners.DeathListener.*;
 
 public class Minigame {
-
     /**
      * sends the player the starting message of the minigame
      * @param player    the player in the minigame
      * @param message   the message as declared in the Minigame
      */
     public static void startMessage(Player player, String message) {
-        player.sendMessage(message);
+        player.sendMessage(Component.text(message).color(NamedTextColor.GOLD));
         playerDeathInventory.setContents(inventories.get(player.getUniqueId()).getContents()); ;
         waitingListMinigame.remove(player);
     }
@@ -27,8 +25,16 @@ public class Minigame {
      * @param player    the player who lost the game
      */
     public static void loseMessage(Player player) {
-        player.sendMessage("§6Du hast verloren");
-        player.sendMessage("§6Dein Inventar wird an deinen Todesort " + "(§cX: " + deaths.get(player.getUniqueId()).getBlockX() + " Y: " + deaths.get(player.getUniqueId()).getBlockY() + " Z: " + deaths.get(player.getUniqueId()).getBlockZ() + "§6) gedroppt");
+        player.sendMessage(Component.text("Du hast verloren").color(NamedTextColor.GOLD));
+        player.sendMessage(Component.text("Dein Inventar wird an deinen Todesort ").color(NamedTextColor.GOLD)
+                .append(Component.text("(X: " + deaths.get(player.getUniqueId()).getBlockX() + " ").color(NamedTextColor.RED))
+                .append(Component.text("Y: " + deaths.get(player.getUniqueId()).getBlockY() + " ").color(NamedTextColor.RED))
+                .append(Component.text("Z: " + deaths.get(player.getUniqueId()).getBlockZ() + ") ").color(NamedTextColor.RED))
+                .append(Component.text("gedroppt").color(NamedTextColor.GOLD)));
+        Difficulty.higherDifficulty(player);
+        player.sendMessage(Component.text("Deine Schwierigkeit wurde um 1 auf ").color(NamedTextColor.GOLD)
+                .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED))
+                .append(Component.text(" erhöht.").color(NamedTextColor.GOLD)));
     }
 
     /**
@@ -55,14 +61,7 @@ public class Minigame {
      * @param player    the player who won the minigame
      */
     public static void winMessage(Player player) {
-        player.sendMessage("§6Du hast gewonnen, du bekommst jetzt deine Items");
-    }
-
-    /**
-     * resets the arena, after the player has finished the minigame
-     */
-    public static void resetArena() {
-
+        player.sendMessage(Component.text("Du hast gewonnen, du bekommst jetzt deine Items").color(NamedTextColor.GOLD));
     }
 
     /**
@@ -97,5 +96,26 @@ public class Minigame {
 
     public static void spawnParticles(Player player, Location location, Particle particle) {
         player.getWorld().spawnParticle(particle, location, 20, 1, 1, 1);
+    }
+
+    public static void teleportPlayerInBox(Player player, Location locationOfBox) {
+        player.teleport(locationOfBox);
+    }
+
+    public static boolean checkIfWaitinglistIsEmpty() {
+        if(waitingListMinigame.isEmpty()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * send the player the statistics of the minigames
+     * @param player
+     */
+    public static void sendStatistics(Player player) {
+
     }
 }
