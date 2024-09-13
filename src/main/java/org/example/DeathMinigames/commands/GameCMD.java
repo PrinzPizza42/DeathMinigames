@@ -5,6 +5,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -75,6 +76,20 @@ public class GameCMD implements BasicCommand {
                 player.sendMessage(Component.text("Du hast nicht das Recht dazu").color(NamedTextColor.RED));
             }
         }
+        else if (args.length == 3) {
+            if(player.isOp()) {
+                int i = Integer.parseInt(args[2]);
+                Difficulty.setDifficulty(player, i);
+                player.sendMessage(Component.text("Die Schwierigkeit von ").color(NamedTextColor.GOLD)
+                        .append(Component.text(args[1])).color(NamedTextColor.RED)
+                        .append(Component.text(" wurde auf ")).color(NamedTextColor.GOLD)
+                        .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED))
+                        .append(Component.text(" gesetzt")).color(NamedTextColor.GOLD));
+            }
+            else {
+                player.sendMessage(Component.text("Du hast nicht das Recht dazu").color(NamedTextColor.RED));
+            }
+        }
     }
 
     @Override
@@ -85,6 +100,12 @@ public class GameCMD implements BasicCommand {
             suggestions.add("ignore");
             suggestions.add("difficulty");
             return suggestions;
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("difficulty")) {
+            Collection<String> suggestions2 = new ArrayList<>();
+            for(Player on : Bukkit.getOnlinePlayers()) {
+                suggestions2.add(on.getName());
+                return suggestions2;
+            }
         }
         return BasicCommand.super.suggest(commandSourceStack, args);
     }
