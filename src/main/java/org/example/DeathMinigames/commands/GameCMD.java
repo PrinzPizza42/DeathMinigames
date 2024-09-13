@@ -27,8 +27,13 @@ public class GameCMD implements BasicCommand {
     @Override
     public void execute(CommandSourceStack stack, String[] args) {
         Player player = (Player) stack.getSender();
-            if (inventories.containsKey(player.getUniqueId())) {
-                if (args.length == 1) {
+        if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("difficulty")) {
+                player.sendMessage(Component.text("Deine Schwierigkeit ist gerade bei ").color(NamedTextColor.GOLD)
+                        .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED)));
+            }
+            else {
+                if (inventories.containsKey(player.getUniqueId())) {
                     switch (args[0].toLowerCase()) {
                         case "start":
                             player.sendActionBar(Component.text("Starte Minispiel...")
@@ -37,14 +42,13 @@ public class GameCMD implements BasicCommand {
                             Location loc = new Location(player.getWorld(), 93, 73, 73);
                             player.teleport(loc);
                             waitingListMinigame.addLast(player);
-                            Main.getPlugin().getLogger().info(waitingListMinigame.getFirst().getName());
                             Main.minigameStart(waitingListMinigame.getFirst());
                             break;
                         case "ignore":
-                            if(!waitingListMinigame.contains(player) && inventories.containsKey(player.getUniqueId())) {
+                            if (!waitingListMinigame.contains(player) && inventories.containsKey(player.getUniqueId())) {
                                 player.sendMessage(Component.text("Dein Inventar wird an deinen Todesort (").color(NamedTextColor.GOLD)
-                                .append(Component.text("X: " + deaths.get(player.getUniqueId()).getBlockX() + " Y: " + deaths.get(player.getUniqueId()).getBlockY() + " Z: " + deaths.get(player.getUniqueId()).getBlockZ()).color(NamedTextColor.RED))
-                                .append(Component.text(") gedroppt")).color(NamedTextColor.GOLD));
+                                        .append(Component.text("X: " + deaths.get(player.getUniqueId()).getBlockX() + " Y: " + deaths.get(player.getUniqueId()).getBlockY() + " Z: " + deaths.get(player.getUniqueId()).getBlockZ()).color(NamedTextColor.RED))
+                                        .append(Component.text(") gedroppt")).color(NamedTextColor.GOLD));
                                 for (int i = 0; i < inventories.get(player.getUniqueId()).getSize(); i++) {
                                     if (inventories.get(player.getUniqueId()).getItem(i) == null) continue;
                                     player.getWorld().dropItem(deaths.get(player.getUniqueId()), inventories.get(player.getUniqueId()).getItem(i));
@@ -52,16 +56,24 @@ public class GameCMD implements BasicCommand {
                                 inventories.remove(player.getUniqueId());
                             }
                             break;
-
-                        case "difficulty":
-                        player.sendMessage(Component.text("Deine Schwierigkeit ist gerade bei ").color(NamedTextColor.GOLD).append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED)));
-
                         default:
-                        player.sendMessage(Component.text("Usage: /game <start/ignore>").color(NamedTextColor.RED));
-                        break;
+                            player.sendMessage(Component.text("Usage: /game <start/ignore/difficulty>").color(NamedTextColor.RED));
+                            break;
                     }
                 }
-
+            }
+        }
+        else if (args.length == 2) {
+            if(player.isOp()) {
+                int i = Integer.parseInt(args[1]);
+                Difficulty.setDifficulty(player, i);
+                player.sendMessage(Component.text("Deine Schwierigkeit wurde auf ").color(NamedTextColor.GOLD)
+                        .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED))
+                        .append(Component.text(" gesetzt")).color(NamedTextColor.GOLD));
+            }
+            else {
+                player.sendMessage(Component.text("Du hast nicht das Recht dazu").color(NamedTextColor.RED));
+            }
         }
     }
 
@@ -71,6 +83,7 @@ public class GameCMD implements BasicCommand {
             Collection<String> suggestions = new ArrayList<>();
             suggestions.add("start");
             suggestions.add("ignore");
+            suggestions.add("difficulty");
             return suggestions;
         }
         return BasicCommand.super.suggest(commandSourceStack, args);

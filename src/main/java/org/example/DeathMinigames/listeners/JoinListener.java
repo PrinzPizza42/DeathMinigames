@@ -14,7 +14,7 @@ public class JoinListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         if(!Difficulty.checkIfPlayerInMap(event.getPlayer())) {
             Difficulty.addPlayer(event.getPlayer());
-            Bukkit.broadcast(Component.text("du wurdest der Liste hinzugefügt und hast eine Difficulty von: ").color(NamedTextColor.GOLD)
+            event.getPlayer().sendMessage(Component.text("Du wurdest der Liste hinzugefügt und hast eine Difficulty von: ").color(NamedTextColor.GOLD)
                     .append(Component.text(Difficulty.getDifficulty(event.getPlayer())).color(NamedTextColor.RED)));
         }
     }

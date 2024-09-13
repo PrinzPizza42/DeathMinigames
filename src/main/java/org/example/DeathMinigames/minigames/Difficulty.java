@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.minigames;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.example.DeathMinigames.deathMinigames.Main;
 
@@ -27,6 +28,11 @@ public class Difficulty {
 
     public static void higherDifficulty(Player player) {
         setDifficulty(player, getDifficulty(player) + 1);
+        Main.getPlugin().saveConfig();
+    }
+
+    public static void lowerDifficulty(Player player) {
+        setDifficulty(player, getDifficulty(player) - 1);
         Main.getPlugin().saveConfig();
     }
     /**
