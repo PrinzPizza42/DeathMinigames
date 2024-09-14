@@ -34,6 +34,8 @@ public class RespawnListener implements Listener {
             ignoreMinigame.setUnderlined(true);
 
             event.getPlayer().spigot().sendMessage(startMinigame, middlePart,ignoreMinigame);
+
+            player.sendTitle("§cEntscheide dich im Chat", "", 1, 1000000, 20);
         }
 
     }
