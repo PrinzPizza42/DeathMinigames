@@ -1,18 +1,18 @@
 package org.example.DeathMinigames.deathMinigames;
 
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.example.DeathMinigames.commands.GameCMD;
 import org.example.DeathMinigames.listeners.*;
 import org.example.DeathMinigames.minigames.JumpAndRun;
+import org.example.DeathMinigames.minigames.Minigame;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -59,6 +59,8 @@ public final class Main extends JavaPlugin {
                 }
                 else {
                     player.sendMessage(Component.text("Die Arena ist gerade besetzt, du wurdest in die Warteliste aufgenommen").color(NamedTextColor.GOLD));
+                    Location locationBox = new Location(player.getWorld(), 115, 76, 53);
+                    Minigame.teleportPlayerInBox(player, locationBox);
                 }
                 break;
 
@@ -69,6 +71,8 @@ public final class Main extends JavaPlugin {
                 }
                 else {
                     player.sendMessage(Component.text("Die Arena ist gerade besetzt, du wurdest in die Warteliste aufgenommen").color(NamedTextColor.GOLD));
+                    Location locationBox = new Location(player.getWorld(), 115, 76, 53);
+                    Minigame.teleportPlayerInBox(player, locationBox);
                 }
                 break;
         }

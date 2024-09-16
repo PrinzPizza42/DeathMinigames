@@ -1,7 +1,9 @@
 package org.example.DeathMinigames.minigames;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -16,6 +18,7 @@ public class Minigame {
      */
     public static void startMessage(Player player, String message) {
         player.sendMessage(Component.text(message).color(NamedTextColor.GOLD));
+
         playerDeathInventory.setContents(inventories.get(player.getUniqueId()).getContents()); ;
         waitingListMinigame.remove(player);
     }
@@ -25,16 +28,17 @@ public class Minigame {
      * @param player    the player who lost the game
      */
     public static void loseMessage(Player player) {
-        player.sendMessage(Component.text("Du hast verloren").color(NamedTextColor.GOLD));
-        player.sendMessage(Component.text("Dein Inventar wird an deinen Todesort ").color(NamedTextColor.GOLD)
-                .append(Component.text("(X: " + deaths.get(player.getUniqueId()).getBlockX() + " ").color(NamedTextColor.RED))
+        player.sendTitle("§6Du hast verloren", "§6Dein Inventar wird an deinen Todesort (" + "§cX:" + deaths.get(player.getUniqueId()).getBlockX() + " §cY: " + deaths.get(player.getUniqueId()).getBlockY() + " §cZ: " + deaths.get(player.getUniqueId()).getBlockZ() + "§6) gedroppt", 1, 50, 20);
+        player.sendMessage(Component.text("Todesort: ").color(NamedTextColor.GOLD)
+                .append(Component.text("X: " + deaths.get(player.getUniqueId()).getBlockX() + " ").color(NamedTextColor.RED))
                 .append(Component.text("Y: " + deaths.get(player.getUniqueId()).getBlockY() + " ").color(NamedTextColor.RED))
-                .append(Component.text("Z: " + deaths.get(player.getUniqueId()).getBlockZ() + ") ").color(NamedTextColor.RED))
-                .append(Component.text("gedroppt").color(NamedTextColor.GOLD)));
-        Difficulty.higherDifficulty(player);
-        player.sendMessage(Component.text("Deine Schwierigkeit wurde um 1 auf ").color(NamedTextColor.GOLD)
-                .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED))
-                .append(Component.text(" erhöht.").color(NamedTextColor.GOLD)));
+                .append(Component.text("Z: " + deaths.get(player.getUniqueId()).getBlockZ()).color(NamedTextColor.RED)));
+        player.sendMessage(Component.text("Wenn du deine Schwierigkeit verringern möchtest musst du 4 Diamanten opfern. Clicke dafür ").color(NamedTextColor.GOLD)
+                .append(Component.text("hier").color(NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/game lowerDifficulty")).decorate(TextDecoration.UNDERLINED)
+                ));
+        player.sendMessage(Component.text("oder gibt ").color(NamedTextColor.GOLD)
+                .append(Component.text("/game lowerDifficulty ").color(NamedTextColor.GREEN)
+                        .append(Component.text("ein").color(NamedTextColor.GOLD))));
     }
 
     /**
@@ -52,8 +56,12 @@ public class Minigame {
         inventories.remove(player.getUniqueId());
 
         if(player.getRespawnLocation() == null) {
+            player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
             player.teleport(player.getWorld().getSpawnLocation());
-        } else player.teleport(player.getRespawnLocation());
+        } else {
+            player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
+            player.teleport(player.getRespawnLocation());
+        }
     }
 
     /**
@@ -62,6 +70,12 @@ public class Minigame {
      */
     public static void winMessage(Player player) {
         player.sendMessage(Component.text("Du hast gewonnen, du bekommst jetzt deine Items").color(NamedTextColor.GOLD));
+        if(Difficulty.getDifficulty(player) < 10) {
+            Difficulty.higherDifficulty(player);
+            player.sendMessage(Component.text("Deine Schwierigkeit wurde um 1 auf ").color(NamedTextColor.GOLD)
+                    .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED))
+                    .append(Component.text(" erhöht.").color(NamedTextColor.GOLD)));
+        }
     }
 
     /**
@@ -69,12 +83,16 @@ public class Minigame {
      * @param player    the play to open the inventory to
      */
     public static void spawnChestWithInv(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 45, "§6Deine Items");
+        Inventory inventory = Bukkit.createInventory(null, 45, Component.text("Deine Items").color(NamedTextColor.GOLD));
         inventory.setContents(playerDeathInventory.getContents());
 
         if(player.getRespawnLocation() == null) {
+            player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
             player.teleport(player.getWorld().getSpawnLocation());
-        } else player.teleport(player.getRespawnLocation());
+        } else {
+            player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
+            player.teleport(player.getRespawnLocation());
+        }
 
         player.openInventory(inventory);
         Minigame.playSoundAtLocation(player.getLocation(), 1F, Sound.ITEM_TOTEM_USE);

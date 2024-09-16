@@ -1,5 +1,8 @@
 package org.example.DeathMinigames.listeners;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -30,9 +33,13 @@ public class DeathListener implements Listener {
         }
 
         if (inventory.isEmpty()) {
-            player.sendMessage("§6§oInventar wurde nicht gespeichert, da es leer war");
+            player.sendActionBar(Component.text("Inventar wurde nicht gespeichert, da es leer war")
+                    .color(NamedTextColor.GOLD)
+                    .decoration(TextDecoration.ITALIC, true));
         } else if (!inventories.containsKey(player.getUniqueId())){
-            player.sendMessage("§6§oInventar wurde gespeichert");
+            player.sendActionBar(Component.text("Inventar wurde gespeichert")
+                    .color(NamedTextColor.GOLD)
+                    .decoration(TextDecoration.ITALIC, true));
             inventories.put(player.getUniqueId(), inventory);
         }
 

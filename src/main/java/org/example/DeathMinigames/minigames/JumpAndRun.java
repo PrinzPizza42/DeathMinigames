@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.minigames;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -20,6 +21,7 @@ public class JumpAndRun {
     private static int _x = 0;
     private static int _y = 0;
     private static int _z = 0;
+    private static String ladderXZ = null;
 
     /**
      * runs the minigame JumpAndRun
@@ -28,10 +30,14 @@ public class JumpAndRun {
         // get the player int the arena from the waiting list
         playerInArena = waitingListMinigame.getFirst();
 
+        playerInArena.sendTitle("Jump and Run", "");
+
         World w = playerInArena.getWorld();
         Location location = new Location(playerInArena.getWorld(), 93.5d, 75.5d, 81.5d);
         playerInArena.teleport(location);
         Minigame.startMessage(playerInArena, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
+
+        int heightToWin = 90;
 
         // get the location and place the first block
         int x = 93;
@@ -50,12 +56,87 @@ public class JumpAndRun {
                     cancel();
                 }
                 else {
+                    int minX = 0;
+                    int minZ = 0;
+                    int maxX = 0;
+                    int maxZ = 0;
+                    int _max = 4;
+                    switch(Difficulty.getDifficulty(playerInArena)) {
+                        case 0:
+                            minX = 1;
+                            minZ = 1;
+                            maxX = 2;
+                            maxZ = 2;
+                            break;
+                        case 1:
+                            minX = 1;
+                            minZ = 1;
+                            maxX = 2;
+                            maxZ = 2;
+                            break;
+                        case 2:
+                            minX = 1;
+                            minZ = 1;
+                            maxX = 3;
+                            maxZ = 3;
+                            break;
+                        case 3:
+                            minX = 1;
+                            minZ = 1;
+                            maxX = 3;
+                            maxZ = 3;
+                            break;
+                        case 4:
+                            minX = 2;
+                            minZ = 2;
+                            maxX = 3;
+                            maxZ = 3;
+                            break;
+                        case 5:
+                            minX = 2;
+                            minZ = 2;
+                            maxX = 3;
+                            maxZ = 3;
+                            break;
+                        case 6:
+                            minX = 3;
+                            minZ = 3;
+                            maxX = 3;
+                            maxZ = 3;
+                            break;
+                        case 7:
+                            minX = 3;
+                            minZ = 3;
+                            maxX = 3;
+                            maxZ = 3;
+                            break;
+                        case 8:
+                            minX = 3;
+                            minZ = 3;
+                            maxX = 3;
+                            maxZ = 3;
+                            break;
+                        case 9:
+                            minX = 3;
+                            minZ = 3;
+                            maxX = 3;
+                            maxZ = 3;
+                            _max = 8;
+                            break;
+                        case 10:
+                            minX = 3;
+                            minZ = 3;
+                            maxX = 3;
+                            maxZ = 3;
+                            _max = 8;
+                            break;
+                    }
                     // check if the player is standing on green concrete, if true place the next block
                     if (checkIfOnConcrete(playerInArena) && !woolPlaced) {
                         // randomizer for coordinates and prefix
-                        _x = randomizer(2, 3);
-                        _z = randomizer(2, 3);
-                        int randomNum = randomizer(1, 4);
+                        _x = randomizer(minX, maxX);
+                        _z = randomizer(minZ, maxZ);
+                        int randomNum = randomizer(1, _max);
                         switch(randomNum) {
                             case 1:
                                 // _x & _z negative
@@ -74,7 +155,32 @@ public class JumpAndRun {
                                 _z = _z * -1;
                                 break;
                             case 5:
-                                // Block with ladder jump
+                                // 4 Block jump north
+                                _z = 4 * -1;
+                                _x = 0;
+                                //ladderXZ = "z";
+                                //placeLadderJump(_x, _z);
+                                break;
+                            case 6:
+                                // 4 Block jump east
+                                _z = 0;
+                                _x = 4 * -1;
+                                //ladderXZ = "x";
+                                //placeLadderJump(_x, _z);
+                                break;
+                            case 7:
+                                // 4 Block jump south
+                                _z = 0;
+                                _x = 4;
+                                //ladderXZ = "x";
+                                //placeLadderJump(_x, _z);
+                                break;
+                            case 8:
+                                // 4 Block jump west
+                                _z = 4;
+                                _x = 0;
+                                //ladderXZ = "x";
+                                //placeLadderJump(_x, _z);
                                 break;
                         }
                         _x = playerInArena.getLocation().getBlockX() + _x;
@@ -83,7 +189,7 @@ public class JumpAndRun {
                         nextBlock.set(_x, _y, _z);
 
                         // check if it is the last block, if true place a gold block
-                        if(_y == 81 && !goldPlaced) {
+                        if(_y == heightToWin && !goldPlaced) {
                             nextBlock.getBlock().setType(Material.GOLD_BLOCK);
                             Minigame.playSoundAtLocation(nextBlock, 2F, Sound.BLOCK_AMETHYST_BLOCK_HIT);
                             Minigame.spawnParticles(playerInArena, nextBlock, Particle.GLOW);
@@ -103,9 +209,6 @@ public class JumpAndRun {
                         // replace the placed wool with concrete if the player is standing on it
                         replaceWoolWithConcrete(playerInArena);
                     }
-                    /*if(_x <= 103 && _x >= 83 && _z <= 91 && _z >= 71) {
-                        Bukkit.broadcast(Component.text("Wool will be placed").color(NamedTextColor.GREEN));
-                    }*/
                 }
             }
         }.runTaskTimer(getPlugin(Main.class), 0, 5);
@@ -238,5 +341,20 @@ public class JumpAndRun {
         else {
             return false;
         }
+    }
+
+    public static void placeLadderJump(int _x, int _z) {
+        Location ladder = new Location(playerInArena.getWorld(), playerInArena.getX() + _x, playerInArena.getY(), playerInArena.getZ() + _z);
+        switch (ladderXZ.toLowerCase()) {
+            case "z":
+                ladder.setZ(playerInArena.getZ() + _z + 1);
+                break;
+            case "x":
+                ladder.setX(playerInArena.getX() + _x + 1);
+                break;
+        }
+        playerInArena.getWorld().getBlockAt(ladder).setType(Material.LADDER);
+        playerInArena.sendMessage(Component.text("Ladder placed at " + ladder));
+        ladderXZ = null;
     }
 }

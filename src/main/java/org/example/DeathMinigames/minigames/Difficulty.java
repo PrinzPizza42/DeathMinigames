@@ -1,10 +1,11 @@
 package org.example.DeathMinigames.minigames;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.example.DeathMinigames.deathMinigames.Main;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 public class Difficulty {
     /**
@@ -26,7 +27,17 @@ public class Difficulty {
     }
 
     public static void higherDifficulty(Player player) {
-        setDifficulty(player, getDifficulty(player) + 1);
+        if(getDifficulty(player) == 10) {
+            player.sendMessage(Component.text("Du hast schon die maximale Schwierigkeit erreicht. Hast du super gemacht").color(NamedTextColor.RED));
+        }
+        else {
+            setDifficulty(player, getDifficulty(player) + 1);
+            Main.getPlugin().saveConfig();
+        }
+    }
+
+    public static void lowerDifficulty(Player player) {
+        setDifficulty(player, getDifficulty(player) - 1);
         Main.getPlugin().saveConfig();
     }
     /**
@@ -38,12 +49,21 @@ public class Difficulty {
         Main.getPlugin().saveConfig();
     }
 
+    public static boolean checkIfPlayerCanPay(Player player) {
+       return player.getInventory().contains(Material.DIAMOND, 4);
+    }
+
+    public static void PlayerPay(Player player) {
+        ItemStack diamonds = new ItemStack(Material.DIAMOND, 4);
+        player.getInventory().removeItem(diamonds);
+    }
+
     /**
      *
      * @param player
      * @return
      */
-    public static boolean checkIfPlayerInMap(Player player) {
+    public static boolean checkIfPlayerInFile(Player player) {
         if(Main.getPlugin().getConfig().contains(player.getName() + ".Difficulty")) {
             return true;
         }
