@@ -11,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.example.DeathMinigames.deathMinigames.Main;
+import org.example.DeathMinigames.listeners.RespawnListener;
 import org.example.DeathMinigames.minigames.Difficulty;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class GameCMD implements BasicCommand {
                     if (inventories.containsKey(player.getUniqueId())) {
                         switch (args[0].toLowerCase()) {
                             case "start":
+                                RespawnListener.setPlayerDecided(true);
                                 player.resetTitle();
                                 player.sendActionBar(Component.text("Starte Minispiel...")
                                         .color(NamedTextColor.GOLD)
@@ -65,6 +67,7 @@ public class GameCMD implements BasicCommand {
                                 Main.minigameStart(waitingListMinigame.getFirst());
                                 break;
                             case "ignore":
+                                RespawnListener.setPlayerDecided(true);
                                 player.resetTitle();
                                 if (!waitingListMinigame.contains(player) && inventories.containsKey(player.getUniqueId())) {
                                     player.sendMessage(Component.text("Dein Inventar wird an deinen Todesort (").color(NamedTextColor.GOLD)

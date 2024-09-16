@@ -45,7 +45,7 @@ public class Minigame {
      * drops the inventory of the player at his deathpoint, clears the playerDeathInventory, teleports him to his respawnlocation and removes him from the deaths HashMap
      * @param player    the player whose inventory is to be droopped
      */
-    public static void dropInv(Player player) {
+    public static void dropInv(Player player, boolean doTeleport) {
         for(int i = 0; i < playerDeathInventory.getSize(); i++) {
             if(playerDeathInventory.getItem(i) == null) continue;
             assert playerDeathInventory.getItem(i) != null;
@@ -55,12 +55,14 @@ public class Minigame {
         deaths.remove(player.getUniqueId());
         inventories.remove(player.getUniqueId());
 
-        if(player.getRespawnLocation() == null) {
-            player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
-            player.teleport(player.getWorld().getSpawnLocation());
-        } else {
-            player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
-            player.teleport(player.getRespawnLocation());
+        if(doTeleport) {
+            if(player.getRespawnLocation() == null) {
+                player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
+                player.teleport(player.getWorld().getSpawnLocation());
+            } else {
+                player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
+                player.teleport(player.getRespawnLocation());
+            }
         }
     }
 

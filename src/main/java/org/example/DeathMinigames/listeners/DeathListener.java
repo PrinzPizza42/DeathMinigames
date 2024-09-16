@@ -28,9 +28,8 @@ public class DeathListener implements Listener {
         inventory.setContents(event.getPlayer().getInventory().getContents());
         Location deathpoint = event.getPlayer().getLocation();
 
-        if (!deaths.containsKey(player.getUniqueId())) {
-            deaths.put(player.getUniqueId(), deathpoint);
-        }
+        deaths.put(player.getUniqueId(), deathpoint);
+        Main.getPlugin().getLogger().info("Player got new deathpoint");
 
         if (inventory.isEmpty()) {
             player.sendActionBar(Component.text("Inventar wurde nicht gespeichert, da es leer war")
