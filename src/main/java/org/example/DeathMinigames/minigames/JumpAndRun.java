@@ -111,7 +111,8 @@ public class JumpAndRun {
     private static boolean checkIfPlayerLost(Player player, int heightToLose) {
         if (player.getLocation().getBlockY() <= heightToLose) {
             Minigame.loseMessage(player);
-            Minigame.dropInv(player, true);
+            Minigame.dropInvWithTeleport(player, true);
+            Minigame.playSoundToPlayer(player, 0.5F, Sound.ENTITY_ITEM_BREAK);
             woolPlaced = false;
             goldPlaced = false;
             for (Block block : blocksToDelete) {

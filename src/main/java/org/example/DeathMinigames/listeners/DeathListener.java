@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.Inventory;
 import org.example.DeathMinigames.deathMinigames.Main;
+import org.example.DeathMinigames.minigames.Minigame;
 
 import java.util.*;
 

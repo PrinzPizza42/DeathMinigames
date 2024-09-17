@@ -19,7 +19,7 @@ import static org.example.DeathMinigames.listeners.DeathListener.*;
 public class RespawnListener implements Listener {
 
     private static boolean playerDecided = false;
-    private static int i = 10;
+    private static int timeForPlayerToDecide = 10;
 
     public static void setPlayerDecided(boolean playerDecided) {
         RespawnListener.playerDecided = playerDecided;
@@ -35,23 +35,25 @@ public class RespawnListener implements Listener {
         inventories.remove(player.getUniqueId());
     }
 
-    private static void decidedTimer(Player player) {
+    private static void timerWhilePlayerDecides(Player player) {
         new BukkitRunnable() {
             public void run() {
-                if(i > 0) {
+                if(timeForPlayerToDecide > 0) {
                     if(!playerDecided) {
                         Title.Times times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofMillis(500));
                         Title title = Title.title(Component.text("Entscheide dich im Chat\n").color(NamedTextColor.GOLD)
                                 .append(Component.text("Du hast noch ").color(NamedTextColor.GOLD))
-                                .append(Component.text(i).color(NamedTextColor.RED))
+                                .append(Component.text(timeForPlayerToDecide).color(NamedTextColor.RED))
                                 .append(Component.text(" Sekunden zeit").color(NamedTextColor.GOLD)), Component.empty(), times);
                         player.showTitle(title);
-                        i--;
+                        timeForPlayerToDecide--;
+                        player.sendTitle("§6Entscheide dich im Chat", "§6Du hast noch §c" + timeForPlayerToDecide + "§6 Sekunden zeit", 0, 25, 10);
+                        timeForPlayerToDecide--;
                     }
                     else {
-                        i = 10;
+                        timeForPlayerToDecide = 10;
                         RespawnListener.playerDecided = false;
-                        Main.getPlugin().getLogger().info("runnabel cancelled");
+                        Main.getPlugin().getLogger().info("runnable cancelled because player decided");
                         cancel();
                     }
                 }
@@ -63,8 +65,8 @@ public class RespawnListener implements Listener {
                             .append(Component.text("Z: " + deaths.get(player.getUniqueId()).getBlockZ()).color(NamedTextColor.RED)));
                     dropInv(player);
                     RespawnListener.playerDecided = false;
-                    i = 10;
-                    Main.getPlugin().getLogger().info("runnabel cancelled");
+                    timeForPlayerToDecide = 10;
+                    Main.getPlugin().getLogger().info("runnable cancelled because of waiting");
                     cancel();
                 }
             }
@@ -94,8 +96,11 @@ public class RespawnListener implements Listener {
             ignoreMinigame.setItalic(true);
             ignoreMinigame.setUnderlined(true);
 
+            timerWhilePlayerDecides(player);
+
+
+
             event.getPlayer().spigot().sendMessage(startMinigame, middlePart,ignoreMinigame);
-            decidedTimer(player);
         }
 
     }

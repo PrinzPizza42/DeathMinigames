@@ -58,21 +58,25 @@ public final class Main extends JavaPlugin {
                     JumpAndRun.start();
                 }
                 else {
-                    player.sendMessage(Component.text("Die Arena ist gerade besetzt, du wurdest in die Warteliste aufgenommen").color(NamedTextColor.GOLD));
-                    Location locationBox = new Location(player.getWorld(), 115, 76, 53);
-                    Minigame.teleportPlayerInBox(player, locationBox);
+                    if(player.getUniqueId() != playerInArena.getUniqueId()) {
+                        player.sendMessage(Component.text("Die Arena ist gerade besetzt, du wurdest in die Warteliste aufgenommen").color(NamedTextColor.GOLD));
+                        Location locationBox = new Location(player.getWorld(), 115, 76, 53);
+                        Minigame.teleportPlayerInBox(player, locationBox);
+                    }
                 }
                 break;
 
             case 2:
-                //FightPVE;
                 if(playerInArena == null) {
                     JumpAndRun.start();
+                    //FightPVE;
                 }
                 else {
-                    player.sendMessage(Component.text("Die Arena ist gerade besetzt, du wurdest in die Warteliste aufgenommen").color(NamedTextColor.GOLD));
-                    Location locationBox = new Location(player.getWorld(), 115, 76, 53);
-                    Minigame.teleportPlayerInBox(player, locationBox);
+                    if(player.getUniqueId() != playerInArena.getUniqueId()) {
+                        player.sendMessage(Component.text("Die Arena ist gerade besetzt, du wurdest in die Warteliste aufgenommen").color(NamedTextColor.GOLD));
+                        Location locationBox = new Location(player.getWorld(), 115, 76, 53);
+                        Minigame.teleportPlayerInBox(player, locationBox);
+                    }
                 }
                 break;
         }

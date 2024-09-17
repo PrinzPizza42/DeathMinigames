@@ -45,7 +45,7 @@ public class Minigame {
      * drops the inventory of the player at his deathpoint, clears the playerDeathInventory, teleports him to his respawnlocation and removes him from the deaths HashMap
      * @param player    the player whose inventory is to be droopped
      */
-    public static void dropInv(Player player, boolean doTeleport) {
+    public static void dropInvWithTeleport(Player player, boolean doTeleport) {
         for(int i = 0; i < playerDeathInventory.getSize(); i++) {
             if(playerDeathInventory.getItem(i) == null) continue;
             assert playerDeathInventory.getItem(i) != null;
@@ -64,6 +64,22 @@ public class Minigame {
                 player.teleport(player.getRespawnLocation());
             }
         }
+    }
+
+    /**
+     * drops the inventory of the player at his deathpoint, clears the playerDeathInventory and removes him from the deaths HashMap
+     * @param player    the player whose inventory is to be droopped
+     */
+    public static void dropInv(Player player) {
+        for(int i = 0; i < playerDeathInventory.getSize(); i++) {
+            if(playerDeathInventory.getItem(i) == null) continue;
+            assert playerDeathInventory.getItem(i) != null;
+            player.getWorld().dropItem(deaths.get(player.getUniqueId()), playerDeathInventory.getItem(i));
+        }
+        playerDeathInventory.clear();
+        deaths.remove(player.getUniqueId());
+        inventories.remove(player.getUniqueId());
+
     }
 
     /**
@@ -112,6 +128,10 @@ public class Minigame {
      */
     public static void playSoundAtLocation(Location location, Float volume, Sound sound) {
         location.getWorld().playSound(location, sound, volume, 1F);
+    }
+
+    public static void playSoundToPlayer(Player player, Float volume, Sound sound) {
+        player.playSound(player, sound, volume, 1F);
     }
 
     public static void spawnParticles(Player player, Location location, Particle particle) {
