@@ -11,7 +11,9 @@ import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.example.DeathMinigames.deathMinigames.Main;
+import org.example.DeathMinigames.listeners.RespawnListener;
 import org.example.DeathMinigames.minigames.Difficulty;
+import org.example.DeathMinigames.minigames.Minigame;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +40,7 @@ public class GameCMD implements BasicCommand {
                         if(Difficulty.getDifficulty(player) > 0) {
                             Difficulty.PlayerPay(player);
                             Difficulty.lowerDifficulty(player);
+                            Minigame.playSoundAtLocation(player.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
                             player.sendMessage(Component.text("Deine Schwierigkeit wurde um 1 auf ").color(NamedTextColor.GOLD)
                                     .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED)));
                         }
@@ -51,9 +54,11 @@ public class GameCMD implements BasicCommand {
                     }
                 }
                 else {
-                    if (inventories.containsKey(player.getUniqueId())) {
+                    if (inventories.containsKey(player.getUniqueId()) && !waitingListMinigame.contains(player.getUniqueId()) && playerInArena != player) {
                         switch (args[0].toLowerCase()) {
                             case "start":
+                                Minigame.playSoundAtLocation(player.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
+                                RespawnListener.setPlayerDecided(true);
                                 player.resetTitle();
                                 player.sendActionBar(Component.text("Starte Minispiel...")
                                         .color(NamedTextColor.GOLD)
@@ -62,9 +67,11 @@ public class GameCMD implements BasicCommand {
                                 player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
                                 player.teleport(loc);
                                 waitingListMinigame.addLast(player);
-                                Main.minigameStart(waitingListMinigame.getFirst());
+                                Main.minigameStart(player);
                                 break;
                             case "ignore":
+                                Minigame.playSoundToPlayer(player, 0.5F, Sound.ENTITY_ITEM_BREAK);
+                                RespawnListener.setPlayerDecided(true);
                                 player.resetTitle();
                                 if (!waitingListMinigame.contains(player) && inventories.containsKey(player.getUniqueId())) {
                                     player.sendMessage(Component.text("Dein Inventar wird an deinen Todesort (").color(NamedTextColor.GOLD)

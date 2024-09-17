@@ -1,15 +1,11 @@
 package org.example.DeathMinigames.listeners;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import org.example.DeathMinigames.deathMinigames.Main;
-import org.example.DeathMinigames.minigames.Minigame;
-
-import java.util.Arrays;
 
 import static org.example.DeathMinigames.listeners.DeathListener.*;
 

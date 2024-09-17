@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.Inventory;
 import org.example.DeathMinigames.deathMinigames.Main;
+import org.example.DeathMinigames.minigames.Minigame;
 
 import java.util.*;
 
@@ -28,9 +29,8 @@ public class DeathListener implements Listener {
         inventory.setContents(event.getPlayer().getInventory().getContents());
         Location deathpoint = event.getPlayer().getLocation();
 
-        if (!deaths.containsKey(player.getUniqueId())) {
-            deaths.put(player.getUniqueId(), deathpoint);
-        }
+        deaths.put(player.getUniqueId(), deathpoint);
+        Main.getPlugin().getLogger().info("Player got new deathpoint");
 
         if (inventory.isEmpty()) {
             player.sendActionBar(Component.text("Inventar wurde nicht gespeichert, da es leer war")
