@@ -2,6 +2,7 @@ package org.example.DeathMinigames.listeners;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -10,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.example.DeathMinigames.deathMinigames.Main;
+
+import java.time.Duration;
 
 import static org.example.DeathMinigames.listeners.DeathListener.*;
 
@@ -37,7 +40,12 @@ public class RespawnListener implements Listener {
             public void run() {
                 if(i > 0) {
                     if(!playerDecided) {
-                        player.sendTitle("§6Entscheide dich im Chat", "§6Du hast noch §c" + i + "§6 Sekunden zeit", 0, 25, 10);
+                        Title.Times times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofMillis(500));
+                        Title title = Title.title(Component.text("Entscheide dich im Chat\n").color(NamedTextColor.GOLD)
+                                .append(Component.text("Du hast noch ").color(NamedTextColor.GOLD))
+                                .append(Component.text(i).color(NamedTextColor.RED))
+                                .append(Component.text(" Sekunden zeit").color(NamedTextColor.GOLD)), Component.empty(), times);
+                        player.showTitle(title);
                         i--;
                     }
                     else {
