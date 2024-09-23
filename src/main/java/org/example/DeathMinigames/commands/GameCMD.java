@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.example.DeathMinigames.deathMinigames.Main;
 import org.example.DeathMinigames.listeners.RespawnListener;
 import org.example.DeathMinigames.minigames.Difficulty;

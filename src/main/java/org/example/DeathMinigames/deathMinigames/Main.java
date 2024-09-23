@@ -1,5 +1,10 @@
 package org.example.DeathMinigames.deathMinigames;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.example.DeathMinigames.listeners.*;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -10,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.example.DeathMinigames.commands.GameCMD;
-import org.example.DeathMinigames.listeners.*;
 import org.example.DeathMinigames.minigames.JumpAndRun;
 import org.example.DeathMinigames.minigames.Minigame;
 
@@ -21,6 +25,7 @@ import static org.example.DeathMinigames.listeners.DeathListener.playerInArena;
 public final class Main extends JavaPlugin {
 
     private static Main plugin;
+
 
     @Override
     public void onEnable() {
@@ -38,7 +43,9 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RespawnListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryListener(), this);
     }
+
 
     @Override
     public void onDisable() {

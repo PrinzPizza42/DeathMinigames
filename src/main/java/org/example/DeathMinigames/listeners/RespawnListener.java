@@ -5,12 +5,17 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.example.DeathMinigames.deathMinigames.Main;
+import org.example.DeathMinigames.minigames.Minigame;
 
 import java.time.Duration;
 
@@ -35,19 +40,30 @@ public class RespawnListener implements Listener {
         inventories.remove(player.getUniqueId());
     }
 
+    private static Inventory respawnMenu = Bukkit.createInventory(null, 9, Component.text("Respawn Menu", NamedTextColor.GOLD));;
+
+    private static void createRespawnMenu() {
+        respawnMenu.setItem(2, new ItemStack(Material.GREEN_WOOL));
+        respawnMenu.setItem(6, new ItemStack(Material.RED_WOOL));
+    }
+
+    public static Inventory getRespawnMenu() {
+        createRespawnMenu();
+        Main.getPlugin().getLogger().info("Getting Respawn Menu");
+        return respawnMenu;
+    }
+
     private static void timerWhilePlayerDecides(Player player) {
         new BukkitRunnable() {
             public void run() {
                 if(timeForPlayerToDecide > 0) {
                     if(!playerDecided) {
                         Title.Times times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofMillis(500));
-                        Title title = Title.title(Component.text("Entscheide dich im Chat\n").color(NamedTextColor.GOLD)
-                                .append(Component.text("Du hast noch ").color(NamedTextColor.GOLD))
+                        Title title = Title.title(Component.text("Entscheide dich im Chat").color(NamedTextColor.GOLD),
+                                Component.text("Du hast noch ").color(NamedTextColor.GOLD)
                                 .append(Component.text(timeForPlayerToDecide).color(NamedTextColor.RED))
-                                .append(Component.text(" Sekunden zeit").color(NamedTextColor.GOLD)), Component.empty(), times);
+                                .append(Component.text(" Sekunden zeit").color(NamedTextColor.GOLD)), times);
                         player.showTitle(title);
-                        timeForPlayerToDecide--;
-                        player.sendTitle("§6Entscheide dich im Chat", "§6Du hast noch §c" + timeForPlayerToDecide + "§6 Sekunden zeit", 0, 25, 10);
                         timeForPlayerToDecide--;
                     }
                     else {
@@ -97,10 +113,7 @@ public class RespawnListener implements Listener {
             ignoreMinigame.setUnderlined(true);
 
             timerWhilePlayerDecides(player);
-
-
-
-            event.getPlayer().spigot().sendMessage(startMinigame, middlePart,ignoreMinigame);
+            event.getPlayer().spigot().sendMessage(startMinigame, middlePart, ignoreMinigame);
         }
 
     }
