@@ -14,8 +14,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.example.DeathMinigames.deathMinigames.Introduction;
 import org.example.DeathMinigames.deathMinigames.Main;
-import org.example.DeathMinigames.minigames.Minigame;
 
 import java.time.Duration;
 
@@ -91,7 +91,7 @@ public class RespawnListener implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
-        if (inventories.containsKey(event.getPlayer().getUniqueId())) {
+        if (inventories.containsKey(event.getPlayer().getUniqueId()) && Introduction.checkIfPlayerUsesPlugin(event.getPlayer())) {
             Main.getPlugin().getLogger().info("inventories contains player");
             Player player = event.getPlayer();
             player.getInventory().clear();
@@ -113,6 +113,9 @@ public class RespawnListener implements Listener {
             ignoreMinigame.setUnderlined(true);
 
             timerWhilePlayerDecides(player);
+
+
+
             event.getPlayer().spigot().sendMessage(startMinigame, middlePart, ignoreMinigame);
         }
 

@@ -170,7 +170,7 @@ public class Minigame {
      * send the player the statistics of the minigames
      * @param player
      */
-    public static void sendStatistics(Player player) {
+    public static void sendPlayerStatistics(Player player) {
 
     }
 }
