@@ -7,10 +7,25 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.example.DeathMinigames.deathMinigames.Main;
 
 import static org.example.DeathMinigames.listeners.DeathListener.*;
 
 public class Minigame {
+
+    public static void wait(int ms)
+    {
+        try
+        {
+            Thread.sleep(ms);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+            Main.getPlugin().getLogger().severe("Thread interrupted while waiting for " + ms + " ms");
+        }
+    }
+
     /**
      * sends the player the starting message of the minigame
      * @param player    the player in the minigame
@@ -155,7 +170,7 @@ public class Minigame {
      * send the player the statistics of the minigames
      * @param player
      */
-    public static void sendStatistics(Player player) {
+    public static void sendPlayerStatistics(Player player) {
 
     }
 }

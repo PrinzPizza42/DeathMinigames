@@ -6,10 +6,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.example.DeathMinigames.deathMinigames.Main;
-
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
-
 import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 import static org.example.DeathMinigames.listeners.DeathListener.*;
 import static org.example.DeathMinigames.minigames.Minigame.checkIfWaitinglistIsEmpty;
@@ -30,7 +28,7 @@ public class JumpAndRun {
         // get the player int the arena from the waiting list
         playerInArena = waitingListMinigame.getFirst();
 
-        playerInArena.sendTitle("Jump and Run", "");
+        playerInArena.sendTitle("JumpNRun", "");
 
         World w = playerInArena.getWorld();
         Location location = new Location(playerInArena.getWorld(), 93.5d, 75.5d, 81.5d);
