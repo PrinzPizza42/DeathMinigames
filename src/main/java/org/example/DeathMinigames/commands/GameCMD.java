@@ -32,8 +32,8 @@ public class GameCMD implements BasicCommand {
     public void execute(CommandSourceStack stack, String[] args) {
         Player player = (Player) stack.getSender();
         if (args.length == 1) {
-            switch (args[0]) {
-                case "lowerDifficulty":
+            switch (args[0].toLowerCase()) {
+                case "lowerdifficulty":
                     if(Difficulty.checkIfPlayerCanPay(player)) {
                         if(Difficulty.getDifficulty(player) > 0) {
                             Difficulty.PlayerPay(player);
@@ -51,7 +51,7 @@ public class GameCMD implements BasicCommand {
                         player.sendMessage(Component.text("Du bist zu pleite um das zu bezahlen").color(NamedTextColor.RED));
                     }
                     break;
-                case "introPlayerDecidesToUseFeatures":
+                case "introplayerdecidestousefeatures":
                     if (!Introduction.checkIfPlayerGotIntroduced(player)) {
                         Introduction.setPlayerIntroduced(player);
                         Introduction.setPlayerPluginUsage(player, true);
@@ -62,7 +62,7 @@ public class GameCMD implements BasicCommand {
                         player.sendMessage(Component.text("Du hast dich bereit entschieden.").color(NamedTextColor.RED));
                     }
                     break;
-                case "introPlayerDecidesToNotUseFeatures":
+                case "introplayerdecidestonotusefeatures":
                     if (!Introduction.checkIfPlayerGotIntroduced(player)) {
                         Introduction.setPlayerIntroduced(player);
                         Introduction.setPlayerPluginUsage(player, false);
@@ -73,7 +73,7 @@ public class GameCMD implements BasicCommand {
                         player.sendMessage(Component.text("Du hast dich bereit entschieden.").color(NamedTextColor.RED));
                     }
                     break;
-                case "setNotIntroduced":
+                case "setnotintroduced":
                     Introduction.setPlayerNotIntroduced(player);
                 case "difficulty":
                     player.sendMessage(Component.text("Deine Schwierigkeit ist gerade bei ").color(NamedTextColor.GOLD)

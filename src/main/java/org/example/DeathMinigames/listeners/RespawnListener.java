@@ -91,10 +91,10 @@ public class RespawnListener implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        player.getInventory().clear();
         if (inventories.containsKey(event.getPlayer().getUniqueId()) && Introduction.checkIfPlayerUsesPlugin(event.getPlayer())) {
             Main.getPlugin().getLogger().info("inventories contains player");
-            Player player = event.getPlayer();
-            player.getInventory().clear();
 
             TextComponent startMinigame = new TextComponent("um deine Items spielen");
             TextComponent ignoreMinigame = new TextComponent("nicht um deine Items spielen");

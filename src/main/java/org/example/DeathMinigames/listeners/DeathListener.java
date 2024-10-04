@@ -25,24 +25,39 @@ public class DeathListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
-        if(Main.checkIfPlayerActivatedPlugin(player)) {
-            Inventory inventory = Bukkit.createInventory(null, 45);
-            inventory.setContents(event.getPlayer().getInventory().getContents());
-            Location deathpoint = event.getPlayer().getLocation();
+        Inventory inventory = Bukkit.createInventory(null, 45);
+        inventory.setContents(event.getPlayer().getInventory().getContents());
+        Location deathpoint = event.getPlayer().getLocation();
 
-            deaths.put(player.getUniqueId(), deathpoint);
-            Main.getPlugin().getLogger().info("Player got new deathpoint");
-
-            if (inventory.isEmpty()) {
+        deaths.put(player.getUniqueId(), deathpoint);
+        Main.getPlugin().getLogger().info("Player got new deathpoint");
+        if (inventory.isEmpty()) {
+            if(Main.checkIfPlayerActivatedPlugin(player)) {
                 player.sendActionBar(Component.text("Inventar wurde nicht gespeichert, da es leer war")
                         .color(NamedTextColor.GOLD)
                         .decoration(TextDecoration.ITALIC, true));
-            } else if (!inventories.containsKey(player.getUniqueId())){
+            }
+        } else if (!inventories.containsKey(player.getUniqueId())){
+            if(Main.checkIfPlayerActivatedPlugin(player)) {
                 player.sendActionBar(Component.text("Inventar wurde gespeichert")
                         .color(NamedTextColor.GOLD)
                         .decoration(TextDecoration.ITALIC, true));
-                inventories.put(player.getUniqueId(), inventory);
             }
+            inventories.put(player.getUniqueId(), inventory);
         }
+
+        if(!Main.checkIfPlayerActivatedPlugin(player)) {
+            dropInv(player);
+        }
+    }
+
+    private static void dropInv(Player player) {
+        for(int i = 0; i < inventories.get(player.getUniqueId()).getSize(); i++) {
+            if(inventories.get(player.getUniqueId()).getItem(i) == null) continue;
+            assert inventories.get(player.getUniqueId()).getItem(i) != null;
+            player.getWorld().dropItem(deaths.get(player.getUniqueId()), inventories.get(player.getUniqueId()).getItem(i));
+        }
+        deaths.remove(player.getUniqueId());
+        inventories.remove(player.getUniqueId());
     }
 }
