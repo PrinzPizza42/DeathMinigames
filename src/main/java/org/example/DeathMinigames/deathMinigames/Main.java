@@ -93,27 +93,22 @@ public final class Main extends JavaPlugin {
         return plugin;
     }
 
-    public static boolean checkIfPlayerActivatedPlugin(Player player) {
-        if (checkIfPlayerInFile(player)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
     public static void changePlayerActivatedPlugin(Player player, boolean whatToChangeTo) {
-        Main.getPlugin().getConfig().set(player.getName() + ".Plugin", whatToChangeTo);
+        Main.getPlugin().getConfig().set(player.getName() + ".UsesPlugin", whatToChangeTo);
         Main.getPlugin().getConfig();
     }
 
+    public static boolean checkIfPlayerActivatedPlugin(Player player) {
+        return Main.getPlugin().getConfig().getBoolean(player.getName() + ".UsesPlugin");
+    }
+
     public static void addPlayer(Player player) {
-        Main.getPlugin().getConfig().set(player.getName() + ".Plugin", true);
+        Main.getPlugin().getConfig().set(player.getName() + ".UsesPlugin", true);
         Main.getPlugin().saveConfig();
     }
 
     public static boolean checkIfPlayerInFile(Player player) {
-        if(Main.getPlugin().getConfig().contains(player.getName() + ".Plugin")) {
+        if(Main.getPlugin().getConfig().contains(player.getName() + ".UsesPlugin")) {
             return true;
         }
         else{
