@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.deathMinigames;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import org.example.DeathMinigames.listeners.*;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -14,6 +15,8 @@ import org.example.DeathMinigames.commands.GameCMD;
 import org.example.DeathMinigames.minigames.JumpAndRun;
 import org.example.DeathMinigames.minigames.Minigame;
 
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.example.DeathMinigames.listeners.DeathListener.playerInArena;
@@ -39,6 +42,9 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
+
+        TranslationFactory tf = new TranslationFactory();
+        tf.addTranslationsFromFile(new InputStreamReader(Main.class.getResourceAsStream("/translations.json"), StandardCharsets.UTF_8));
     }
 
 
