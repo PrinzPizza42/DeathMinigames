@@ -17,10 +17,15 @@ version = plversion
 repositories {
     mavenCentral()
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
+    maven {
+        name = "reposiliteRepositoryReleases"
+        url = uri("https://repo.jonasfranke.xyz/snapshots")
+    }
 }
 
 dependencies {
     paperweight.paperDevBundle("$minecraftVersion-R0.1-SNAPSHOT")
+    implementation("com.github.atompilz-devteam:stationofdoom:1.14.4.1")
 }
 
 tasks {
@@ -46,4 +51,11 @@ paper {
     version = plversion
     main = "org.example.DeathMinigames.deathMinigames.Main"
     apiVersion = "1.21"
+
+    serverDependencies {
+        register("StationOfDoom") {
+            required = true
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
+    }
 }
