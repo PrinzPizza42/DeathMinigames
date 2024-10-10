@@ -7,17 +7,15 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import org.example.DeathMinigames.deathMinigames.Main;
 
-import org.example.DeathMinigames.listeners.DeathListener.*;
+import static org.example.DeathMinigames.listeners.DeathListener.*;
 
 public class ChatListener implements Listener {
 
     @EventHandler
     void onChatInput(PlayerCommandPreprocessEvent event) {
-        Main main = new Main();
-
         Player player = event.getPlayer();
-        main.getPlugin().getLogger().info(player.getName());
-        if (DeathListener.inventories.containsKey(player.getUniqueId())) {
+        Main.getPlugin().getLogger().info(player.getName());
+        if (inventories.containsKey(player.getUniqueId())) {
             /*if (event.getMessage().equalsIgnoreCase("/game start")) {
                     event.setCancelled(true);
                     player.sendMessage("§6§oStarte Minispiel...");
