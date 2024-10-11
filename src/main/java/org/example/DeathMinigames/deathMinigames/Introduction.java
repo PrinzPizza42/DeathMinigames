@@ -18,9 +18,9 @@ public class Introduction {
     private static ArrayList<Location> blocks = new ArrayList<>();
 
     public boolean checkIfPlayerGotIntroduced(Player player) {
-        Main main = new Main();
+        Config config = new Config();
 
-        return main.checkConfigBoolean(player, "Introduction");
+        return config.checkConfigBoolean(player, "Introduction");
     }
 
     public void introStart(Player player) {
@@ -116,11 +116,10 @@ public class Introduction {
     }
 
     private void teleportPlayer(Player player) {
+        player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
         if(player.getRespawnLocation() == null) {
-                player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
                 player.teleport(player.getWorld().getSpawnLocation());
             } else {
-                player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
                 player.teleport(player.getRespawnLocation());
             }
     }

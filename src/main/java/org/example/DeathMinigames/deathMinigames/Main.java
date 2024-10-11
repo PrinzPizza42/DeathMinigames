@@ -1,6 +1,5 @@
 package org.example.DeathMinigames.deathMinigames;
 
-import org.bukkit.OfflinePlayer;
 import org.example.DeathMinigames.listeners.*;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -15,8 +14,7 @@ import org.example.DeathMinigames.commands.GameCMD;
 import org.example.DeathMinigames.minigames.JumpAndRun;
 import org.example.DeathMinigames.minigames.Minigame;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.example.DeathMinigames.listeners.DeathListener.playerInArena;
@@ -24,16 +22,19 @@ import static org.example.DeathMinigames.listeners.DeathListener.playerInArena;
 public final class Main extends JavaPlugin {
 
     private static Main plugin;
-    public static HashMap<UUID, Boolean> configIntroduction = new HashMap<>();
-    public static HashMap<UUID, Boolean> configUsesPlugin = new HashMap<>();
-    public static HashMap<UUID, Integer> configDifficulty = new HashMap<>();
 
     @Override
     public void onEnable() {
         getLogger().info("Plugin enabled");
         plugin = this;
 
-        cloneConfigToHasMap();
+        Config config = new Config();
+        if(!getPlugin().getConfig().contains("KnownPlayers")) {
+            getPlugin().getConfig().set("KnownPlayers", new ArrayList<>().stream().toList());
+            getPlugin().getLogger().info("created KnownPlayers");
+        }
+
+        config.cloneConfigToHasMap();
 
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -44,7 +45,6 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SnowballHitListener(), this);
         getServer().getPluginManager().registerEvents(new DeathListener(), this);
         getServer().getPluginManager().registerEvents(new RespawnListener(), this);
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
     }
@@ -62,12 +62,12 @@ public final class Main extends JavaPlugin {
         JumpAndRun jumpAndRun = new JumpAndRun();
         Minigame minigame = new Minigame();
         Introduction introduction = new Introduction();
-        Main main = new Main();
+        Config config = new Config();
 
         if(!introduction.checkIfPlayerGotIntroduced(player)) {
             introduction.introStart(player);
         }
-        else if(main.checkConfigBoolean(player, "UsesPlugin")) {
+        else if(config.checkConfigBoolean(player, "UsesPlugin")) {
             // get a random number, to start a random minigame
             int randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
             switch (randomNum) {
@@ -105,80 +105,4 @@ public final class Main extends JavaPlugin {
         return plugin;
     }
 
-    public void addPlayerInConfig(UUID player) {
-        getPlugin().getConfig().set(player + ".Introduction", false);
-        getPlugin().getConfig().set(player + ".UsesPlugin", true);
-        getPlugin().getConfig().set(player + ".Difficulty", 0);
-        getPlugin().saveConfig();
-    }
-
-    public void addPlayerInHashMap(UUID player) {
-        configIntroduction.put(player, (boolean) getConfig().get(player + ".Introduction"));
-        configUsesPlugin.put(player, (boolean) getConfig().get(player + ".UsesPlugin"));
-        configDifficulty.put(player, (int) getConfig().get(player + ".Difficulty"));
-    }
-
-    public void addNewPlayerInHashMap(UUID player) {
-        configIntroduction.put(player, false);
-        configUsesPlugin.put(player, true);
-        configDifficulty.put(player, 0);
-
-        addPlayerInConfig(player);
-    }
-
-    public boolean checkIfPlayerInFile(Player player) {
-        Main main = new Main();
-
-        if(main.getPlugin().getConfig().contains(player.getUniqueId().toString())) {
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    private void cloneConfigToHasMap() {
-        for(OfflinePlayer player : getServer().getWhitelistedPlayers()) {
-            if(getConfig().contains(player.getUniqueId().toString())) {
-                addPlayerInHashMap(player.getUniqueId());
-            }
-        }
-    }
-
-    public void setIntroduction(Player player, boolean introduction) {
-        configIntroduction.replace(player.getUniqueId(), introduction);
-        getPlugin().getConfig().set(player.getUniqueId() + ".Introduction", introduction);
-        getPlugin().saveConfig();
-    }
-
-    public void setUsesPlugin(Player player, boolean usesPlugin) {
-        configUsesPlugin.replace(player.getUniqueId(), usesPlugin);
-        getPlugin().getConfig().set(player.getUniqueId() + ".UsesPlugin", usesPlugin);
-        getPlugin().saveConfig();
-    }
-
-    public void setDifficulty(Player player, int difficulty) {
-        configDifficulty.replace(player.getUniqueId(), difficulty);
-        getPlugin().getConfig().set(player.getUniqueId() + ".Difficulty", difficulty);
-        getPlugin().saveConfig();
-    }
-
-    public boolean checkConfigBoolean(Player player, String topic) {
-        switch(topic) {
-            case "Introduction":
-                return configIntroduction.get(player.getUniqueId());
-            case "UsesPlugin":
-                return configUsesPlugin.get(player.getUniqueId());
-        }
-        return false;
-    }
-
-    public int checkConfigInt(Player player, String topic) {
-        switch(topic) {
-            case "Difficulty":
-                return configDifficulty.get(player.getUniqueId());
-
-        }
-        return 404;
-    }
 }
