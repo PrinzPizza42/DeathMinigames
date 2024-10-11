@@ -5,6 +5,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.deathMinigames.Main;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -207,6 +208,7 @@ public class JumpAndRun {
         Minigame mg = new Minigame();
         Main main = new Main();
         Difficulty diff = new Difficulty();
+        Config config = new Config();
 
         Location nextBlock = firstBLock;
         new BukkitRunnable() {
@@ -223,13 +225,8 @@ public class JumpAndRun {
                     int maxX = 0;
                     int maxZ = 0;
                     int _max = 4;
-                    switch(main.checkConfigInt(playerInArena, "Difficulty")) {
+                    switch(config.checkConfigInt(playerInArena, "Difficulty")) {
                         case 0:
-                            minX = 1;
-                            minZ = 1;
-                            maxX = 2;
-                            maxZ = 2;
-                            break;
                         case 1:
                             minX = 1;
                             minZ = 1;
@@ -237,11 +234,6 @@ public class JumpAndRun {
                             maxZ = 2;
                             break;
                         case 2:
-                            minX = 1;
-                            minZ = 1;
-                            maxX = 3;
-                            maxZ = 3;
-                            break;
                         case 3:
                             minX = 1;
                             minZ = 1;
@@ -249,11 +241,6 @@ public class JumpAndRun {
                             maxZ = 3;
                             break;
                         case 4:
-                            minX = 2;
-                            minZ = 2;
-                            maxX = 3;
-                            maxZ = 3;
-                            break;
                         case 5:
                             minX = 2;
                             minZ = 2;
@@ -261,17 +248,7 @@ public class JumpAndRun {
                             maxZ = 3;
                             break;
                         case 6:
-                            minX = 3;
-                            minZ = 3;
-                            maxX = 3;
-                            maxZ = 3;
-                            break;
                         case 7:
-                            minX = 3;
-                            minZ = 3;
-                            maxX = 3;
-                            maxZ = 3;
-                            break;
                         case 8:
                             minX = 3;
                             minZ = 3;
@@ -279,12 +256,6 @@ public class JumpAndRun {
                             maxZ = 3;
                             break;
                         case 9:
-                            minX = 3;
-                            minZ = 3;
-                            maxX = 3;
-                            maxZ = 3;
-                            _max = 8;
-                            break;
                         case 10:
                             minX = 3;
                             minZ = 3;

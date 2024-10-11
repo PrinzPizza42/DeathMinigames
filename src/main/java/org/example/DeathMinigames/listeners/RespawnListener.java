@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.deathMinigames.Introduction;
 import org.example.DeathMinigames.deathMinigames.Main;
 
@@ -94,17 +95,16 @@ public class RespawnListener implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
-        Main main = new Main();
-        Introduction introduction = new Introduction();
+        Config config = new Config();
 
-        Player player = event.getPlayer();
-        player.getInventory().clear();
-        if (inventories.containsKey(event.getPlayer().getUniqueId()) && main.checkConfigBoolean(player, "UsesPlugin")) {
+        Player player_7 = event.getPlayer();
+        player_7.getInventory().clear();
+        if (inventories.containsKey(event.getPlayer().getUniqueId()) && config.checkConfigBoolean(player_7, "UsesPlugin")) {
             TextComponent startMinigame = new TextComponent("um deine Items spielen");
             TextComponent ignoreMinigame = new TextComponent("nicht um deine Items spielen");
             TextComponent middlePart = new TextComponent(" / ");
 
-            player.sendMessage("§6Entscheide dich, möchtest du ein Minispiel um deine Items spielen oder deine Items an deiner Todesstelle gedroppt bekommen?");
+            player_7.sendMessage("§6Entscheide dich, möchtest du ein Minispiel um deine Items spielen oder deine Items an deiner Todesstelle gedroppt bekommen?");
 
             //TODO: replace deprecated code
             startMinigame.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/game start"));
@@ -116,9 +116,7 @@ public class RespawnListener implements Listener {
             ignoreMinigame.setItalic(true);
             ignoreMinigame.setUnderlined(true);
 
-            timerWhilePlayerDecides(player);
-
-
+            timerWhilePlayerDecides(player_7);
 
             event.getPlayer().spigot().sendMessage(startMinigame, middlePart, ignoreMinigame);
         }

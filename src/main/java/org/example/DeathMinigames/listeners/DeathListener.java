@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.Inventory;
+import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.deathMinigames.Introduction;
 import org.example.DeathMinigames.deathMinigames.Main;
 
@@ -24,33 +25,31 @@ public class DeathListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        Main main = new Main();
-        Introduction introduction = new Introduction();
+        Config config = new Config();
 
-        Player player = event.getPlayer();
+        Player player_3 = event.getPlayer();
         Inventory inventory = Bukkit.createInventory(null, 45);
         inventory.setContents(event.getPlayer().getInventory().getContents());
         Location deathpoint = event.getPlayer().getLocation();
 
-        deaths.put(player.getUniqueId(), deathpoint);
-        main.getPlugin().getLogger().info("Player got new deathpoint");
+        deaths.put(player_3.getUniqueId(), deathpoint);
         if (inventory.isEmpty()) {
-            if(main.checkConfigBoolean(player, "UsesPlugin")) {
-                player.sendActionBar(Component.text("Inventar wurde nicht gespeichert, da es leer war")
+            if(config.checkConfigBoolean(player_3, "UsesPlugin")) {
+                player_3.sendActionBar(Component.text("Inventar wurde nicht gespeichert, da es leer war")
                         .color(NamedTextColor.GOLD)
                         .decoration(TextDecoration.ITALIC, true));
             }
-        } else if (!inventories.containsKey(player.getUniqueId())){
-            if(main.checkConfigBoolean(player, "UsesPlugin")) {
-                player.sendActionBar(Component.text("Inventar wurde gespeichert")
+        } else if (!inventories.containsKey(player_3.getUniqueId())){
+            if(config.checkConfigBoolean(player_3, "UsesPlugin")) {
+                player_3.sendActionBar(Component.text("Inventar wurde gespeichert")
                         .color(NamedTextColor.GOLD)
                         .decoration(TextDecoration.ITALIC, true));
             }
-            inventories.put(player.getUniqueId(), inventory);
+            inventories.put(player_3.getUniqueId(), inventory);
         }
 
-        if(!main.checkConfigBoolean(player, "UsesPlugin")) {
-            dropInv(player);
+        if(!config.checkConfigBoolean(player_3, "UsesPlugin")) {
+            dropInv(player_3);
         }
     }
 

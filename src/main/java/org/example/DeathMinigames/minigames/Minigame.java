@@ -7,6 +7,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.deathMinigames.Introduction;
 import org.example.DeathMinigames.deathMinigames.Main;
 
@@ -31,10 +32,10 @@ public class Minigame {
      * @param player    the player who lost the game
      */
     public void loseMessage(Player player) {
-        Main main = new Main();
+        Config config = new Config();
 
-        if(main.checkConfigBoolean(player, "UsesPlugin")) {
-            player.sendTitle("§6Du hast verloren", "§6Dein Inventar wird an deinen Todesort (" + "§cX:" + deaths.get(player.getUniqueId()).getBlockX() + " §cY: " + deaths.get(player.getUniqueId()).getBlockY() + " §cZ: " + deaths.get(player.getUniqueId()).getBlockZ() + "§6) gedroppt", 1, 50, 20);
+        if(config.checkConfigBoolean(player, "UsesPlugin")) {
+            player.sendMessage(Component.text("Du hast verloren. Dein Inventar wird an deinem Todesort gedroppt").color(NamedTextColor.RED));
             player.sendMessage(Component.text("Todesort: ").color(NamedTextColor.GOLD)
                     .append(Component.text("X: " + deaths.get(player.getUniqueId()).getBlockX() + " ").color(NamedTextColor.RED))
                     .append(Component.text("Y: " + deaths.get(player.getUniqueId()).getBlockY() + " ").color(NamedTextColor.RED))
@@ -95,13 +96,13 @@ public class Minigame {
      */
     public void winMessage(Player player) {
         Difficulty difficulty = new Difficulty();
-        Main main = new Main();
+        Config config = new Config();
 
         player.sendMessage(Component.text("Du hast gewonnen, du bekommst jetzt deine Items").color(NamedTextColor.GOLD));
-        if(main.checkConfigInt(player, "Difficulty") < 10) {
+        if(config.checkConfigInt(player, "Difficulty") < 10) {
             difficulty.higherDifficulty(player);
             player.sendMessage(Component.text("Deine Schwierigkeit wurde um 1 auf ").color(NamedTextColor.GOLD)
-                    .append(Component.text(main.checkConfigInt(player, "Difficulty")).color(NamedTextColor.RED))
+                    .append(Component.text(config.checkConfigInt(player, "Difficulty")).color(NamedTextColor.RED))
                     .append(Component.text(" erhöht.").color(NamedTextColor.GOLD)));
         }
     }
