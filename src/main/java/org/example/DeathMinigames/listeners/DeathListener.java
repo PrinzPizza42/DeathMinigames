@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.Inventory;
+import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.deathMinigames.Introduction;
 import org.example.DeathMinigames.deathMinigames.Main;
 
@@ -24,34 +25,35 @@ public class DeathListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        Player player = event.getPlayer();
+        Config config = new Config();
+
+        Player player_3 = event.getPlayer();
         Inventory inventory = Bukkit.createInventory(null, 45);
         inventory.setContents(event.getPlayer().getInventory().getContents());
         Location deathpoint = event.getPlayer().getLocation();
 
-        deaths.put(player.getUniqueId(), deathpoint);
-        Main.getPlugin().getLogger().info("Player got new deathpoint");
+        deaths.put(player_3.getUniqueId(), deathpoint);
         if (inventory.isEmpty()) {
-            if(Main.checkIfPlayerActivatedPlugin(player)) {
-                player.sendActionBar(Component.text("Inventar wurde nicht gespeichert, da es leer war")
+            if(config.checkConfigBoolean(player_3, "UsesPlugin")) {
+                player_3.sendActionBar(Component.text("Inventar wurde nicht gespeichert, da es leer war")
                         .color(NamedTextColor.GOLD)
                         .decoration(TextDecoration.ITALIC, true));
             }
-        } else if (!inventories.containsKey(player.getUniqueId())){
-            if(Main.checkIfPlayerActivatedPlugin(player)) {
-                player.sendActionBar(Component.text("Inventar wurde gespeichert")
+        } else if (!inventories.containsKey(player_3.getUniqueId())){
+            if(config.checkConfigBoolean(player_3, "UsesPlugin")) {
+                player_3.sendActionBar(Component.text("Inventar wurde gespeichert")
                         .color(NamedTextColor.GOLD)
                         .decoration(TextDecoration.ITALIC, true));
             }
-            inventories.put(player.getUniqueId(), inventory);
+            inventories.put(player_3.getUniqueId(), inventory);
         }
 
-        if(!Main.checkIfPlayerActivatedPlugin(player)) {
-            dropInv(player);
+        if(!config.checkConfigBoolean(player_3, "UsesPlugin")) {
+            dropInv(player_3);
         }
     }
 
-    private static void dropInv(Player player) {
+    private void dropInv(Player player) {
         for(int i = 0; i < inventories.get(player.getUniqueId()).getSize(); i++) {
             if(inventories.get(player.getUniqueId()).getItem(i) == null) continue;
             assert inventories.get(player.getUniqueId()).getItem(i) != null;

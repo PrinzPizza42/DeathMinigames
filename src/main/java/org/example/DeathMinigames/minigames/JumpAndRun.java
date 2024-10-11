@@ -5,12 +5,13 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.deathMinigames.Main;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
-import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
-import static org.example.DeathMinigames.listeners.DeathListener.*;
-import static org.example.DeathMinigames.minigames.Minigame.checkIfWaitinglistIsEmpty;
+
+import static org.example.DeathMinigames.listeners.DeathListener.playerInArena;
+import static org.example.DeathMinigames.listeners.DeathListener.waitingListMinigame;
 
 public class JumpAndRun {
     private static ArrayList<Block> blocksToDelete = new ArrayList<Block> ();
@@ -24,7 +25,10 @@ public class JumpAndRun {
     /**
      * runs the minigame JumpAndRun
      */
-    public static void start() {
+    public void start() {
+        JumpAndRun JAR = new JumpAndRun();
+        Minigame mg = new Minigame();
+
         // get the player int the arena from the waiting list
         playerInArena = waitingListMinigame.getFirst();
 
@@ -33,7 +37,7 @@ public class JumpAndRun {
         World w = playerInArena.getWorld();
         Location location = new Location(playerInArena.getWorld(), 93.5d, 75.5d, 81.5d);
         playerInArena.teleport(location);
-        Minigame.startMessage(playerInArena, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
+        mg.startMessage(playerInArena, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
 
         int heightToWin = 90;
 
@@ -45,7 +49,7 @@ public class JumpAndRun {
         firstBlock.getBlock().setType(Material.GREEN_CONCRETE);
 
         // check synchronously if the player looses or wins, false run the generator of the parkour
-        JumpAndRun.parkourGenerator(firstBlock, heightToWin);
+        JAR.parkourGenerator(firstBlock, heightToWin);
     }
 
     /**
@@ -53,7 +57,7 @@ public class JumpAndRun {
      * @param player    the given player
      * @return          true or false
      */
-    private static boolean checkIfOnConcrete(Player player) {
+    private boolean checkIfOnConcrete(Player player) {
         Location block = player.getLocation();
         block.setY(block.getBlockY() - 1);
         if (block.getBlock().getType() == Material.GREEN_CONCRETE) {
@@ -71,7 +75,7 @@ public class JumpAndRun {
      * @param max   the maximum number
      * @return      the number as an int
      */
-    private static int randomizer(int min, int max) {
+    private int randomizer(int min, int max) {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
@@ -80,10 +84,11 @@ public class JumpAndRun {
      * @param player        the player in question
      * @return              true if he reaches that height or higher, false if he does not reach that height
      */
-    private static boolean checkIfPlayerWon(Player player) {
+    private boolean checkIfPlayerWon(Player player) {
+        Minigame mg = new Minigame();
         if (checkIfOnGold(player) == true) {
-            Minigame.winMessage(player);
-            Minigame.spawnChestWithInv(player);
+            mg.winMessage(player);
+            mg.spawnChestWithInv(player);
             woolPlaced = false;
             goldPlaced = false;
             for (Block block : blocksToDelete) {
@@ -106,11 +111,12 @@ public class JumpAndRun {
      * @param heightToLose  the height, at which the last block was placed
      * @return              true if he lost, false if he did not lose
      */
-    private static boolean checkIfPlayerLost(Player player, int heightToLose) {
+    private boolean checkIfPlayerLost(Player player, int heightToLose) {
+        Minigame mg = new Minigame();
         if (player.getLocation().getBlockY() <= heightToLose) {
-            Minigame.loseMessage(player);
-            Minigame.dropInvWithTeleport(player, true);
-            Minigame.playSoundToPlayer(player, 0.5F, Sound.ENTITY_ITEM_BREAK);
+            mg.loseMessage(player);
+            mg.dropInvWithTeleport(player, true);
+            mg.playSoundToPlayer(player, 0.5F, Sound.ENTITY_ITEM_BREAK);
             woolPlaced = false;
             goldPlaced = false;
             for (Block block : blocksToDelete) {
@@ -131,7 +137,8 @@ public class JumpAndRun {
      * cycle to check if the player is standing on green wool, if true replace it with green concrete, stops when concrete is placed
      * @param player    player to get the location of the block beneath him
      */
-    private static void replaceWoolWithConcrete(Player player) {
+    private void replaceWoolWithConcrete(Player player) {
+        Main main = new Main();
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -143,7 +150,7 @@ public class JumpAndRun {
                     cancel();
                 }
             }
-        }.runTaskTimer(Main.getPlugin(), 0, 5);
+        }.runTaskTimer(main.getPlugin(), 0, 5);
     }
 
     /**
@@ -151,7 +158,7 @@ public class JumpAndRun {
      * @param player    the given player
      * @return          true or false
      */
-    private static boolean checkIfOnWool(Player player) {
+    private boolean checkIfOnWool(Player player) {
         Location block = player.getLocation();
         block.setY(block.getBlockY() - 1);
         if (block.getBlock().getType() == Material.GREEN_WOOL) {
@@ -167,7 +174,7 @@ public class JumpAndRun {
      * @param player    the given player
      * @return          true or false
      */
-    private static boolean checkIfOnGold(Player player) {
+    private boolean checkIfOnGold(Player player) {
         Location block = player.getLocation();
         block.setY(block.getBlockY() - 1);
         if (block.getBlock().getType() == Material.GOLD_BLOCK) {
@@ -178,7 +185,7 @@ public class JumpAndRun {
         }
     }
 
-    public static void placeLadderJump(int _x, int _z) {
+    public void placeLadderJump(int _x, int _z) {
         Location ladder = new Location(playerInArena.getWorld(), playerInArena.getX() + _x, playerInArena.getY(), playerInArena.getZ() + _z);
         switch (ladderXZ.toLowerCase()) {
             case "z":
@@ -197,13 +204,18 @@ public class JumpAndRun {
      * @param firstBLock    the location of the first block, base the next blocks on
      * @param heightToWin   at which height to check if the player won
      */
-    private static void parkourGenerator(Location firstBLock, int heightToWin) {
+    private void parkourGenerator(Location firstBLock, int heightToWin) {
+        Minigame mg = new Minigame();
+        Main main = new Main();
+        Difficulty diff = new Difficulty();
+        Config config = new Config();
+
         Location nextBlock = firstBLock;
         new BukkitRunnable() {
             public void run() {
                 if(checkIfPlayerWon(playerInArena) || checkIfPlayerLost(playerInArena, 73)) {
-                    if(!checkIfWaitinglistIsEmpty()) {
-                        Main.minigameStart(waitingListMinigame.getFirst());
+                    if(!mg.checkIfWaitinglistIsEmpty()) {
+                        main.minigameStart(waitingListMinigame.getFirst());
                     }
                     cancel();
                 }
@@ -213,13 +225,8 @@ public class JumpAndRun {
                     int maxX = 0;
                     int maxZ = 0;
                     int _max = 4;
-                    switch(Difficulty.getDifficulty(playerInArena)) {
+                    switch(config.checkConfigInt(playerInArena, "Difficulty")) {
                         case 0:
-                            minX = 1;
-                            minZ = 1;
-                            maxX = 2;
-                            maxZ = 2;
-                            break;
                         case 1:
                             minX = 1;
                             minZ = 1;
@@ -227,11 +234,6 @@ public class JumpAndRun {
                             maxZ = 2;
                             break;
                         case 2:
-                            minX = 1;
-                            minZ = 1;
-                            maxX = 3;
-                            maxZ = 3;
-                            break;
                         case 3:
                             minX = 1;
                             minZ = 1;
@@ -239,11 +241,6 @@ public class JumpAndRun {
                             maxZ = 3;
                             break;
                         case 4:
-                            minX = 2;
-                            minZ = 2;
-                            maxX = 3;
-                            maxZ = 3;
-                            break;
                         case 5:
                             minX = 2;
                             minZ = 2;
@@ -251,17 +248,7 @@ public class JumpAndRun {
                             maxZ = 3;
                             break;
                         case 6:
-                            minX = 3;
-                            minZ = 3;
-                            maxX = 3;
-                            maxZ = 3;
-                            break;
                         case 7:
-                            minX = 3;
-                            minZ = 3;
-                            maxX = 3;
-                            maxZ = 3;
-                            break;
                         case 8:
                             minX = 3;
                             minZ = 3;
@@ -269,12 +256,6 @@ public class JumpAndRun {
                             maxZ = 3;
                             break;
                         case 9:
-                            minX = 3;
-                            minZ = 3;
-                            maxX = 3;
-                            maxZ = 3;
-                            _max = 8;
-                            break;
                         case 10:
                             minX = 3;
                             minZ = 3;
@@ -343,16 +324,16 @@ public class JumpAndRun {
                         // check if it is the last block, if true place a gold block
                         if(_y == heightToWin && !goldPlaced) {
                             nextBlock.getBlock().setType(Material.GOLD_BLOCK);
-                            Minigame.playSoundAtLocation(nextBlock, 2F, Sound.BLOCK_AMETHYST_BLOCK_HIT);
-                            Minigame.spawnParticles(playerInArena, nextBlock, Particle.GLOW);
+                            mg.playSoundAtLocation(nextBlock, 2F, Sound.BLOCK_AMETHYST_BLOCK_HIT);
+                            mg.spawnParticles(playerInArena, nextBlock, Particle.GLOW);
                             blocksToDelete.add(nextBlock.getBlock());
                             goldPlaced = true;
                             woolPlaced = true;
                         }
                         else {
                             nextBlock.getBlock().setType(Material.GREEN_WOOL);
-                            Minigame.playSoundAtLocation(nextBlock, 2F, Sound.BLOCK_AMETHYST_BLOCK_HIT);
-                            Minigame.spawnParticles(playerInArena, nextBlock, Particle.GLOW);
+                            mg.playSoundAtLocation(nextBlock, 2F, Sound.BLOCK_AMETHYST_BLOCK_HIT);
+                            mg.spawnParticles(playerInArena, nextBlock, Particle.GLOW);
                             woolPlaced = true;
                             blocksToDelete.add(nextBlock.getBlock());
                         }
@@ -363,6 +344,6 @@ public class JumpAndRun {
                     }
                 }
             }
-        }.runTaskTimer(getPlugin(Main.class), 0, 5);
+        }.runTaskTimer(main.getPlugin(), 0, 5);
     }
 }

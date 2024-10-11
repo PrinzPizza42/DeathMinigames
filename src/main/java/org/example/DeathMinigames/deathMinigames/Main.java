@@ -17,6 +17,7 @@ import org.example.DeathMinigames.minigames.Minigame;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.example.DeathMinigames.listeners.DeathListener.playerInArena;
@@ -30,6 +31,14 @@ public final class Main extends JavaPlugin {
         getLogger().info("Plugin enabled");
         plugin = this;
 
+        Config config = new Config();
+        if(!getPlugin().getConfig().contains("KnownPlayers")) {
+            getPlugin().getConfig().set("KnownPlayers", new ArrayList<>().stream().toList());
+            getPlugin().getLogger().info("created KnownPlayers");
+        }
+
+        config.cloneConfigToHasMap();
+
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands COMMANDS = event.registrar();
@@ -39,7 +48,6 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SnowballHitListener(), this);
         getServer().getPluginManager().registerEvents(new DeathListener(), this);
         getServer().getPluginManager().registerEvents(new RespawnListener(), this);
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
@@ -50,44 +58,48 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
     }
 
     /**
      * starts a random minigame
      * @param player    the player who is starting a random minigame
      */
-    public static void minigameStart(Player player) {
-        if(!Introduction.checkIfPlayerGotIntroduced(player)) {
-            Introduction.introStart(player);
+    public void minigameStart(Player player) {
+        JumpAndRun jumpAndRun = new JumpAndRun();
+        Minigame minigame = new Minigame();
+        Introduction introduction = new Introduction();
+        Config config = new Config();
+
+        if(!introduction.checkIfPlayerGotIntroduced(player)) {
+            introduction.introStart(player);
         }
-        else if(Introduction.checkIfPlayerUsesPlugin(player)) {
+        else if(config.checkConfigBoolean(player, "UsesPlugin")) {
             // get a random number, to start a random minigame
             int randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
             switch (randomNum) {
                 case 1:
                     if(playerInArena == null) {
-                        JumpAndRun.start();
+                        jumpAndRun.start();
                     }
                     else {
                         if(player.getUniqueId() != playerInArena.getUniqueId()) {
                             player.sendMessage(Component.text("Die Arena ist gerade besetzt, du wurdest in die Warteliste aufgenommen").color(NamedTextColor.GOLD));
                             Location locationBox = new Location(player.getWorld(), 115, 76, 53);
-                            Minigame.teleportPlayerInBox(player, locationBox);
+                            minigame.teleportPlayerInBox(player, locationBox);
                         }
                     }
                     break;
 
                 case 2:
                     if(playerInArena == null) {
-                        JumpAndRun.start();
+                        jumpAndRun.start();
                         //FightPVE;
                     }
                     else {
                         if(player.getUniqueId() != playerInArena.getUniqueId()) {
                             player.sendMessage(Component.text("Die Arena ist gerade besetzt, du wurdest in die Warteliste aufgenommen").color(NamedTextColor.GOLD));
                             Location locationBox = new Location(player.getWorld(), 115, 76, 53);
-                            Minigame.teleportPlayerInBox(player, locationBox);
+                            minigame.teleportPlayerInBox(player, locationBox);
                         }
                     }
                     break;
@@ -95,30 +107,8 @@ public final class Main extends JavaPlugin {
         }
     }
 
-    public static Plugin getPlugin() {
+    public Plugin getPlugin() {
         return plugin;
     }
 
-    public static void changePlayerActivatedPlugin(Player player, boolean whatToChangeTo) {
-        Main.getPlugin().getConfig().set(player.getName() + ".UsesPlugin", whatToChangeTo);
-        Main.getPlugin().getConfig();
-    }
-
-    public static boolean checkIfPlayerActivatedPlugin(Player player) {
-        return Main.getPlugin().getConfig().getBoolean(player.getName() + ".UsesPlugin");
-    }
-
-    public static void addPlayer(Player player) {
-        Main.getPlugin().getConfig().set(player.getName() + ".UsesPlugin", true);
-        Main.getPlugin().saveConfig();
-    }
-
-    public static boolean checkIfPlayerInFile(Player player) {
-        if(Main.getPlugin().getConfig().contains(player.getName() + ".UsesPlugin")) {
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
 }

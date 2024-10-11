@@ -10,15 +10,17 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
+import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.deathMinigames.Introduction;
 import org.example.DeathMinigames.deathMinigames.Main;
 import org.example.DeathMinigames.listeners.RespawnListener;
 import org.example.DeathMinigames.minigames.Difficulty;
 import org.example.DeathMinigames.minigames.Minigame;
+import org.example.DeathMinigames.settings.MainMenu;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import static org.example.DeathMinigames.listeners.DeathListener.*;
 
 public class GameCMD implements BasicCommand {
@@ -30,140 +32,181 @@ public class GameCMD implements BasicCommand {
 
     @Override
     public void execute(CommandSourceStack stack, String[] args) {
-        Player player = (Player) stack.getSender();
+        Difficulty difficulty = new Difficulty();
+        Minigame minigame = new Minigame();
+        Main main = new Main();
+        RespawnListener respawnListener = new RespawnListener();
+        Introduction introduction = new Introduction();
+        MainMenu mainMenu = new MainMenu();
+        Config config = new Config();
+
+        Player player_2 = (Player) stack.getSender();
         if (args.length == 1) {
             switch (args[0].toLowerCase()) {
+                case "settings":
+                    if(player_2.isOp()) {
+                        mainMenu.showPlayerSettings(player_2);
+                    }
+                    else {
+                        player_2.sendMessage(Component.text("Du bist nicht dazu berechtigt").color(NamedTextColor.RED));
+                    }
+                    break;
                 case "lowerdifficulty":
-                    if(Difficulty.checkIfPlayerCanPay(player)) {
-                        if(Difficulty.getDifficulty(player) > 0) {
-                            Difficulty.PlayerPay(player);
-                            Difficulty.lowerDifficulty(player);
-                            Minigame.playSoundAtLocation(player.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
-                            player.sendMessage(Component.text("Deine Schwierigkeit wurde um 1 auf ").color(NamedTextColor.GOLD)
-                                    .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED)));
+                    if(difficulty.checkIfPlayerCanPay(player_2)) {
+                        if(config.checkConfigInt(player_2, "Difficulty") > 0) {
+                            difficulty.playerPay(player_2);
+                            difficulty.lowerDifficulty(player_2);
+                            minigame.playSoundAtLocation(player_2.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
+                            player_2.sendMessage(Component.text("Deine Schwierigkeit wurde um 1 auf ").color(NamedTextColor.GOLD)
+                                    .append(Component.text(config.checkConfigInt(player_2, "Difficulty")).color(NamedTextColor.RED)));
                         }
                         else {
-                            player.sendMessage(Component.text("Deine Schwierigkeit ist schon bei ").color(NamedTextColor.GOLD)
-                                    .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED)));
+                            player_2.sendMessage(Component.text("Deine Schwierigkeit ist schon bei ").color(NamedTextColor.GOLD)
+                                    .append(Component.text(config.checkConfigInt(player_2, "Difficulty")).color(NamedTextColor.RED)));
                         }
                     }
                     else {
-                        player.sendMessage(Component.text("Du bist zu pleite um das zu bezahlen").color(NamedTextColor.RED));
+                        player_2.sendMessage(Component.text("Du bist zu pleite um das zu bezahlen").color(NamedTextColor.RED));
                     }
                     break;
                 case "introplayerdecidestousefeatures":
-                    if (!Introduction.checkIfPlayerGotIntroduced(player)) {
-                        Introduction.setPlayerIntroduced(player);
-                        Introduction.setPlayerPluginUsage(player, true);
-                        Introduction.introEnd(player);
-                        Main.minigameStart(player);
-                        player.sendMessage(Component.text("Du hast dich entschieden.").color(NamedTextColor.GOLD));
+                    if (!introduction.checkIfPlayerGotIntroduced(player_2)) {
+                        config.setIntroduction(player_2, true);
+                        config.setUsesPlugin(player_2, true);
+                        introduction.introEnd(player_2);
+                        main.minigameStart(player_2);
+                        player_2.sendMessage(Component.text("Du hast dich entschieden.").color(NamedTextColor.GOLD));
                     } else {
-                        player.sendMessage(Component.text("Du hast dich bereit entschieden.").color(NamedTextColor.RED));
+                        player_2.sendMessage(Component.text("Du hast dich bereit entschieden.").color(NamedTextColor.RED));
                     }
                     break;
                 case "introplayerdecidestonotusefeatures":
-                    if (!Introduction.checkIfPlayerGotIntroduced(player)) {
-                        Introduction.setPlayerIntroduced(player);
-                        Introduction.setPlayerPluginUsage(player, false);
-                        Introduction.introEnd(player);
-                        Introduction.dropInv(player);
-                        player.sendMessage(Component.text("Du hast dich entschieden.").color(NamedTextColor.GOLD));
+                    if (!config.checkConfigBoolean(player_2, "Introduction")) {
+                        config.setIntroduction(player_2, true);
+                        config.setUsesPlugin(player_2, false);
+                        introduction.introEnd(player_2);
+                        introduction.dropInv(player_2);
+                        player_2.sendMessage(Component.text("Du hast dich entschieden.").color(NamedTextColor.GOLD));
                     } else {
-                        player.sendMessage(Component.text("Du hast dich bereit entschieden.").color(NamedTextColor.RED));
+                        player_2.sendMessage(Component.text("Du hast dich bereit entschieden.").color(NamedTextColor.RED));
                     }
                     break;
                 case "setnotintroduced":
-                    Introduction.setPlayerNotIntroduced(player);
+                    config.setIntroduction(player_2, false);
                 case "difficulty":
-                    player.sendMessage(Component.text("Deine Schwierigkeit ist gerade bei ").color(NamedTextColor.GOLD)
-                            .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED)));
+                    player_2.sendMessage(Component.text("Deine Schwierigkeit ist gerade bei ").color(NamedTextColor.GOLD)
+                            .append(Component.text(config.checkConfigInt(player_2, "Difficulty")).color(NamedTextColor.RED)));
                     break;
             }
-            if (inventories.containsKey(player.getUniqueId()) && !waitingListMinigame.contains(player.getUniqueId()) && playerInArena != player) {
+            if (inventories.containsKey(player_2.getUniqueId()) && !waitingListMinigame.contains(player_2) && playerInArena != player_2) {
                 switch (args[0].toLowerCase()) {
                     case "start":
-                        if(Introduction.checkIfPlayerUsesPlugin(player)) {
-                            Minigame.playSoundAtLocation(player.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
-                            player.resetTitle();
-                            player.sendActionBar(Component.text("Starte Minispiel...")
+                        if(config.checkConfigBoolean(player_2, "UsesPlugin")) {
+                            minigame.playSoundAtLocation(player_2.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
+                            player_2.resetTitle();
+                            player_2.sendActionBar(Component.text("Starte Minispiel...")
                                     .color(NamedTextColor.GOLD)
                                     .decoration(TextDecoration.ITALIC, true));
-                            Location loc = new Location(player.getWorld(), 93, 73, 73);
-                            player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
-                            player.teleport(loc);
-                            waitingListMinigame.addLast(player);
+                            Location loc = new Location(player_2.getWorld(), 93, 73, 73);
+                            player_2.playSound(player_2.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
+                            player_2.teleport(loc);
+                            waitingListMinigame.addLast(player_2);
                         }
-                        RespawnListener.setPlayerDecided(true);
-                        Main.minigameStart(player);
+                        respawnListener.setPlayerDecided(true);
+                        main.minigameStart(player_2);
                         break;
                     case "ignore":
-                        Minigame.playSoundToPlayer(player, 0.5F, Sound.ENTITY_ITEM_BREAK);
-                        RespawnListener.setPlayerDecided(true);
-                        player.resetTitle();
-                        if (!waitingListMinigame.contains(player) && inventories.containsKey(player.getUniqueId())) {
-                            player.sendMessage(Component.text("Dein Inventar wird an deinen Todesort (").color(NamedTextColor.GOLD)
-                                    .append(Component.text("X: " + deaths.get(player.getUniqueId()).getBlockX() + " Y: " + deaths.get(player.getUniqueId()).getBlockY() + " Z: " + deaths.get(player.getUniqueId()).getBlockZ()).color(NamedTextColor.RED))
+                        minigame.playSoundToPlayer(player_2, 0.5F, Sound.ENTITY_ITEM_BREAK);
+                        respawnListener.setPlayerDecided(true);
+                        player_2.resetTitle();
+                        if (!waitingListMinigame.contains(player_2) && inventories.containsKey(player_2.getUniqueId())) {
+                            player_2.sendMessage(Component.text("Dein Inventar wird an deinen Todesort (").color(NamedTextColor.GOLD)
+                                    .append(Component.text("X: " + deaths.get(player_2.getUniqueId()).getBlockX() + " Y: " + deaths.get(player_2.getUniqueId()).getBlockY() + " Z: " + deaths.get(player_2.getUniqueId()).getBlockZ()).color(NamedTextColor.RED))
                                     .append(Component.text(") gedroppt")).color(NamedTextColor.GOLD));
-                            for (int i = 0; i < inventories.get(player.getUniqueId()).getSize(); i++) {
-                                if (inventories.get(player.getUniqueId()).getItem(i) == null) continue;
-                                player.getWorld().dropItem(deaths.get(player.getUniqueId()), inventories.get(player.getUniqueId()).getItem(i));
+                            for (int i = 0; i < inventories.get(player_2.getUniqueId()).getSize(); i++) {
+                                if (inventories.get(player_2.getUniqueId()).getItem(i) == null) continue;
+                                player_2.getWorld().dropItem(deaths.get(player_2.getUniqueId()), inventories.get(player_2.getUniqueId()).getItem(i));
                             }
-                            inventories.remove(player.getUniqueId());
+                            inventories.remove(player_2.getUniqueId());
                         }
                         break;
                     default:
-                        if(!Introduction.checkIfPlayerGotIntroduced(player)) {
-                            player.sendMessage(Component.text("Usage: /game <start/ignore/difficulty>").color(NamedTextColor.RED));
+                        if(!introduction.checkIfPlayerGotIntroduced(player_2)) {
+                            player_2.sendMessage(Component.text("Usage: /game <start/ignore/difficulty>").color(NamedTextColor.RED));
                         }
                         break;
                 }
             }
         }
         else if (args.length == 2) {
-            if(player.isOp()) {
+            if(player_2.isOp()) {
                 switch (args[0]) {
                     case "difficulty":
-                        int i = Integer.parseInt(args[1]);
-                        Difficulty.setDifficulty(player, i);
-                        player.sendMessage(Component.text("Deine Schwierigkeit wurde auf ").color(NamedTextColor.GOLD)
-                                .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED))
-                                .append(Component.text(" gesetzt")).color(NamedTextColor.GOLD));
+                        if(args[1] != null) {
+                            int i = Integer.parseInt(args[1]);
+                            config.setDifficulty(player_2, i);
+                            player_2.sendMessage(Component.text("Deine Schwierigkeit wurde auf ").color(NamedTextColor.GOLD)
+                                    .append(Component.text(config.checkConfigInt(player_2, "Difficulty")).color(NamedTextColor.RED))
+                                    .append(Component.text(" gesetzt")).color(NamedTextColor.GOLD));
+                        }
+                        else {
+                            player_2.sendMessage(Component.text("Um die Schwierigkeit zu ändern muss eine Zahl eingegeben werden"));
+                        }
+                        break;
                     case "introPlayerDecidesToUseFeatures":
-                        Introduction.setPlayerPluginUsage(player, true);
+                        config.setUsesPlugin(player_2, true);
+                        break;
                     case "introPlayerDecidesToNotUseFeatures":
-                        Introduction.setPlayerPluginUsage(player, false);
+                        config.setUsesPlugin(player_2, false);
+                        break;
                 }
             }
             else {
-                player.sendMessage(Component.text("Du hast nicht das Recht dazu").color(NamedTextColor.RED));
+                player_2.sendMessage(Component.text("Du hast nicht das Recht dazu").color(NamedTextColor.RED));
             }
         }
         else if (args.length == 3) {
-            if(player.isOp()) {
+            if(player_2.isOp()) {
                 switch (args[0]) {
                     case "difficulty":
-                        int i = Integer.parseInt(args[2]);
-                        Player player1 = Bukkit.getPlayer(args[1]);
-                        Difficulty.setDifficulty(player1, i);
-                        player.sendMessage(Component.text("Die Schwierigkeit von ").color(NamedTextColor.GOLD)
-                                .append(Component.text(args[1])).color(NamedTextColor.RED)
-                                .append(Component.text(" wurde auf ")).color(NamedTextColor.GOLD)
-                                .append(Component.text(Difficulty.getDifficulty(player)).color(NamedTextColor.RED))
-                                .append(Component.text(" gesetzt")).color(NamedTextColor.GOLD));
+                        if(args[2] != null) {
+                            int i = Integer.parseInt(args[2]);
+                            Player player1 = Bukkit.getPlayer(args[1]);
+                            assert player1 != null;
+                            config.setDifficulty(player1, i);
+                            player_2.sendMessage(Component.text("Die Schwierigkeit von ").color(NamedTextColor.GOLD)
+                                    .append(Component.text(args[1])).color(NamedTextColor.RED)
+                                    .append(Component.text(" wurde auf ")).color(NamedTextColor.GOLD)
+                                    .append(Component.text(config.checkConfigInt(player_2, "Difficulty")).color(NamedTextColor.RED))
+                                    .append(Component.text(" gesetzt")).color(NamedTextColor.GOLD));
+                        }
+                        else {
+                            player_2.sendMessage(Component.text("Um die Schwierigkeit zu ändern muss eine Zahl eingegeben werden"));
+                        }
                         break;
                     case "introPlayerDecidesToUseFeatures":
                         Player player2 = Bukkit.getPlayer(args[1]);
-                        Introduction.setPlayerPluginUsage(player2, true);
-                        break;
+                        if(player2 != null) {
+                            config.setUsesPlugin(player2, true);
+                            break;
+                        }
+                        else {
+                            player_2.sendMessage(Component.text("Du hast keinen bekannten Spieler eingegeben"));
+                        }
                     case "introPlayerDecidesToNotUseFeatures":
                         Player player3 = Bukkit.getPlayer(args[1]);
-                        Introduction.setPlayerPluginUsage(player3, false);
+                        if(player3 != null) {
+                            config.setUsesPlugin(player3, false);
+                            break;
+                        }
+                        else {
+                            player_2.sendMessage(Component.text("Du hast keinen bekannten Spieler eingegeben"));
+                        }
                         break;
                 }
             }
             else {
-                player.sendMessage(Component.text("Du hast nicht das Recht dazu").color(NamedTextColor.RED));
+                player_2.sendMessage(Component.text("Du hast nicht das Recht dazu").color(NamedTextColor.RED));
             }
         }
     }
@@ -172,11 +215,7 @@ public class GameCMD implements BasicCommand {
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
         if (args.length == 0) {
             Collection<String> suggestions = new ArrayList<>();
-            suggestions.add("start");
-            suggestions.add("ignore");
             suggestions.add("difficulty");
-            suggestions.add("introPlayerDecidesToUseFeatures");
-            suggestions.add("introPlayerDecidesToNotUseFeatures");
             return suggestions;
         } else if (args.length == 2) {
             switch (args[0]) {
@@ -185,20 +224,6 @@ public class GameCMD implements BasicCommand {
                     for(Player on : Bukkit.getOnlinePlayers()) {
                         suggestions2.add(on.getName());
                         return suggestions2;
-                    }
-                    break;
-                case "introPlayerDecidesToUseFeatures":
-                    Collection<String> suggestions3 = new ArrayList<>();
-                    for(Player on : Bukkit.getOnlinePlayers()) {
-                        suggestions3.add(on.getName());
-                        return suggestions3;
-                    }
-                    break;
-                case "introPlayerDecidesToNotUseFeatures":
-                    Collection<String> suggestions4 = new ArrayList<>();
-                    for(Player on : Bukkit.getOnlinePlayers()) {
-                        suggestions4.add(on.getName());
-                        return suggestions4;
                     }
                     break;
             }

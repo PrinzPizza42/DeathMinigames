@@ -17,24 +17,28 @@ import static org.example.DeathMinigames.listeners.DeathListener.inventories;
 public class Introduction {
     private static ArrayList<Location> blocks = new ArrayList<>();
 
-    public static boolean checkIfPlayerGotIntroduced(Player player) {
-        return Main.getPlugin().getConfig().getBoolean(player.getName() + ".Introduction");
+    public boolean checkIfPlayerGotIntroduced(Player player) {
+        Config config = new Config();
+
+        return config.checkConfigBoolean(player, "Introduction");
     }
 
-    public static void introStart(Player player) {
+    public void introStart(Player player) {
         Location locationIntro = new Location(player.getWorld(), 115.5F, 100, 53.5F);
         sendPlayerIntroMessage(player);
         teleportPlayerToGod(player, locationIntro);
     }
 
-    public static void introEnd(Player player) {
+    public void introEnd(Player player) {
+        Main main = new Main();
+
         assert checkIfPlayerGotIntroduced(player);
-        Main.getPlugin().getLogger().info(player.getName().toUpperCase() + " got introduced");
-        Introduction.deleteBarrierCage(player.getLocation());
-        Introduction.blocks.clear();
+        main.getPlugin().getLogger().info(player.getName().toUpperCase() + " got introduced");
+        deleteBarrierCage(player.getLocation());
+        blocks.clear();
     }
 
-    private static void sendPlayerIntroMessage(Player player) {
+    private void sendPlayerIntroMessage(Player player) {
         player.sendMessage(Component.text("Ich gebe dir eine zweite Chance, nutze sie gut."));
         player.sendMessage(Component.text("Du kannst versuchen um deine Items zu spielen. Da ich mich aber auch amüsieren will, werden die Spiele immer schwerer werden."));
         player.sendMessage(Component.text("Wenn dir die Spiele zu schwer werden kannst du mich natürlich auch immer mit Diamanten bezahlen, das ist ganz dir überlassen."));
@@ -57,13 +61,15 @@ public class Introduction {
         player.sendMessage(decideForPlugin, middlePart, decideNotForPlugin);
     }
 
-    private static void teleportPlayerToGod(Player player, Location location) {
+    private void teleportPlayerToGod(Player player, Location location) {
+        Minigame minigame = new Minigame();
+
         placeBarrierCageAroundLoc(location);
         player.teleport(location);
-        Minigame.playSoundAtLocation(location, 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
+        minigame.playSoundAtLocation(location, 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
     }
 
-    private static void placeBarrierCageAroundLoc(Location location) {
+    private void placeBarrierCageAroundLoc(Location location) {
         Location location1 = new Location(location.getWorld(), location.getX(), location.getY() - 1, location.getZ());
         Location location2 = new Location(location.getWorld(), location.getX() + 1, location.getY(), location.getZ());
         Location location3 = new Location(location.getWorld(), location.getX() - 1, location.getY(), location.getZ());
@@ -89,64 +95,31 @@ public class Introduction {
         }
     }
 
-    private static void deleteBarrierCage(Location location) {
+    private void deleteBarrierCage(Location location) {
         for (int i = 0; i < 10; i++ ) {
             location.getWorld().getBlockAt(blocks.get(i)).setType(Material.AIR);
         }
     }
 
-    public static void setPlayerIntroduced(Player player) {
-        Main.getPlugin().getConfig().set(player.getName() + ".Introduction", true);
-        Main.getPlugin().saveConfig();
-    }
+    public void dropInv(Player player) {
+        Minigame minigame = new Minigame();
 
-    public static void setPlayerNotIntroduced(Player player) {
-        Main.getPlugin().getConfig().set(player.getName() + ".Introduction", false);
-        Main.getPlugin().saveConfig();
-    }
-
-    public static void addPlayer(Player player) {
-        Main.getPlugin().getConfig().set(player.getName() + ".Introduction", false);
-        Main.getPlugin().getConfig().set(player.getName() + ".UsesPlugin", true);
-        Main.getPlugin().saveConfig();
-    }
-
-    public static boolean checkIfPlayerInFile(Player player) {
-        if(Main.getPlugin().getConfig().contains(player.getName() + ".Introduction")) {
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    public static void setPlayerPluginUsage(Player player, boolean pluginUsage) {
-        Main.getPlugin().getConfig().set(player.getName() + ".UsesPlugin", pluginUsage);
-        Main.getPlugin().saveConfig();
-    }
-
-    public static boolean checkIfPlayerUsesPlugin(Player player) {
-        return Main.getPlugin().getConfig().getBoolean(player.getName() + ".UsesPlugin");
-    }
-
-    public static void dropInv(Player player) {
-        Minigame.loseMessage(player);
+        minigame.loseMessage(player);
         for (int i = 0; i < inventories.get(player.getUniqueId()).getSize(); i++) {
             if (inventories.get(player.getUniqueId()).getItem(i) == null) continue;
             player.getWorld().dropItem(deaths.get(player.getUniqueId()), inventories.get(player.getUniqueId()).getItem(i));
         }
         teleportPlayer(player);
-        Minigame.playSoundToPlayer(player, 0.5F, Sound.ENTITY_ITEM_BREAK);
+        minigame.playSoundToPlayer(player, 0.5F, Sound.ENTITY_ITEM_BREAK);
         inventories.remove(player.getUniqueId());
         deaths.remove(player.getUniqueId());
     }
 
-    private static void teleportPlayer(Player player) {
+    private void teleportPlayer(Player player) {
+        player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
         if(player.getRespawnLocation() == null) {
-                player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
                 player.teleport(player.getWorld().getSpawnLocation());
             } else {
-                player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
                 player.teleport(player.getRespawnLocation());
             }
     }
