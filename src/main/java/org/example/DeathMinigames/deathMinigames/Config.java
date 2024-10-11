@@ -1,4 +1,4 @@
 package org.example.DeathMinigames.deathMinigames;
 
-public class Introduction {
+public class Config {
 }
