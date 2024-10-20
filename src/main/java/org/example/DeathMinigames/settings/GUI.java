@@ -23,7 +23,7 @@ public class GUI implements InventoryHolder {
         Config config = new Config();
         InventoryListener inventoryListener = new InventoryListener();
 
-        inventory = Bukkit.createInventory(this, 45, title);
+        inventory = Bukkit.createInventory(this, 54, title);
         if(addAllPlayers) {
             for(int i = 0; i < Config.knownPlayers.size(); i++) {
                 Material material;
@@ -41,7 +41,7 @@ public class GUI implements InventoryHolder {
                 inventory.setItem(i, itemStack);
             }
         }
-        addClickableItemStack("Zurück", Material.RED_CONCRETE, 1, 44);
+        addClickableItemStack("Zurück", Material.RED_CONCRETE, 1, 53);
     }
 
     public void addClickableItemStack(String name, Material material, int amount, int slotWhereToPutTheItem) {

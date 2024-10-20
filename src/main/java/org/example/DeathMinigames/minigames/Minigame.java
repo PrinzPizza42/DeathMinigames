@@ -8,8 +8,6 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.example.DeathMinigames.deathMinigames.Config;
-import org.example.DeathMinigames.deathMinigames.Introduction;
-import org.example.DeathMinigames.deathMinigames.Main;
 
 import static org.example.DeathMinigames.listeners.DeathListener.*;
 
@@ -111,7 +109,7 @@ public class Minigame {
      * Opens an inventory for the player which has inside the items, he had in his inventory at the time of his death, teleports him to his respawnpoint, clears playerDeathInventory and removes him from the inventories and deaths HashMaps
      * @param player    the play to open the inventory to
      */
-    public void spawnChestWithInv(Player player) {
+    public void showInv(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 45, Component.text("Deine Items").color(NamedTextColor.GOLD));
         inventory.setContents(playerDeathInventory.getContents());
 

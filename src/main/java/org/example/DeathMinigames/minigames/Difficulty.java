@@ -28,11 +28,13 @@ public class Difficulty {
     }
 
     public boolean checkIfPlayerCanPay(Player player) {
-       return player.getInventory().contains(Material.DIAMOND, 4);
+       Config config = new Config();
+        return player.getInventory().contains(Material.DIAMOND, config.checkConfigInt("CostToLowerTheDifficulty"));
     }
 
     public void playerPay(Player player) {
-        ItemStack diamonds = new ItemStack(Material.DIAMOND, 4);
+        Config config = new Config();
+        ItemStack diamonds = new ItemStack(Material.DIAMOND, config.checkConfigInt("CostToLowerTheDifficulty"));
         player.getInventory().removeItem(diamonds);
     }
 }

@@ -51,8 +51,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
-        TranslationFactory tf = new TranslationFactory();
-        tf.addTranslationsFromFile(new InputStreamReader(Main.class.getResourceAsStream("/translations.json"), StandardCharsets.UTF_8));
+        //TranslationFactory tf = new TranslationFactory();
+        //tf.addTranslationsFromFile(new InputStreamReader(Main.class.getResourceAsStream("/translations.json"), StandardCharsets.UTF_8));
     }
 
 

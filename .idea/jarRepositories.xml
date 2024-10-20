@@ -26,5 +26,15 @@
       <option name="name" value="sonatype" />
       <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="https://papermc.io/repo/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="reposiliteRepositoryReleases" />
+      <option name="name" value="reposiliteRepositoryReleases" />
+      <option name="url" value="https://repo.jonasfranke.xyz/snapshots" />
+    </remote-repository>
   </component>
 </project>

@@ -9,8 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.deathMinigames.Main;
 import org.example.DeathMinigames.settings.GUI;
@@ -36,7 +34,7 @@ public class InventoryListener implements Listener {
             event.setCancelled(true);
             switch (slot) {
                 case 0:
-                    fillSetUpInventory();
+                    reloadInventory("SetUp", mainMenu);
                     MainMenu.setUp.showInventory(player);
                     break;
                 case 1:
@@ -58,7 +56,7 @@ public class InventoryListener implements Listener {
             if(ID == MainMenu.introduction.getID()) {
                 // Introduction
                 event.setCancelled(true);
-                if(slot == 44) {
+                if(slot == 53) {
                     mainMenu.showPlayerSettings(player);
                 }
                 else if (slot <= Config.knownPlayers.size()) {
@@ -71,10 +69,11 @@ public class InventoryListener implements Listener {
                     reloadInventory("Introduction", slot, mainMenu);
                     player.sendMessage(Component.text("Changed Introduction of " + playerClicked.getName() + " to " + config.checkConfigBoolean(playerClicked, "Introduction")).color(NamedTextColor.RED));
                 }
-            } else if (ID == MainMenu.usesPlugin.getID()) {
+            }
+            else if (ID == MainMenu.usesPlugin.getID()) {
                 // UsesPlugin
                 event.setCancelled(true);
-                if(slot == 44) {
+                if(slot == 53) {
                     mainMenu.showPlayerSettings(player);
                 }
                 else if (slot <= Config.knownPlayers.size()) {
@@ -91,7 +90,7 @@ public class InventoryListener implements Listener {
             else if (ID == MainMenu.difficulty.getID()) {
                 // Difficulty
                 event.setCancelled(true);
-                if (slot == 44) {
+                if (slot == 53) {
                     mainMenu.showPlayerSettings(player);
                 } else if (slot <= Config.knownPlayers.size()) {
                     playerClicked = getPlayerFromListFromSpecificInt(slot);
@@ -103,8 +102,9 @@ public class InventoryListener implements Listener {
                 }
             }
             else if(ID == MainMenu.difficultyPlayerSettings.getID()) {
+                // difficultyPlayerSettings
                 event.setCancelled(true);
-                if(slot == 44) {
+                if(slot == 53) {
                     mainMenu.showPlayerSettings(player);
                 }
                 else if (slot < 11){
@@ -114,12 +114,71 @@ public class InventoryListener implements Listener {
                 }
             }
             else if(ID == MainMenu.setUp.getID()) {
+                // SetUp
                 event.setCancelled(true);
-                if(slot == 44) {
+                if(slot == 53) {
                     mainMenu.showPlayerSettings(player);
                 }
                 else if (slot <= 3){
-                    MainMenu.setUp.showInventory(player);
+                    switch (slot) {
+                        case 0:
+                            reloadInventory("ParkourStartHeight", mainMenu);
+                            MainMenu.parkourStartHeight.showInventory(player);
+                            break;
+                        case 1:
+                            reloadInventory("ParkourLength", mainMenu);
+                            MainMenu.parkourLength.showInventory(player);
+                            break;
+                        case 2:
+                            reloadInventory("CostToLowerTheDifficulty", mainMenu);
+                            MainMenu.costToLowerTheDifficulty.showInventory(player);
+                            break;
+                        case 3:
+                            reloadInventory("TimeToDecideWhenRespawning", mainMenu);
+                            MainMenu.timeToDecideWhenRespawning.showInventory(player);
+                            break;
+                    }
+                }
+            }
+            else if (ID == MainMenu.parkourStartHeight.getID()) {
+                event.setCancelled(true);
+                if(slot == 53) {
+                    mainMenu.showPlayerSettings(player);
+                }
+                else if (slot <= 36){
+                    int parkourStartHeight = slot * 10;
+                    config.setParkourStartHeight(parkourStartHeight);
+                    reloadInventory("ParkourStartHeight", mainMenu);
+                }
+            }
+            else if (ID == MainMenu.parkourLength.getID()) {
+                event.setCancelled(true);
+                if(slot == 53) {
+                    mainMenu.showPlayerSettings(player);
+                }
+                else if (slot < 20) {
+                    config.setParkourLength(slot);
+                    reloadInventory("ParkourLength", mainMenu);
+                }
+            }
+            else if (ID == MainMenu.costToLowerTheDifficulty.getID()) {
+                event.setCancelled(true);
+                if(slot == 53) {
+                    mainMenu.showPlayerSettings(player);
+                }
+                else if (slot < 9) {
+                    config.setCostToLowerTheDifficulty(slot);
+                    reloadInventory("CostToLowerTheDifficulty", mainMenu);
+                }
+            }
+            else if (ID == MainMenu.timeToDecideWhenRespawning.getID()) {
+                event.setCancelled(true);
+                if(slot == 53) {
+                    mainMenu.showPlayerSettings(player);
+                }
+                else if (slot < 25) {
+                    config.setTimeToDecideWhenRespawning(slot);
+                    reloadInventory("TimeToDecideWhenRespawning", mainMenu);
                 }
             }
         }
@@ -127,13 +186,6 @@ public class InventoryListener implements Listener {
 
     public Player getPlayerFromListFromSpecificInt(int placeInList) {
         return Bukkit.getPlayer(Config.knownPlayers.get(placeInList));
-    }
-
-    private void fillSetUpInventory() {
-        MainMenu.setUp.addClickableItemStack("Parcour Start Height", Material.GREEN_CONCRETE, 1, 0);
-        MainMenu.setUp.addClickableItemStack("Parcour End Height", Material.GOLD_BLOCK, 1, 1);
-        MainMenu.setUp.addClickableItemStack("cost to lower the difficulty", Material.DIAMOND, 1, 2);
-        MainMenu.setUp.addClickableItemStack("time to decide when respawning", Material.DIAMOND, 1, 3);
     }
 
     public void reloadInventory(String inventory, int slot, MainMenu mainMenu) {
@@ -158,6 +210,18 @@ public class InventoryListener implements Listener {
             case "Difficulty - Settings":
                 int difficulty = config.checkConfigInt(playerClicked, "Difficulty");
                 mainMenu.difficultySettingsSetInventoryContents(difficulty);
+                break;
+            case "Settings":
+                if(config.checkConfigBoolean("SetUp")) {
+                    mainMenu.addClickableItemStack("SetUp", Material.GREEN_CONCRETE, 1, 0);
+                }
+                else {
+                    mainMenu.addClickableItemStack("SetUp", Material.RED_CONCRETE, 1, 0);
+                }
+                mainMenu.addClickableItemStack("Introduction", Material.GREEN_CONCRETE, 1, 1);
+                mainMenu.addClickableItemStack("UsesPlugin", Material.GREEN_CONCRETE, 1, 2);
+                mainMenu.addClickableItemStack("Difficulty", Material.RED_CONCRETE, 1, 3);
+                break;
         }
     }
     public void reloadInventory(String inventory, MainMenu mainMenu) {
@@ -190,6 +254,22 @@ public class InventoryListener implements Listener {
             case "Difficulty - Settings":
                 int difficulty = config.checkConfigInt(playerClicked, "Difficulty");
                 mainMenu.difficultySettingsSetInventoryContents(difficulty);
+                break;
+            case "SetUp":
+                mainMenu.setUpSettingsSetInventoryContents();
+                break;
+            case "ParkourStartHeight":
+                mainMenu.parkourStartHeightSettingsSetInventoryContents();
+                break;
+            case "ParkourLength":
+                mainMenu.parkourLengthSettingsSetInventoryContents();
+                break;
+            case "CostToLowerTheDifficulty":
+                mainMenu.costToLowerTheDifficultySettingsSetInventoryContents();
+                break;
+            case "TimeToDecideWhenRespawning":
+                mainMenu.timeToDecideWhenRespawningSettingsSetInventoryContents();
+                break;
         }
     }
 

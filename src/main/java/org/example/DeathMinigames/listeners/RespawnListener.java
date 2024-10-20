@@ -26,7 +26,7 @@ import static org.example.DeathMinigames.listeners.DeathListener.inventories;
 public class RespawnListener implements Listener {
 
     private static boolean playerDecided = false;
-    private static int timeForPlayerToDecide = 10;
+    private static int timeForPlayerToDecide = 0;
 
     public void setPlayerDecided(boolean playerDecided) {
         this.playerDecided = playerDecided;
@@ -97,6 +97,7 @@ public class RespawnListener implements Listener {
     public void onRespawn(PlayerRespawnEvent event) {
         Config config = new Config();
 
+        timeForPlayerToDecide = config.checkConfigInt("TimeToDecideWhenRespawning");
         Player player_7 = event.getPlayer();
         player_7.getInventory().clear();
         if (inventories.containsKey(event.getPlayer().getUniqueId()) && config.checkConfigBoolean(player_7, "UsesPlugin")) {

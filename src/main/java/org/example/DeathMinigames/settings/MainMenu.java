@@ -7,6 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.example.DeathMinigames.deathMinigames.Config;
 import org.jetbrains.annotations.NotNull;
 
 public class MainMenu implements InventoryHolder {
@@ -16,6 +17,10 @@ public class MainMenu implements InventoryHolder {
     public static GUI usesPlugin = new GUI("UsesPlugin", true);
     public static GUI difficultyPlayerSettings = new GUI("Difficulty - Settings", false);
     public static GUI setUp = new GUI("SetUp", false);
+    public static GUI parkourStartHeight = new GUI("ParkourStartHeight", false);
+    public static GUI parkourLength = new GUI("ParkourLength", false);
+    public static GUI costToLowerTheDifficulty = new GUI("CostToLowerTheDifficulty", false);
+    public static GUI timeToDecideWhenRespawning = new GUI("TimeToDecideWhenRespawning", false);
 
     public void showPlayerSettings(Player player) {
         inventory = Bukkit.createInventory(this, 9, "Settings");
@@ -24,7 +29,13 @@ public class MainMenu implements InventoryHolder {
     }
 
     private void addSubmenus() {
-        addClickableItemStack("SetUp", Material.GOLD_BLOCK, 1, 0);
+        Config config = new Config();
+        if(config.checkConfigBoolean("SetUp")) {
+            addClickableItemStack("SetUp", Material.GREEN_CONCRETE, 1, 0);
+        }
+        else {
+            addClickableItemStack("SetUp", Material.RED_CONCRETE, 1, 0);
+        }
         addClickableItemStack("Introduction", Material.GREEN_CONCRETE, 1, 1);
         addClickableItemStack("UsesPlugin", Material.GREEN_CONCRETE, 1, 2);
         addClickableItemStack("Difficulty", Material.RED_CONCRETE, 1, 3);
@@ -55,4 +66,70 @@ public class MainMenu implements InventoryHolder {
         }
         MainMenu.difficultyPlayerSettings.addClickableItemStack(Integer.toString(difficulty), Material.GREEN_CONCRETE_POWDER, 1 ,difficulty);
     }
+
+    public void setUpSettingsSetInventoryContents() {
+        Config config = new Config();
+        int startHeight = config.checkConfigInt("ParkourStartHeight");
+        int parkourLength = config.checkConfigInt("ParkourLength");
+        int costToLowerTheDifficulty = config.checkConfigInt("CostToLowerTheDifficulty");
+        int timeToDecideWhenRespawning = config.checkConfigInt("TimeToDecideWhenRespawning");
+
+        setUp.addClickableItemStack("Parcour Start Height", Material.LADDER, startHeight, 0);
+        setUp.addClickableItemStack("Parcour length", Material.LADDER, parkourLength, 1);
+        setUp.addClickableItemStack("cost to lower the difficulty", Material.DIAMOND, costToLowerTheDifficulty, 2);
+        setUp.addClickableItemStack("time to decide when respawning", Material.CLOCK, timeToDecideWhenRespawning, 3);
+    }
+
+    public void parkourStartHeightSettingsSetInventoryContents() {
+        Config config = new Config();
+        int startHeight = config.checkConfigInt("ParkourStartHeight");
+        for(int i = 0; i < 29; i++) {
+            if(startHeight == i*10) {
+                MainMenu.parkourStartHeight.addClickableItemStack(Integer.toString(i*10), Material.GREEN_CONCRETE_POWDER, 1, i);
+            }
+            else {
+                MainMenu.parkourStartHeight.addClickableItemStack(Integer.toString(i*10), Material.RED_CONCRETE_POWDER, 1, i);
+            }
+        }
+    }
+
+    public void parkourLengthSettingsSetInventoryContents() {
+        Config config = new Config();
+        int length = config.checkConfigInt("ParkourLength");
+        for(int i = 0; i < 20; i++) {
+            if(length == i) {
+                MainMenu.parkourLength.addClickableItemStack(Integer.toString(i), Material.GREEN_CONCRETE_POWDER, 1, i);
+            }
+            else {
+                MainMenu.parkourLength.addClickableItemStack(Integer.toString(i), Material.RED_CONCRETE_POWDER, 1, i);
+            }
+        }
+    }
+
+    public void costToLowerTheDifficultySettingsSetInventoryContents() {
+        Config config = new Config();
+        int length = config.checkConfigInt("CostToLowerTheDifficulty");
+        for(int i = 1; i < 11; i++) {
+            if(length == i) {
+                MainMenu.costToLowerTheDifficulty.addClickableItemStack(Integer.toString(i), Material.GREEN_CONCRETE_POWDER, 1, i);
+            }
+            else {
+                MainMenu.costToLowerTheDifficulty.addClickableItemStack(Integer.toString(i), Material.RED_CONCRETE_POWDER, 1, i);
+            }
+        }
+    }
+
+    public void timeToDecideWhenRespawningSettingsSetInventoryContents() {
+        Config config = new Config();
+        int time = config.checkConfigInt("TimeToDecideWhenRespawning");
+        for(int i = 5; i < 31; i++) {
+            if(time == i) {
+                MainMenu.timeToDecideWhenRespawning.addClickableItemStack(Integer.toString(time), Material.GREEN_CONCRETE_POWDER, 1, i);
+            }
+            else {
+                MainMenu.timeToDecideWhenRespawning.addClickableItemStack(Integer.toString(i), Material.RED_CONCRETE_POWDER, 1, i);
+            }
+        }
+    }
+
 }
