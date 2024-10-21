@@ -51,8 +51,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
-        //TranslationFactory tf = new TranslationFactory();
-        //tf.addTranslationsFromFile(new InputStreamReader(Main.class.getResourceAsStream("/translations.json"), StandardCharsets.UTF_8));
+        TranslationFactory tf = new TranslationFactory();
+        tf.addTranslationsFromFile(new InputStreamReader(Main.class.getResourceAsStream("/translations.json"), StandardCharsets.UTF_8));
     }
 
 
@@ -69,6 +69,7 @@ public final class Main extends JavaPlugin {
         Minigame minigame = new Minigame();
         Introduction introduction = new Introduction();
         Config config = new Config();
+        TranslationFactory tf = new TranslationFactory();
 
         if(!introduction.checkIfPlayerGotIntroduced(player)) {
             introduction.introStart(player);
@@ -83,7 +84,7 @@ public final class Main extends JavaPlugin {
                     }
                     else {
                         if(player.getUniqueId() != playerInArena.getUniqueId()) {
-                            player.sendMessage(Component.text("Die Arena ist gerade besetzt, du wurdest in die Warteliste aufgenommen").color(NamedTextColor.GOLD));
+                            player.sendMessage(Component.text(tf.getTranslation(player, "arenaIsFull")).color(NamedTextColor.GOLD));
                             Location locationBox = new Location(player.getWorld(), 115, 76, 53);
                             minigame.teleportPlayerInBox(player, locationBox);
                         }
@@ -97,7 +98,7 @@ public final class Main extends JavaPlugin {
                     }
                     else {
                         if(player.getUniqueId() != playerInArena.getUniqueId()) {
-                            player.sendMessage(Component.text("Die Arena ist gerade besetzt, du wurdest in die Warteliste aufgenommen").color(NamedTextColor.GOLD));
+                            player.sendMessage(Component.text(tf.getTranslation(player, "arenaIsFull")).color(NamedTextColor.GOLD));
                             Location locationBox = new Location(player.getWorld(), 115, 76, 53);
                             minigame.teleportPlayerInBox(player, locationBox);
                         }

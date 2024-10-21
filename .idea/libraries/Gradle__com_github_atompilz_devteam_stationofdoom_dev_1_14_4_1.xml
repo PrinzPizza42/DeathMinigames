@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.atompilz-devteam:stationofdoom:dev:1.14.4.1" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.github.atompilz-devteam" artifactId="stationofdoom" version="1.14.4.1" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.atompilz-devteam/stationofdoom/1.14.4.1/abc22a50debd30b8f92120fed8339905bf41123a/stationofdoom-1.14.4.1-dev.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

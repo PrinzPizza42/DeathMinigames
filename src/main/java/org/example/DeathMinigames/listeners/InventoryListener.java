@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.deathMinigames.Main;
+import org.example.DeathMinigames.minigames.Minigame;
 import org.example.DeathMinigames.settings.GUI;
 import org.example.DeathMinigames.settings.MainMenu;
 
@@ -26,6 +28,7 @@ public class InventoryListener implements Listener {
         MainMenu mainMenu = new MainMenu();
         InventoryHolder invHolder = event.getInventory().getHolder();
         Main main = new Main();
+        Minigame minigame = new Minigame();
 
         int ID;
         int slot = event.getSlot();
@@ -62,8 +65,10 @@ public class InventoryListener implements Listener {
                 else if (slot <= Config.knownPlayers.size()) {
                     playerClicked = getPlayerFromListFromSpecificInt(slot);
                     if(config.checkConfigBoolean(playerClicked, "Introduction")) {
+                        minigame.playSoundToPlayer(player, 0.5F, Sound.ENTITY_ITEM_BREAK);
                         config.setIntroduction(playerClicked, false);
                     } else if (!config.checkConfigBoolean(playerClicked, "Introduction")) {
+                        minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
                         config.setIntroduction(playerClicked, true);
                     }
                     reloadInventory("Introduction", slot, mainMenu);
@@ -79,8 +84,10 @@ public class InventoryListener implements Listener {
                 else if (slot <= Config.knownPlayers.size()) {
                     playerClicked = getPlayerFromListFromSpecificInt(slot);
                     if(config.checkConfigBoolean(playerClicked, "UsesPlugin")) {
+                        minigame.playSoundToPlayer(player, 0.5F, Sound.ENTITY_ITEM_BREAK);
                         config.setUsesPlugin(playerClicked, false);
                     } else if (!config.checkConfigBoolean(playerClicked, "UsesPlugin")) {
+                        minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
                         config.setUsesPlugin(playerClicked, true);
                     }
                     reloadInventory("UsesPlugin", slot, mainMenu);
@@ -108,6 +115,7 @@ public class InventoryListener implements Listener {
                     mainMenu.showPlayerSettings(player);
                 }
                 else if (slot < 11){
+                    minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
                     config.setDifficulty(playerClicked, slot);
                     reloadInventory("Difficulty - Settings", slot, mainMenu);
                     player.sendMessage(Component.text("Changed Difficulty of " + playerClicked.getName() + " to " + config.checkConfigInt(playerClicked, "Difficulty")).color(NamedTextColor.RED));
@@ -146,12 +154,14 @@ public class InventoryListener implements Listener {
                     mainMenu.showPlayerSettings(player);
                 }
                 else if (slot <= 36){
+                    minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
                     int parkourStartHeight = slot * 10;
                     config.setParkourStartHeight(parkourStartHeight);
                     reloadInventory("ParkourStartHeight", mainMenu);
                 }
             }
             else if (ID == MainMenu.parkourLength.getID()) {
+                minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
                 event.setCancelled(true);
                 if(slot == 53) {
                     mainMenu.showPlayerSettings(player);
@@ -167,6 +177,8 @@ public class InventoryListener implements Listener {
                     mainMenu.showPlayerSettings(player);
                 }
                 else if (slot < 9) {
+                    minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
+                    slot = slot + 1;
                     config.setCostToLowerTheDifficulty(slot);
                     reloadInventory("CostToLowerTheDifficulty", mainMenu);
                 }
@@ -176,7 +188,9 @@ public class InventoryListener implements Listener {
                 if(slot == 53) {
                     mainMenu.showPlayerSettings(player);
                 }
-                else if (slot < 25) {
+                else if (slot < 29) {
+                    minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
+                    slot = slot + 5;
                     config.setTimeToDecideWhenRespawning(slot);
                     reloadInventory("TimeToDecideWhenRespawning", mainMenu);
                 }

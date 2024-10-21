@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: io.papermc.paper:paper-server:userdev-1.21.1-R0.1-SNAPSHOT" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="io.papermc.paper" artifactId="paper-server" version="userdev-1.21.1-R0.1-SNAPSHOT" />
+    <ANNOTATIONS>
+      <root url="jar://$APPLICATION_PLUGINS_DIR$/MinecraftDev/lib/resources/externalAnnotations.jar!/" />
+      <root url="jar://$APPLICATION_PLUGINS_DIR$/Minecraft Development/lib/resources/externalAnnotations.jar!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/paperweight-userdev/41e8c3eaa51a95fbe3b460207ce1f3b60d21b77591467a0ed4cde0bc77c79bb1/module/io.papermc.paper/dev-bundle/1.21.1-R0.1-SNAPSHOT/paperweight/ivyRepository/io/papermc/paper/paper-server/userdev-1.21.1-R0.1-SNAPSHOT/paper-server-userdev-1.21.1-R0.1-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/paperweight-userdev/41e8c3eaa51a95fbe3b460207ce1f3b60d21b77591467a0ed4cde0bc77c79bb1/module/io.papermc.paper/dev-bundle/1.21.1-R0.1-SNAPSHOT/paperweight/ivyRepository/io/papermc/paper/paper-server/userdev-1.21.1-R0.1-SNAPSHOT/paper-server-userdev-1.21.1-R0.1-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

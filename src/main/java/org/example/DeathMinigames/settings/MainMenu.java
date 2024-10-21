@@ -74,10 +74,30 @@ public class MainMenu implements InventoryHolder {
         int costToLowerTheDifficulty = config.checkConfigInt("CostToLowerTheDifficulty");
         int timeToDecideWhenRespawning = config.checkConfigInt("TimeToDecideWhenRespawning");
 
-        setUp.addClickableItemStack("Parcour Start Height", Material.LADDER, startHeight, 0);
-        setUp.addClickableItemStack("Parcour length", Material.LADDER, parkourLength, 1);
-        setUp.addClickableItemStack("cost to lower the difficulty", Material.DIAMOND, costToLowerTheDifficulty, 2);
-        setUp.addClickableItemStack("time to decide when respawning", Material.CLOCK, timeToDecideWhenRespawning, 3);
+        if(startHeight != 0) {
+            setUp.addClickableItemStack("Parcour Start Height", Material.LADDER, startHeight, 0);
+        }
+        else {
+            setUp.addClickableItemStack("Parcour Start Height", Material.LADDER, 1, 0);
+        }
+        if(parkourLength != 0) {
+            setUp.addClickableItemStack("Parcour length", Material.LADDER, parkourLength, 1);
+        }
+        else {
+            setUp.addClickableItemStack("Parcour length", Material.LADDER, 1, 0);
+        }
+        if(costToLowerTheDifficulty != 0) {
+            setUp.addClickableItemStack("cost to lower the difficulty", Material.DIAMOND, costToLowerTheDifficulty, 2);
+        }
+        else {
+            setUp.addClickableItemStack("cost to lower the difficulty", Material.DIAMOND, 1, 2);
+        }
+        if(timeToDecideWhenRespawning != 0) {
+            setUp.addClickableItemStack("time to decide when respawning", Material.CLOCK, timeToDecideWhenRespawning, 3);
+        }
+        else {
+            setUp.addClickableItemStack("time to decide when respawning", Material.CLOCK, 1, 3);
+        }
     }
 
     public void parkourStartHeightSettingsSetInventoryContents() {
@@ -111,10 +131,10 @@ public class MainMenu implements InventoryHolder {
         int length = config.checkConfigInt("CostToLowerTheDifficulty");
         for(int i = 1; i < 11; i++) {
             if(length == i) {
-                MainMenu.costToLowerTheDifficulty.addClickableItemStack(Integer.toString(i), Material.GREEN_CONCRETE_POWDER, 1, i);
+                MainMenu.costToLowerTheDifficulty.addClickableItemStack(Integer.toString(i), Material.GREEN_CONCRETE_POWDER, 1, i-1);
             }
             else {
-                MainMenu.costToLowerTheDifficulty.addClickableItemStack(Integer.toString(i), Material.RED_CONCRETE_POWDER, 1, i);
+                MainMenu.costToLowerTheDifficulty.addClickableItemStack(Integer.toString(i), Material.RED_CONCRETE_POWDER, 1, i-1);
             }
         }
     }
@@ -124,10 +144,10 @@ public class MainMenu implements InventoryHolder {
         int time = config.checkConfigInt("TimeToDecideWhenRespawning");
         for(int i = 5; i < 31; i++) {
             if(time == i) {
-                MainMenu.timeToDecideWhenRespawning.addClickableItemStack(Integer.toString(time), Material.GREEN_CONCRETE_POWDER, 1, i);
+                MainMenu.timeToDecideWhenRespawning.addClickableItemStack(Integer.toString(time), Material.GREEN_CONCRETE_POWDER, 1, i-5);
             }
             else {
-                MainMenu.timeToDecideWhenRespawning.addClickableItemStack(Integer.toString(i), Material.RED_CONCRETE_POWDER, 1, i);
+                MainMenu.timeToDecideWhenRespawning.addClickableItemStack(Integer.toString(i), Material.RED_CONCRETE_POWDER, 1, i-5);
             }
         }
     }

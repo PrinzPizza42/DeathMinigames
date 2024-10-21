@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: net.kyori:ansi:1.0.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="net.kyori" artifactId="ansi" version="1.0.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.kyori/ansi/1.0.3/6f779bed836ddfa9d9719d2e08ad4524023343e6/ansi-1.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -5,6 +5,8 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-api/4.17.0/e90703097679e9ca0ee8a059bb933aa7d495bce3/adventure-api-4.17.0.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-api/4.17.0/9fe291e1a4094136f8632c7d28096e95088121f7/adventure-api-4.17.0-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
