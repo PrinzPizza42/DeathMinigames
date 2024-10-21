@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.minigames;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -28,6 +29,7 @@ public class JumpAndRun {
     public void start() {
         Minigame mg = new Minigame();
         Config config = new Config();
+        TranslationFactory tf = new TranslationFactory();
 
         // get the player int the arena from the waiting list
         playerInArena = waitingListMinigame.getFirst();
@@ -37,7 +39,7 @@ public class JumpAndRun {
         World w = playerInArena.getWorld();
         Location firstBlockPlayerTPLocation = new Location(playerInArena.getWorld(), 93.5d, config.checkConfigInt("ParkourStartHeight")+1, 81.5d);
         playerInArena.teleport(firstBlockPlayerTPLocation);
-        mg.startMessage(playerInArena, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
+        mg.startMessage(playerInArena, tf.getTranslation(playerInArena, "introParkour"));
 
         int heightToWin = config.checkConfigInt("ParkourStartHeight") + config.checkConfigInt("ParkourLength");
 

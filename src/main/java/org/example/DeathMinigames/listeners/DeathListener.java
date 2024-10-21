@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.listeners;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -26,30 +27,31 @@ public class DeathListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         Config config = new Config();
+        TranslationFactory tf = new TranslationFactory();
 
-        Player player_3 = event.getPlayer();
+        Player player = event.getPlayer();
         Inventory inventory = Bukkit.createInventory(null, 45);
         inventory.setContents(event.getPlayer().getInventory().getContents());
         Location deathpoint = event.getPlayer().getLocation();
 
-        deaths.put(player_3.getUniqueId(), deathpoint);
+        deaths.put(player.getUniqueId(), deathpoint);
         if (inventory.isEmpty()) {
-            if(config.checkConfigBoolean(player_3, "UsesPlugin")) {
-                player_3.sendActionBar(Component.text("Inventar wurde nicht gespeichert, da es leer war")
+            if(config.checkConfigBoolean(player, "UsesPlugin")) {
+                player.sendActionBar(Component.text(tf.getTranslation(player, "didNotSaveInv"))
                         .color(NamedTextColor.GOLD)
                         .decoration(TextDecoration.ITALIC, true));
             }
-        } else if (!inventories.containsKey(player_3.getUniqueId())){
-            if(config.checkConfigBoolean(player_3, "UsesPlugin")) {
-                player_3.sendActionBar(Component.text("Inventar wurde gespeichert")
+        } else if (!inventories.containsKey(player.getUniqueId())){
+            if(config.checkConfigBoolean(player, "UsesPlugin")) {
+                player.sendActionBar(Component.text(tf.getTranslation(player, "savedInv"))
                         .color(NamedTextColor.GOLD)
                         .decoration(TextDecoration.ITALIC, true));
             }
-            inventories.put(player_3.getUniqueId(), inventory);
+            inventories.put(player.getUniqueId(), inventory);
         }
 
-        if(!config.checkConfigBoolean(player_3, "UsesPlugin")) {
-            dropInv(player_3);
+        if(!config.checkConfigBoolean(player, "UsesPlugin")) {
+            dropInv(player);
         }
     }
 

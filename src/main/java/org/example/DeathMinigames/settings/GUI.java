@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.settings;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -41,7 +42,7 @@ public class GUI implements InventoryHolder {
                 inventory.setItem(i, itemStack);
             }
         }
-        addClickableItemStack("Zurück", Material.RED_CONCRETE, 1, 53);
+        addClickableItemStack("back", Material.RED_CONCRETE, 1, 53);
     }
 
     public void addClickableItemStack(String name, Material material, int amount, int slotWhereToPutTheItem) {

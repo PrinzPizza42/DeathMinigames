@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.minigames;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -31,19 +32,20 @@ public class Minigame {
      */
     public void loseMessage(Player player) {
         Config config = new Config();
+        TranslationFactory tf = new TranslationFactory();
 
         if(config.checkConfigBoolean(player, "UsesPlugin")) {
-            player.sendMessage(Component.text("Du hast verloren. Dein Inventar wird an deinem Todesort gedroppt").color(NamedTextColor.RED));
-            player.sendMessage(Component.text("Todesort: ").color(NamedTextColor.GOLD)
+            player.sendMessage(Component.text(tf.getTranslation(player, "loseMessage1")).color(NamedTextColor.RED));
+            player.sendMessage(Component.text(tf.getTranslation(player, "loseMessage2")).color(NamedTextColor.GOLD)
                     .append(Component.text("X: " + deaths.get(player.getUniqueId()).getBlockX() + " ").color(NamedTextColor.RED))
                     .append(Component.text("Y: " + deaths.get(player.getUniqueId()).getBlockY() + " ").color(NamedTextColor.RED))
                     .append(Component.text("Z: " + deaths.get(player.getUniqueId()).getBlockZ()).color(NamedTextColor.RED)));
-            player.sendMessage(Component.text("Wenn du deine Schwierigkeit verringern möchtest musst du 4 Diamanten opfern. Clicke dafür ").color(NamedTextColor.GOLD)
-                    .append(Component.text("hier").color(NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/game lowerDifficulty")).decorate(TextDecoration.UNDERLINED)
+            player.sendMessage(Component.text(tf.getTranslation(player, "loseMessage3")).color(NamedTextColor.GOLD)
+                    .append(Component.text(tf.getTranslation(player, "loseMessage4")).color(NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/game lowerDifficulty")).decorate(TextDecoration.UNDERLINED)
                     ));
-            player.sendMessage(Component.text("oder gibt ").color(NamedTextColor.GOLD)
+            player.sendMessage(Component.text(tf.getTranslation(player, "loseMessage5")).color(NamedTextColor.GOLD)
                     .append(Component.text("/game lowerDifficulty ").color(NamedTextColor.GREEN)
-                            .append(Component.text("ein").color(NamedTextColor.GOLD))));
+                            .append(Component.text(tf.getTranslation(player, "loseMessage6")).color(NamedTextColor.GOLD))));
         }
     }
 
@@ -95,13 +97,14 @@ public class Minigame {
     public void winMessage(Player player) {
         Difficulty difficulty = new Difficulty();
         Config config = new Config();
+        TranslationFactory tf = new TranslationFactory();
 
-        player.sendMessage(Component.text("Du hast gewonnen, du bekommst jetzt deine Items").color(NamedTextColor.GOLD));
+        player.sendMessage(Component.text(tf.getTranslation(player, "winMessage1")).color(NamedTextColor.GOLD));
         if(config.checkConfigInt(player, "Difficulty") < 10) {
             difficulty.higherDifficulty(player);
-            player.sendMessage(Component.text("Deine Schwierigkeit wurde um 1 auf ").color(NamedTextColor.GOLD)
+            player.sendMessage(Component.text(tf.getTranslation(player, "changedDiff1")).color(NamedTextColor.GOLD)
                     .append(Component.text(config.checkConfigInt(player, "Difficulty")).color(NamedTextColor.RED))
-                    .append(Component.text(" erhöht.").color(NamedTextColor.GOLD)));
+                    .append(Component.text(tf.getTranslation(player, "changedDiff2")).color(NamedTextColor.GOLD)));
         }
     }
 
@@ -110,7 +113,8 @@ public class Minigame {
      * @param player    the play to open the inventory to
      */
     public void showInv(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 45, Component.text("Deine Items").color(NamedTextColor.GOLD));
+        TranslationFactory tf = new TranslationFactory();
+        Inventory inventory = Bukkit.createInventory(null, 45, Component.text(tf.getTranslation(player, "winInv")).color(NamedTextColor.GOLD));
         inventory.setContents(playerDeathInventory.getContents());
 
         if(player.getRespawnLocation() == null) {

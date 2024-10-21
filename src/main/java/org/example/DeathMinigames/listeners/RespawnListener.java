@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.listeners;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
@@ -59,16 +60,17 @@ public class RespawnListener implements Listener {
 
     private void timerWhilePlayerDecides(Player player) {
         Main main = new Main();
+        TranslationFactory tf = new TranslationFactory();
 
         new BukkitRunnable() {
             public void run() {
                 if(timeForPlayerToDecide > 0) {
                     if(!playerDecided) {
                         Title.Times times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofMillis(500));
-                        Title title = Title.title(Component.text("Entscheide dich im Chat").color(NamedTextColor.GOLD),
-                                Component.text("Du hast noch ").color(NamedTextColor.GOLD)
+                        Title title = Title.title(Component.text(tf.getTranslation(player, "decideInChat")).color(NamedTextColor.GOLD),
+                                Component.text(tf.getTranslation(player, "decideTime")).color(NamedTextColor.GOLD)
                                 .append(Component.text(timeForPlayerToDecide).color(NamedTextColor.RED))
-                                .append(Component.text(" Sekunden zeit").color(NamedTextColor.GOLD)), times);
+                                .append(Component.text(tf.getTranslation(player, "decideTime2")).color(NamedTextColor.GOLD)), times);
                         player.showTitle(title);
                         timeForPlayerToDecide--;
                     }
@@ -79,7 +81,7 @@ public class RespawnListener implements Listener {
                     }
                 }
                 else {
-                    player.sendTitle("", "Dein Inventar wird an deinem Todesort gedroppt", 10, 40, 10);
+                    player.sendTitle("", tf.getTranslation(player, "droppingInvAt2"), 10, 40, 10);
                     player.sendMessage(Component.text("Todesort: ").color(NamedTextColor.GOLD)
                             .append(Component.text("X: " + deaths.get(player.getUniqueId()).getBlockX() + " ").color(NamedTextColor.RED))
                             .append(Component.text("Y: " + deaths.get(player.getUniqueId()).getBlockY() + " ").color(NamedTextColor.RED))
@@ -96,16 +98,17 @@ public class RespawnListener implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         Config config = new Config();
+        TranslationFactory tf = new TranslationFactory();
 
         timeForPlayerToDecide = config.checkConfigInt("TimeToDecideWhenRespawning");
-        Player player_7 = event.getPlayer();
-        player_7.getInventory().clear();
-        if (inventories.containsKey(event.getPlayer().getUniqueId()) && config.checkConfigBoolean(player_7, "UsesPlugin")) {
-            TextComponent startMinigame = new TextComponent("um deine Items spielen");
-            TextComponent ignoreMinigame = new TextComponent("nicht um deine Items spielen");
+        Player player = event.getPlayer();
+        player.getInventory().clear();
+        if (inventories.containsKey(event.getPlayer().getUniqueId()) && config.checkConfigBoolean(player, "UsesPlugin")) {
+            TextComponent startMinigame = new TextComponent(tf.getTranslation(player, "playMinigame"));
+            TextComponent ignoreMinigame = new TextComponent(tf.getTranslation(player, "ignoreMinigame"));
             TextComponent middlePart = new TextComponent(" / ");
 
-            player_7.sendMessage("§6Entscheide dich, möchtest du ein Minispiel um deine Items spielen oder deine Items an deiner Todesstelle gedroppt bekommen?");
+            player.sendMessage(tf.getTranslation(player, "decision"));
 
             //TODO: replace deprecated code
             startMinigame.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/game start"));
@@ -117,7 +120,7 @@ public class RespawnListener implements Listener {
             ignoreMinigame.setItalic(true);
             ignoreMinigame.setUnderlined(true);
 
-            timerWhilePlayerDecides(player_7);
+            timerWhilePlayerDecides(player);
 
             event.getPlayer().spigot().sendMessage(startMinigame, middlePart, ignoreMinigame);
         }

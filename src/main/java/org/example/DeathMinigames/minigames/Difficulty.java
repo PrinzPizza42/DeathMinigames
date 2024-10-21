@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.minigames;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -12,9 +13,10 @@ public class Difficulty {
 
     public void higherDifficulty(Player player) {
         Config config = new Config();
+        TranslationFactory tf = new TranslationFactory();
 
         if(config.checkConfigInt(player, "Difficulty") == 10) {
-            player.sendMessage(Component.text("Du hast schon die maximale Schwierigkeit erreicht. Hast du super gemacht").color(NamedTextColor.RED));
+            player.sendMessage(Component.text(tf.getTranslation(player, "maxDiffAlreadyReached")).color(NamedTextColor.RED));
         }
         else {
             config.setDifficulty(player, config.checkConfigInt(player, "Difficulty") + 1);
