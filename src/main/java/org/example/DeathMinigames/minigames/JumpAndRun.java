@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.minigames;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -26,8 +27,9 @@ public class JumpAndRun {
      * runs the minigame JumpAndRun
      */
     public void start() {
-        JumpAndRun JAR = new JumpAndRun();
         Minigame mg = new Minigame();
+        Config config = new Config();
+        TranslationFactory tf = new TranslationFactory();
 
         // get the player int the arena from the waiting list
         playerInArena = waitingListMinigame.getFirst();
@@ -35,21 +37,21 @@ public class JumpAndRun {
         playerInArena.sendTitle("JumpNRun", "");
 
         World w = playerInArena.getWorld();
-        Location location = new Location(playerInArena.getWorld(), 93.5d, 75.5d, 81.5d);
-        playerInArena.teleport(location);
-        mg.startMessage(playerInArena, "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen");
+        Location firstBlockPlayerTPLocation = new Location(playerInArena.getWorld(), 93.5d, config.checkConfigInt("ParkourStartHeight")+1, 81.5d);
+        playerInArena.teleport(firstBlockPlayerTPLocation);
+        mg.startMessage(playerInArena, tf.getTranslation(playerInArena, "introParkour"));
 
-        int heightToWin = 90;
+        int heightToWin = config.checkConfigInt("ParkourStartHeight") + config.checkConfigInt("ParkourLength");
 
         // get the location and place the first block
         int x = 93;
-        int y = 74;
+        int y = config.checkConfigInt("ParkourStartHeight");
         int z = 81;
-        Location firstBlock = new Location(location.getWorld(), x, y, z);
+        Location firstBlock = new Location(firstBlockPlayerTPLocation.getWorld(), x, y, z);
         firstBlock.getBlock().setType(Material.GREEN_CONCRETE);
 
         // check synchronously if the player looses or wins, false run the generator of the parkour
-        JAR.parkourGenerator(firstBlock, heightToWin);
+        parkourGenerator(firstBlock, heightToWin);
     }
 
     /**
@@ -88,7 +90,7 @@ public class JumpAndRun {
         Minigame mg = new Minigame();
         if (checkIfOnGold(player) == true) {
             mg.winMessage(player);
-            mg.spawnChestWithInv(player);
+            mg.showInv(player);
             woolPlaced = false;
             goldPlaced = false;
             for (Block block : blocksToDelete) {
@@ -138,7 +140,6 @@ public class JumpAndRun {
      * @param player    player to get the location of the block beneath him
      */
     private void replaceWoolWithConcrete(Player player) {
-        Main main = new Main();
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -150,7 +151,7 @@ public class JumpAndRun {
                     cancel();
                 }
             }
-        }.runTaskTimer(main.getPlugin(), 0, 5);
+        }.runTaskTimer(Main.getPlugin(), 0, 5);
     }
 
     /**
@@ -206,16 +207,16 @@ public class JumpAndRun {
      */
     private void parkourGenerator(Location firstBLock, int heightToWin) {
         Minigame mg = new Minigame();
-        Main main = new Main();
-        Difficulty diff = new Difficulty();
         Config config = new Config();
+
+        int heightToLose = config.checkConfigInt("ParkourStartHeight") - 2;
 
         Location nextBlock = firstBLock;
         new BukkitRunnable() {
             public void run() {
-                if(checkIfPlayerWon(playerInArena) || checkIfPlayerLost(playerInArena, 73)) {
+                if(checkIfPlayerWon(playerInArena) || checkIfPlayerLost(playerInArena, heightToLose)) {
                     if(!mg.checkIfWaitinglistIsEmpty()) {
-                        main.minigameStart(waitingListMinigame.getFirst());
+                        Main.minigameStart(waitingListMinigame.getFirst());
                     }
                     cancel();
                 }
@@ -344,6 +345,6 @@ public class JumpAndRun {
                     }
                 }
             }
-        }.runTaskTimer(main.getPlugin(), 0, 5);
+        }.runTaskTimer(Main.getPlugin(), 0, 5);
     }
 }

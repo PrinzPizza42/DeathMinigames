@@ -11,56 +11,61 @@ public class Config {
     public static ArrayList<UUID> configIntroduction = new ArrayList<>();
     public static ArrayList<UUID> configUsesPlugin = new ArrayList<>();
     public static ArrayList<UUID> knownPlayers = new ArrayList<>();
-    private static ArrayList<String> knownPlayersString = new ArrayList<>(); // just for testing puposes
+    private static ArrayList<String> knownPlayersString = new ArrayList<>();
+    public static boolean configSetUp;
+    public static int configParkourStartHeight;
+    public static int configParkourLength;
+    public static int configCostToLowerTheDifficulty;
+    public static int configTimeToDecideWhenRespawning;
+
 
     public void addPlayerInConfig(UUID playerUUID) {
-        Main main = new Main();
-        main.getPlugin().getConfig().set(playerUUID + ".Introduction", false);
-        main.getPlugin().getConfig().set(playerUUID + ".UsesPlugin", true);
-        main.getPlugin().getConfig().set(playerUUID + ".Difficulty", 0);
-        main.getPlugin().getConfig().set("KnownPlayers", knownPlayersString);
-        main.getPlugin().saveConfig();
+        Main.getPlugin().getConfig().set(playerUUID + ".Introduction", false);
+        Main.getPlugin().getConfig().set(playerUUID + ".UsesPlugin", true);
+        Main.getPlugin().getConfig().set(playerUUID + ".Difficulty", 0);
+        Main.getPlugin().getConfig().set("KnownPlayers", knownPlayersString);
+        Main.getPlugin().saveConfig();
     }
 
     private void fillKnownPlayersArrayList() {
-        Main main = new Main();
+        
 
-        for (String playerUUDIInString : main.getPlugin().getConfig().getStringList("KnownPlayers")) {
+        for (String playerUUDIInString : Main.getPlugin().getConfig().getStringList("KnownPlayers")) {
             knownPlayers.add(UUID.fromString(playerUUDIInString));
             knownPlayersString.add(playerUUDIInString);
         }
 
         if(!knownPlayers.isEmpty()) {
-            main.getPlugin().getLogger().info("knownPlayers is not empty");
+            Main.getPlugin().getLogger().info("knownPlayers is not empty");
         }
         else {
-            main.getPlugin().getLogger().info("knownPlayers is empty");
+            Main.getPlugin().getLogger().info("knownPlayers is empty");
         }
         for (UUID playerUUID : knownPlayers) {
-            main.getPlugin().getLogger().info(playerUUID.toString());
+            Main.getPlugin().getLogger().info(playerUUID.toString());
         }
 
         if(!knownPlayersString.isEmpty()) {
-            main.getPlugin().getLogger().info("knownPlayersString is not empty");
+            Main.getPlugin().getLogger().info("knownPlayersString is not empty");
         }
         else {
-            main.getPlugin().getLogger().info("knownPlayersString is empty");
+            Main.getPlugin().getLogger().info("knownPlayersString is empty");
         }
         for (String playerUUIDString : knownPlayersString) {
-            main.getPlugin().getLogger().info(playerUUIDString);
+            Main.getPlugin().getLogger().info(playerUUIDString);
         }
     }
 
     public void addPlayerInHashMap(UUID playerUUID) {
-        Main main = new Main();
+        
 
-        if(main.getPlugin().getConfig().getBoolean(playerUUID + ".Introduction")) {
+        if(Main.getPlugin().getConfig().getBoolean(playerUUID + ".Introduction")) {
             configIntroduction.add(playerUUID);
         }
-        if(main.getPlugin().getConfig().getBoolean(playerUUID + ".UsesPlugin")) {
+        if(Main.getPlugin().getConfig().getBoolean(playerUUID + ".UsesPlugin")) {
             configUsesPlugin.add(playerUUID);
         }
-        configDifficulty.put(playerUUID, main.getPlugin().getConfig().getInt(playerUUID + ".Difficulty"));
+        configDifficulty.put(playerUUID, Main.getPlugin().getConfig().getInt(playerUUID + ".Difficulty"));
     }
 
     public void addNewPlayer(UUID playerUUID) {
@@ -74,9 +79,9 @@ public class Config {
     }
 
     public boolean checkIfPlayerInFile(Player player_8) {
-        Main main = new Main();
+        
 
-        if(main.getPlugin().getConfig().contains(player_8.getUniqueId().toString())) {
+        if(Main.getPlugin().getConfig().contains(player_8.getUniqueId().toString())) {
             return true;
         }
         else{
@@ -85,19 +90,49 @@ public class Config {
     }
 
     public void cloneConfigToHasMap() {
-        Main main = new Main();
+        
 
         fillKnownPlayersArrayList();
+        if(Main.getPlugin().getConfig().contains("SetUp")) {
+            setSetUp(Main.getPlugin().getConfig().getBoolean("SetUp"));
+        }
+        else {
+            setSetUp(false);
+        }
+        if(Main.getPlugin().getConfig().contains("ParkourStartHeight")) {
+            setParkourStartHeight(Main.getPlugin().getConfig().getInt("ParkourStartHeight"));
+        }
+        else {
+            setParkourStartHeight(100);
+        }
+        if(Main.getPlugin().getConfig().contains("ParkourLength")) {
+            setParkourLength(Main.getPlugin().getConfig().getInt("ParkourLength"));
+        }
+        else {
+            setParkourLength(10);
+        }
+        if(Main.getPlugin().getConfig().contains("CostToLowerTheDifficulty")) {
+            setCostToLowerTheDifficulty(Main.getPlugin().getConfig().getInt("CostToLowerTheDifficulty"));
+        }
+        else {
+            setCostToLowerTheDifficulty(6);
+        }
+        if(Main.getPlugin().getConfig().contains("TimeToDecideWhenRespawning")) {
+            setTimeToDecideWhenRespawning(Main.getPlugin().getConfig().getInt("TimeToDecideWhenRespawning"));
+        }
+        else {
+            setTimeToDecideWhenRespawning(10);
+        }
 
         for(UUID playerUUID : knownPlayers) {
-            if(main.getPlugin().getConfig().contains(playerUUID.toString())) {
+            if(Main.getPlugin().getConfig().contains(playerUUID.toString())) {
                 addPlayerInHashMap(playerUUID);
             }
         }
     }
 
     public void setIntroduction(Player player_9, boolean introduction) {
-        Main main = new Main();
+        
         if(introduction) {
             if(!configIntroduction.contains(player_9.getUniqueId())) {
                 configIntroduction.add(player_9.getUniqueId());
@@ -106,12 +141,12 @@ public class Config {
         else {
             configIntroduction.remove(player_9.getUniqueId());
         }
-        main.getPlugin().getConfig().set(player_9.getUniqueId() + ".Introduction", introduction);
-        main.getPlugin().saveConfig();
+        Main.getPlugin().getConfig().set(player_9.getUniqueId() + ".Introduction", introduction);
+        Main.getPlugin().saveConfig();
     }
 
     public void setUsesPlugin(Player player_10, boolean usesPlugin) {
-        Main main = new Main();
+        
         if(usesPlugin) {
             if(!configUsesPlugin.contains(player_10.getUniqueId())) {
                 configUsesPlugin.add(player_10.getUniqueId());
@@ -120,46 +155,107 @@ public class Config {
         else {
             configUsesPlugin.remove(player_10.getUniqueId());
         }
-        main.getPlugin().getConfig().set(player_10.getUniqueId() + ".UsesPlugin", usesPlugin);
-        main.getPlugin().saveConfig();
+        Main.getPlugin().getConfig().set(player_10.getUniqueId() + ".UsesPlugin", usesPlugin);
+        Main.getPlugin().saveConfig();
     }
 
     public void setDifficulty(Player player_11, int difficulty) {
-        Main main = new Main();
+        
         configDifficulty.replace(player_11.getUniqueId(), difficulty);
-        main.getPlugin().getConfig().set(player_11.getUniqueId() + ".Difficulty", difficulty);
-        main.getPlugin().saveConfig();
+        Main.getPlugin().getConfig().set(player_11.getUniqueId() + ".Difficulty", difficulty);
+        Main.getPlugin().saveConfig();
     }
 
-    public boolean checkConfigBoolean(Player player_12, String topic) {
+    public void setSetUp(boolean bool) {
+        
+        configSetUp = bool;
+        Main.getPlugin().getConfig().set("SetUp", bool);
+        Main.getPlugin().saveConfig();
+    }
+
+    public void setParkourStartHeight(int height) {
+        
+        configParkourStartHeight = height;
+        Main.getPlugin().getConfig().set("ParkourStartHeight", height);
+        Main.getPlugin().saveConfig();
+    }
+
+    public void setParkourLength(int length) {
+        
+        configParkourLength = length;
+        Main.getPlugin().getConfig().set("ParkourLength", length);
+        Main.getPlugin().saveConfig();
+    }
+
+    public void setCostToLowerTheDifficulty(int cost) {
+        
+        configCostToLowerTheDifficulty = cost;
+        Main.getPlugin().getConfig().set("CostToLowerTheDifficulty", cost);
+        Main.getPlugin().saveConfig();
+    }
+
+    public void setTimeToDecideWhenRespawning(int time) {
+        
+        configTimeToDecideWhenRespawning = time;
+        Main.getPlugin().getConfig().set("TimeToDecideWhenRespawning", time);
+        Main.getPlugin().saveConfig();
+    }
+
+    public boolean checkConfigBoolean(Player player, String topic) {
         try {
             switch (topic) {
                 case "Introduction":
-                    if (configIntroduction.contains(player_12.getUniqueId())) {
+                    if (configIntroduction.contains(player.getUniqueId())) {
                         return true;
                     }
                     return false;
                 case "UsesPlugin":
-                    if (configUsesPlugin.contains(player_12.getUniqueId())) {
+                    if (configUsesPlugin.contains(player.getUniqueId())) {
                         return true;
                     }
                     return false;
             }
         }
         catch(NullPointerException e){
-            Main main = new Main();
-            main.getPlugin().getLogger().info(e.getMessage());
-            main.getPlugin().getLogger().info("cant check config boolean because player_12 is null");
+            
+            Main.getPlugin().getLogger().info(e.getMessage());
+            Main.getPlugin().getLogger().info("cant check config boolean because player_12 is null");
+        }
+        return false;
+    }
+
+    public boolean checkConfigBoolean(String topic) {
+        try {
+            if (topic.equals("SetUp")) {
+                return configSetUp;
+            }
+        }
+        catch(NullPointerException e){
+            
+            Main.getPlugin().getLogger().info(e.getMessage());
+            Main.getPlugin().getLogger().info("cant check config boolean because player_12 is null");
         }
         return false;
     }
 
     public int checkConfigInt(Player player, String topic) {
-        switch(topic) {
-            case "Difficulty":
-                return configDifficulty.get(player.getUniqueId());
+        if(topic.equals("Difficulty")) {
+            return configDifficulty.get(player.getUniqueId());
         }
         return 404;
     }
 
+    public int checkConfigInt(String topic) {
+        switch(topic) {
+            case "ParkourStartHeight":
+                return configParkourStartHeight;
+            case "ParkourLength":
+                return configParkourLength;
+            case "CostToLowerTheDifficulty":
+                return configCostToLowerTheDifficulty;
+            case "TimeToDecideWhenRespawning":
+                return configTimeToDecideWhenRespawning;
+        }
+        return 404;
+    }
 }

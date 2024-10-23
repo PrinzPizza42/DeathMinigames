@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.deathMinigames;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -30,22 +31,17 @@ public class Introduction {
     }
 
     public void introEnd(Player player) {
-        Main main = new Main();
-
         assert checkIfPlayerGotIntroduced(player);
-        main.getPlugin().getLogger().info(player.getName().toUpperCase() + " got introduced");
         deleteBarrierCage(player.getLocation());
         blocks.clear();
     }
 
     private void sendPlayerIntroMessage(Player player) {
-        player.sendMessage(Component.text("Ich gebe dir eine zweite Chance, nutze sie gut."));
-        player.sendMessage(Component.text("Du kannst versuchen um deine Items zu spielen. Da ich mich aber auch amüsieren will, werden die Spiele immer schwerer werden."));
-        player.sendMessage(Component.text("Wenn dir die Spiele zu schwer werden kannst du mich natürlich auch immer mit Diamanten bezahlen, das ist ganz dir überlassen."));
-        player.sendMessage(Component.text("Möchtest du diese Chance nutzen?"));
+        TranslationFactory tf = new TranslationFactory();
+        player.sendMessage(Component.text(tf.getTranslation(player, "introMessage")));
 
-        TextComponent decideForPlugin = new TextComponent("Ja");
-        TextComponent decideNotForPlugin = new TextComponent("Nein");
+        TextComponent decideForPlugin = new TextComponent(tf.getTranslation(player, "yes"));
+        TextComponent decideNotForPlugin = new TextComponent(tf.getTranslation(player, "no"));
         TextComponent middlePart = new TextComponent(" / ");
 
         //TODO: replace deprecated code

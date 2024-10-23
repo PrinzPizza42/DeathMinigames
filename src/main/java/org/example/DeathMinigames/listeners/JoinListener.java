@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.listeners;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
@@ -13,12 +14,13 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Config config = new Config();
-        Player player_14 = event.getPlayer();
+        Player player = event.getPlayer();
+        TranslationFactory tf = new TranslationFactory();
 
-        if(!config.checkIfPlayerInFile(player_14)) {
-            config.addNewPlayer(player_14.getUniqueId());
-            player_14.sendMessage(Component.text("Du wurdest der Liste hinzugefügt und hast eine Difficulty von: ").color(NamedTextColor.GOLD)
-                    .append(Component.text(config.checkConfigInt(player_14, "Difficulty")).color(NamedTextColor.RED)));
+        if(!config.checkIfPlayerInFile(player)) {
+            config.addNewPlayer(player.getUniqueId());
+            player.sendMessage(Component.text(tf.getTranslation(player,"addedToPlayerList")).color(NamedTextColor.GOLD)
+                    .append(Component.text(config.checkConfigInt(player, "Difficulty")).color(NamedTextColor.RED)));
         }
     }
 }
