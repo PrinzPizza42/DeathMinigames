@@ -2,9 +2,11 @@ package org.example.DeathMinigames.minigames;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -35,17 +37,7 @@ public class Minigame {
         TranslationFactory tf = new TranslationFactory();
 
         if(config.checkConfigBoolean(player, "UsesPlugin")) {
-            player.sendMessage(Component.text(tf.getTranslation(player, "loseMessage1")).color(NamedTextColor.RED));
-            player.sendMessage(Component.text(tf.getTranslation(player, "loseMessage2")).color(NamedTextColor.GOLD)
-                    .append(Component.text("X: " + deaths.get(player.getUniqueId()).getBlockX() + " ").color(NamedTextColor.RED))
-                    .append(Component.text("Y: " + deaths.get(player.getUniqueId()).getBlockY() + " ").color(NamedTextColor.RED))
-                    .append(Component.text("Z: " + deaths.get(player.getUniqueId()).getBlockZ()).color(NamedTextColor.RED)));
-            player.sendMessage(Component.text(tf.getTranslation(player, "loseMessage3")).color(NamedTextColor.GOLD)
-                    .append(Component.text(tf.getTranslation(player, "loseMessage4")).color(NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/game lowerDifficulty")).decorate(TextDecoration.UNDERLINED)
-                    ));
-            player.sendMessage(Component.text(tf.getTranslation(player, "loseMessage5")).color(NamedTextColor.GOLD)
-                    .append(Component.text("/game lowerDifficulty ").color(NamedTextColor.GREEN)
-                            .append(Component.text(tf.getTranslation(player, "loseMessage6")).color(NamedTextColor.GOLD))));
+            player.sendMessage(MiniMessage.miniMessage().deserialize(Component.text(tf.getTranslation(player, "loseMessage", "X: " + deaths.get(player.getUniqueId()).getBlockX() + " " + "Y: " + deaths.get(player.getUniqueId()).getBlockY() + " " + "Z: " + deaths.get(player.getUniqueId()).getBlockZ())).content()));
         }
     }
 
@@ -99,12 +91,10 @@ public class Minigame {
         Config config = new Config();
         TranslationFactory tf = new TranslationFactory();
 
-        player.sendMessage(Component.text(tf.getTranslation(player, "winMessage1")).color(NamedTextColor.GOLD));
+        player.sendMessage(Component.text(tf.getTranslation(player, "winMessage")).color(NamedTextColor.GOLD));
         if(config.checkConfigInt(player, "Difficulty") < 10) {
             difficulty.higherDifficulty(player);
-            player.sendMessage(Component.text(tf.getTranslation(player, "changedDiff1")).color(NamedTextColor.GOLD)
-                    .append(Component.text(config.checkConfigInt(player, "Difficulty")).color(NamedTextColor.RED))
-                    .append(Component.text(tf.getTranslation(player, "changedDiff2")).color(NamedTextColor.GOLD)));
+            player.sendMessage(MiniMessage.miniMessage().deserialize(Component.text(tf.getTranslation(player, "changedDiff", config.checkConfigInt(player, "Difficulty"))).content()));
         }
     }
 

@@ -3,6 +3,7 @@ package org.example.DeathMinigames.listeners;
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -45,19 +46,6 @@ public class RespawnListener implements Listener {
 
     private Inventory respawnMenu = Bukkit.createInventory(null, 9, Component.text("Respawn Menu", NamedTextColor.GOLD));;
 
-    private void createRespawnMenu() {
-        respawnMenu.setItem(2, new ItemStack(Material.GREEN_WOOL));
-        respawnMenu.setItem(6, new ItemStack(Material.RED_WOOL));
-    }
-
-    public Inventory getRespawnMenu() {
-        Main main = new Main();
-
-        createRespawnMenu();
-        main.getPlugin().getLogger().info("Getting Respawn Menu");
-        return respawnMenu;
-    }
-
     private void timerWhilePlayerDecides(Player player) {
         Main main = new Main();
         TranslationFactory tf = new TranslationFactory();
@@ -68,9 +56,7 @@ public class RespawnListener implements Listener {
                     if(!playerDecided) {
                         Title.Times times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofMillis(500));
                         Title title = Title.title(Component.text(tf.getTranslation(player, "decideInChat")).color(NamedTextColor.GOLD),
-                                Component.text(tf.getTranslation(player, "decideTime")).color(NamedTextColor.GOLD)
-                                .append(Component.text(timeForPlayerToDecide).color(NamedTextColor.RED))
-                                .append(Component.text(tf.getTranslation(player, "decideTime2")).color(NamedTextColor.GOLD)), times);
+                                MiniMessage.miniMessage().deserialize(Component.text(tf.getTranslation(player, "decideTime", timeForPlayerToDecide)).content()), times);
                         player.showTitle(title);
                         timeForPlayerToDecide--;
                     }
@@ -82,7 +68,7 @@ public class RespawnListener implements Listener {
                 }
                 else {
                     player.sendTitle("", tf.getTranslation(player, "droppingInvAt2"), 10, 40, 10);
-                    player.sendMessage(Component.text("Todesort: ").color(NamedTextColor.GOLD)
+                    player.sendMessage(Component.text(new TranslationFactory().getTranslation(player, "deathpoint")).color(NamedTextColor.GOLD)
                             .append(Component.text("X: " + deaths.get(player.getUniqueId()).getBlockX() + " ").color(NamedTextColor.RED))
                             .append(Component.text("Y: " + deaths.get(player.getUniqueId()).getBlockY() + " ").color(NamedTextColor.RED))
                             .append(Component.text("Z: " + deaths.get(player.getUniqueId()).getBlockZ()).color(NamedTextColor.RED)));
@@ -108,7 +94,7 @@ public class RespawnListener implements Listener {
             TextComponent ignoreMinigame = new TextComponent(tf.getTranslation(player, "ignoreMinigame"));
             TextComponent middlePart = new TextComponent(" / ");
 
-            player.sendMessage(tf.getTranslation(player, "decision"));
+            player.sendMessage(Component.text(tf.getTranslation(player, "decision")).color(NamedTextColor.GOLD));
 
             //TODO: replace deprecated code
             startMinigame.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/game start"));

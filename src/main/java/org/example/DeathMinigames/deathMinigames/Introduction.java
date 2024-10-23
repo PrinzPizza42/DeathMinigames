@@ -31,20 +31,14 @@ public class Introduction {
     }
 
     public void introEnd(Player player) {
-        Main main = new Main();
-
         assert checkIfPlayerGotIntroduced(player);
-        main.getPlugin().getLogger().info(player.getName().toUpperCase() + " got introduced");
         deleteBarrierCage(player.getLocation());
         blocks.clear();
     }
 
     private void sendPlayerIntroMessage(Player player) {
         TranslationFactory tf = new TranslationFactory();
-        player.sendMessage(Component.text(tf.getTranslation(player, "introMessage1")));
-        player.sendMessage(Component.text(tf.getTranslation(player, "introMessage2")));
-        player.sendMessage(Component.text(tf.getTranslation(player, "introMessage3")));
-        player.sendMessage(Component.text(tf.getTranslation(player, "introMessage4")));
+        player.sendMessage(Component.text(tf.getTranslation(player, "introMessage")));
 
         TextComponent decideForPlugin = new TextComponent(tf.getTranslation(player, "yes"));
         TextComponent decideNotForPlugin = new TextComponent(tf.getTranslation(player, "no"));

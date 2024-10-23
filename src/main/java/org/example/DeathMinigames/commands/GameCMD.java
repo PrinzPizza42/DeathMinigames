@@ -4,8 +4,10 @@ import de.j.stationofdoom.util.translations.TranslationFactory;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -59,8 +61,7 @@ public class GameCMD implements BasicCommand {
                             difficulty.playerPay(player);
                             difficulty.lowerDifficulty(player);
                             minigame.playSoundAtLocation(player.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
-                            player.sendMessage(Component.text(tf.getTranslation(player, "changedDiff1")).color(NamedTextColor.GOLD)
-                                    .append(Component.text(config.checkConfigInt(player, "Difficulty")).color(NamedTextColor.RED)));
+                            player.sendMessage(MiniMessage.miniMessage().deserialize(Component.text(tf.getTranslation(player, "changedDiff", config.checkConfigInt(player, "Difficulty"))).content()));
                         }
                         else {
                             player.sendMessage(Component.text(tf.getTranslation(player, "diffAlreadyAt")).color(NamedTextColor.GOLD)
@@ -147,9 +148,7 @@ public class GameCMD implements BasicCommand {
                         if(args[1] != null) {
                             int i = Integer.parseInt(args[1]);
                             config.setDifficulty(player, i);
-                            player.sendMessage(Component.text(tf.getTranslation(player, "setDiffTo1")).color(NamedTextColor.GOLD)
-                                    .append(Component.text(config.checkConfigInt(player, "Difficulty")).color(NamedTextColor.RED))
-                                    .append(Component.text(tf.getTranslation(player, "setDiffTo2"))).color(NamedTextColor.GOLD));
+                            player.sendMessage(MiniMessage.miniMessage().deserialize(Component.text(tf.getTranslation(player, "setDiffTo", config.checkConfigInt(player, "Difficulty"))).content()));
                         }
                         else {
                             player.sendMessage(Component.text(tf.getTranslation(player, "youHaveToEnterANumber")));
@@ -176,11 +175,7 @@ public class GameCMD implements BasicCommand {
                             Player player1 = Bukkit.getPlayer(args[1]);
                             assert player1 != null;
                             config.setDifficulty(player1, i);
-                            player.sendMessage(Component.text(tf.getTranslation(player, "setDiffOfTo1")).color(NamedTextColor.GOLD)
-                                    .append(Component.text(args[1])).color(NamedTextColor.RED)
-                                    .append(Component.text(tf.getTranslation(player, "setDiffTo2"))).color(NamedTextColor.GOLD)
-                                    .append(Component.text(config.checkConfigInt(player, "Difficulty")).color(NamedTextColor.RED))
-                                    .append(Component.text(tf.getTranslation(player, "setDiffOfTo3"))).color(NamedTextColor.GOLD));
+                            player.sendMessage(MiniMessage.miniMessage().deserialize(Component.text(tf.getTranslation(player, "setDiffOfTo", player1, config.checkConfigInt(player1, "Difficulty"))).content()));
                         }
                         else {
                             player.sendMessage(Component.text(tf.getTranslation(player, "youHaveToEnterANumber")).color(NamedTextColor.RED));
