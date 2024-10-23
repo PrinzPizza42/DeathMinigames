@@ -30,7 +30,7 @@ public class Difficulty {
     }
 
     public boolean checkIfPlayerCanPay(Player player) {
-       Config config = new Config();
+        Config config = new Config();
         return player.getInventory().contains(Material.DIAMOND, config.checkConfigInt("CostToLowerTheDifficulty"));
     }
 

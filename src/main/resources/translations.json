@@ -32,7 +32,8 @@
       "introParkour": "Du musst diesen Parkour bestehen, um deine Items wieder zu bekommen",
       "loseMessage": "<red>Du hast verloren. Dein Inventar wird an deinem Todesort gedroppt<red/> \n <gold>Todesort:<gold/> <red>%s<red/> \n <gold>Wenn du deine Schwierigkeit verringern möchtest musst du etwas opfern. Clicke dafür <click:run_command:/game lowerDifficulty><green><b><u>hier</click> <gold>oder gib <white>/game lowerDifficulty ein",
       "winMessage": "Du hast gewonnen, du bekommst jetzt deine Items",
-      "winInv": "Deine Items"
+      "winInv": "Deine Items",
+      "backButton": "Zurück"
     }
   ],
   "en-US": [
@@ -68,7 +69,8 @@
       "introParkour": "You have to get to the end of this parkour to get your items back",
       "loseMessage": "<red>You lost. Your inventory will get dropped at your point of death \n <gold>Deathpoint: <red>%s \n <gold>If this difficulty is to hard for you you can always lower it by sacrificing something. To do that click <click:run_command:/game lowerDifficulty><green><b><u>here</click> <gold>or type in chat <white>/game lowerDifficulty",
       "winMessage": "You won, you will get your items back",
-      "winInv": "Your items"
+      "winInv": "Your items",
+      "backButton": "Back"
     }
   ]
 }

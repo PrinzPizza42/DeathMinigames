@@ -47,7 +47,6 @@ public class RespawnListener implements Listener {
     private Inventory respawnMenu = Bukkit.createInventory(null, 9, Component.text("Respawn Menu", NamedTextColor.GOLD));;
 
     private void timerWhilePlayerDecides(Player player) {
-        Main main = new Main();
         TranslationFactory tf = new TranslationFactory();
 
         new BukkitRunnable() {
@@ -78,7 +77,7 @@ public class RespawnListener implements Listener {
                     cancel();
                 }
             }
-        }.runTaskTimer(main.getPlugin(), 0, 20);
+        }.runTaskTimer(Main.getPlugin(), 0, 20);
     }
 
     @EventHandler

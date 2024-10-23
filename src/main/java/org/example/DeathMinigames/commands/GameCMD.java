@@ -4,7 +4,6 @@ import de.j.stationofdoom.util.translations.TranslationFactory;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -37,7 +36,6 @@ public class GameCMD implements BasicCommand {
     public void execute(CommandSourceStack stack, String[] args) {
         Difficulty difficulty = new Difficulty();
         Minigame minigame = new Minigame();
-        Main main = new Main();
         RespawnListener respawnListener = new RespawnListener();
         Introduction introduction = new Introduction();
         MainMenu mainMenu = new MainMenu();
@@ -77,9 +75,10 @@ public class GameCMD implements BasicCommand {
                         config.setIntroduction(player, true);
                         config.setUsesPlugin(player, true);
                         introduction.introEnd(player);
-                        main.minigameStart(player);
+                        Main.minigameStart(player);
                         player.sendMessage(Component.text(tf.getTranslation(player, "playerDecided")).color(NamedTextColor.GOLD));
-                    } else {
+                    }
+                    else {
                         player.sendMessage(Component.text(tf.getTranslation(player, "playerAlreadyDecided")).color(NamedTextColor.RED));
                     }
                     break;
@@ -90,7 +89,8 @@ public class GameCMD implements BasicCommand {
                         introduction.introEnd(player);
                         introduction.dropInv(player);
                         player.sendMessage(Component.text(tf.getTranslation(player, "playerDecided")).color(NamedTextColor.GOLD));
-                    } else {
+                    }
+                    else {
                         player.sendMessage(Component.text(tf.getTranslation(player, "playerAlreadyDecided")).color(NamedTextColor.RED));
                     }
                     break;
@@ -116,7 +116,7 @@ public class GameCMD implements BasicCommand {
                             waitingListMinigame.addLast(player);
                         }
                         respawnListener.setPlayerDecided(true);
-                        main.minigameStart(player);
+                        Main.minigameStart(player);
                         break;
                     case "ignore":
                         minigame.playSoundToPlayer(player, 0.5F, Sound.ENTITY_ITEM_BREAK);
@@ -213,16 +213,16 @@ public class GameCMD implements BasicCommand {
         if (args.length == 0) {
             Collection<String> suggestions = new ArrayList<>();
             suggestions.add("difficulty");
+            suggestions.add("lowerDifficulty");
             return suggestions;
-        } else if (args.length == 2) {
-            switch (args[0]) {
-                case "difficulty":
-                    Collection<String> suggestions2 = new ArrayList<>();
-                    for(Player on : Bukkit.getOnlinePlayers()) {
-                        suggestions2.add(on.getName());
-                        return suggestions2;
-                    }
-                    break;
+        }
+        else if (args.length == 2) {
+            if(args[1].equals("difficulty")) {
+                Collection<String> suggestions2 = new ArrayList<>();
+                for (Player on : Bukkit.getOnlinePlayers()) {
+                    suggestions2.add(on.getName());
+                    return suggestions2;
+                }
             }
         }
         return BasicCommand.super.suggest(commandSourceStack, args);

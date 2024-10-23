@@ -140,7 +140,6 @@ public class JumpAndRun {
      * @param player    player to get the location of the block beneath him
      */
     private void replaceWoolWithConcrete(Player player) {
-        Main main = new Main();
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -152,7 +151,7 @@ public class JumpAndRun {
                     cancel();
                 }
             }
-        }.runTaskTimer(main.getPlugin(), 0, 5);
+        }.runTaskTimer(Main.getPlugin(), 0, 5);
     }
 
     /**
@@ -208,7 +207,6 @@ public class JumpAndRun {
      */
     private void parkourGenerator(Location firstBLock, int heightToWin) {
         Minigame mg = new Minigame();
-        Main main = new Main();
         Config config = new Config();
 
         int heightToLose = config.checkConfigInt("ParkourStartHeight") - 2;
@@ -218,7 +216,7 @@ public class JumpAndRun {
             public void run() {
                 if(checkIfPlayerWon(playerInArena) || checkIfPlayerLost(playerInArena, heightToLose)) {
                     if(!mg.checkIfWaitinglistIsEmpty()) {
-                        main.minigameStart(waitingListMinigame.getFirst());
+                        Main.minigameStart(waitingListMinigame.getFirst());
                     }
                     cancel();
                 }
@@ -347,6 +345,6 @@ public class JumpAndRun {
                     }
                 }
             }
-        }.runTaskTimer(main.getPlugin(), 0, 5);
+        }.runTaskTimer(Main.getPlugin(), 0, 5);
     }
 }

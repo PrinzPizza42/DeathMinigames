@@ -4,7 +4,6 @@ import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -13,7 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.listeners.InventoryListener;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class GUI implements InventoryHolder {
@@ -42,7 +40,6 @@ public class GUI implements InventoryHolder {
                 inventory.setItem(i, itemStack);
             }
         }
-        addClickableItemStack("back", Material.RED_CONCRETE, 1, 53);
     }
 
     public void addClickableItemStack(String name, Material material, int amount, int slotWhereToPutTheItem) {
@@ -61,6 +58,10 @@ public class GUI implements InventoryHolder {
 
     public void showInventory(Player playerToShowTheInvTo) {
         playerToShowTheInvTo.openInventory(inventory);
+    }
+
+    public void addBackButton(Player player) {
+        addClickableItemStack(new TranslationFactory().getTranslation(player, "backButton"), Material.RED_CONCRETE, 1, 53);
     }
 
     public Inventory getInventory() {

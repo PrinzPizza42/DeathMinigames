@@ -64,7 +64,7 @@ public final class Main extends JavaPlugin {
      * starts a random minigame
      * @param player    the player who is starting a random minigame
      */
-    public void minigameStart(Player player) {
+    public static void minigameStart(Player player) {
         JumpAndRun jumpAndRun = new JumpAndRun();
         Minigame minigame = new Minigame();
         Introduction introduction = new Introduction();
@@ -75,40 +75,20 @@ public final class Main extends JavaPlugin {
             introduction.introStart(player);
         }
         else if(config.checkConfigBoolean(player, "UsesPlugin")) {
-            // get a random number, to start a random minigame
-            int randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-            switch (randomNum) {
-                case 1:
-                    if(playerInArena == null) {
-                        jumpAndRun.start();
-                    }
-                    else {
-                        if(player.getUniqueId() != playerInArena.getUniqueId()) {
-                            player.sendMessage(Component.text(tf.getTranslation(player, "arenaIsFull")).color(NamedTextColor.GOLD));
-                            Location locationBox = new Location(player.getWorld(), 115, 76, 53);
-                            minigame.teleportPlayerInBox(player, locationBox);
-                        }
-                    }
-                    break;
-
-                case 2:
-                    if(playerInArena == null) {
-                        jumpAndRun.start();
-                        //FightPVE;
-                    }
-                    else {
-                        if(player.getUniqueId() != playerInArena.getUniqueId()) {
-                            player.sendMessage(Component.text(tf.getTranslation(player, "arenaIsFull")).color(NamedTextColor.GOLD));
-                            Location locationBox = new Location(player.getWorld(), 115, 76, 53);
-                            minigame.teleportPlayerInBox(player, locationBox);
-                        }
-                    }
-                    break;
+            if(playerInArena == null) {
+                jumpAndRun.start();
+            }
+            else {
+                if(player.getUniqueId() != playerInArena.getUniqueId()) {
+                    player.sendMessage(Component.text(tf.getTranslation(player, "arenaIsFull")).color(NamedTextColor.GOLD));
+                    Location locationBox = new Location(player.getWorld(), 115, 76, 53);
+                    minigame.teleportPlayerInBox(player, locationBox);
+                }
             }
         }
     }
 
-    public Plugin getPlugin() {
+    public static Plugin getPlugin() {
         return plugin;
     }
 
