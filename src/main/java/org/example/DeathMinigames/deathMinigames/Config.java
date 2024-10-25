@@ -257,7 +257,7 @@ public class Config {
         return 404;
     }
 
-    public Location checkConfigLocation(Player player, String topic) {
+    public Location checkConfigLocation(String topic) {
         if(topic.equals("WaitingListPosition")) {
             if(configWaitingListPosition != null) {
                 return configWaitingListPosition;

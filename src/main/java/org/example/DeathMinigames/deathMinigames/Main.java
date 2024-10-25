@@ -81,7 +81,7 @@ public final class Main extends JavaPlugin {
             else {
                 if(player.getUniqueId() != playerInArena.getUniqueId()) {
                     player.sendMessage(Component.text(tf.getTranslation(player, "arenaIsFull")).color(NamedTextColor.GOLD));
-                    Location locationBox = config.checkConfigLocation(player, "WaitingListPosition");
+                    Location locationBox = config.checkConfigLocation("WaitingListPosition");
                     minigame.teleportPlayerInBox(player, locationBox);
                 }
             }

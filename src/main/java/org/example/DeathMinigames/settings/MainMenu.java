@@ -84,19 +84,25 @@ public class MainMenu implements InventoryHolder {
             setUp.addClickableItemStack("Parcour length", Material.LADDER, parkourLength, 1);
         }
         else {
-            setUp.addClickableItemStack("Parcour length", Material.LADDER, 1, 0);
+            setUp.addClickableItemStack("Parcour length", Material.LADDER, 1, 1);
+        }
+        if(config.checkConfigLocation("WaitingListPosition")!=null) {
+            setUp.addClickableItemStack("WaitingListPosition", Material.GREEN_CONCRETE_POWDER, 1, 2);
+        }
+        else {
+            setUp.addClickableItemStack("WaitingListPosition", Material.RED_CONCRETE_POWDER, 1, 2);
         }
         if(costToLowerTheDifficulty != 0) {
-            setUp.addClickableItemStack("cost to lower the difficulty", Material.DIAMOND, costToLowerTheDifficulty, 2);
+            setUp.addClickableItemStack("cost to lower the difficulty", Material.DIAMOND, costToLowerTheDifficulty, 3);
         }
         else {
-            setUp.addClickableItemStack("cost to lower the difficulty", Material.DIAMOND, 1, 2);
+            setUp.addClickableItemStack("cost to lower the difficulty", Material.DIAMOND, 1, 3);
         }
         if(timeToDecideWhenRespawning != 0) {
-            setUp.addClickableItemStack("time to decide when respawning", Material.CLOCK, timeToDecideWhenRespawning, 3);
+            setUp.addClickableItemStack("time to decide when respawning", Material.CLOCK, timeToDecideWhenRespawning, 4);
         }
         else {
-            setUp.addClickableItemStack("time to decide when respawning", Material.CLOCK, 1, 3);
+            setUp.addClickableItemStack("time to decide when respawning", Material.CLOCK, 1, 4);
         }
     }
 
