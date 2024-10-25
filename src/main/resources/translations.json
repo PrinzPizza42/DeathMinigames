@@ -33,7 +33,10 @@
       "loseMessage": "<red>Du hast verloren. Dein Inventar wird an deinem Todesort gedroppt<red/> \n <gold>Todesort:<gold/> <red>%s<red/> \n <gold>Wenn du deine Schwierigkeit verringern möchtest musst du etwas opfern. Clicke dafür <click:run_command:/game lowerDifficulty><green><b><u>hier</click> <gold>oder gib <white>/game lowerDifficulty ein",
       "winMessage": "Du hast gewonnen, du bekommst jetzt deine Items",
       "winInv": "Deine Items",
-      "backButton": "Zurück"
+      "backButton": "Zurück",
+      "waitingListPositionNotSetUp": "Die Position der überschüssigen Spieler in der Warteliste ist noch nicht deklariert. Möchtest du die Position auf deine jetzige Position setzen??",
+      "decidedNotToSetPosition": "Denk daran die Position festzulegen bevor der playthrough richtig startet",
+      "setWaitingListPosition": "Position wurde gesetzt!"
     }
   ],
   "en-US": [
@@ -70,7 +73,10 @@
       "loseMessage": "<red>You lost. Your inventory will get dropped at your point of death \n <gold>Deathpoint: <red>%s \n <gold>If this difficulty is to hard for you you can always lower it by sacrificing something. To do that click <click:run_command:/game lowerDifficulty><green><b><u>here</click> <gold>or type in chat <white>/game lowerDifficulty",
       "winMessage": "You won, you will get your items back",
       "winInv": "Your items",
-      "backButton": "Back"
+      "backButton": "Back",
+      "waitingListPositionNotSetUp": "The waitingposition for surplus players in the waitinglist is not set yet. Do you want to set the position to your own position?",
+      "decidedNotToSetPosition": "Be aware that you need to set the position before the playthrough is starting",
+      "setWaitingListPosition": "Position was set!"
     }
   ]
 }

@@ -100,6 +100,14 @@ public class GameCMD implements BasicCommand {
                     player.sendMessage(Component.text(tf.getTranslation(player, "diffAt")).color(NamedTextColor.GOLD)
                             .append(Component.text(config.checkConfigInt(player, "Difficulty")).color(NamedTextColor.RED)));
                     break;
+                case "setwaitinglistposition":
+                    Location location = player.getLocation();
+                    config.setWaitingListPosition(location);
+                    player.sendMessage(Component.text(tf.getTranslation(player, "setWaitingListPosition")).color(NamedTextColor.GREEN));
+                    break;
+                case "decidednottosetposition":
+                    player.sendMessage(Component.text(tf.getTranslation(player, "decidedNotToSetPosition")).color(NamedTextColor.RED));
+                    break;
             }
             if (inventories.containsKey(player.getUniqueId()) && !waitingListMinigame.contains(player) && playerInArena != player) {
                 switch (args[0].toLowerCase()) {

@@ -2,6 +2,7 @@ package org.example.DeathMinigames.listeners;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +17,12 @@ public class JoinListener implements Listener {
         Config config = new Config();
         Player player = event.getPlayer();
         TranslationFactory tf = new TranslationFactory();
+        if(player.isOp() && Config.configWaitingListPosition == null) {
+            player.sendMessage(Component.text(tf.getTranslation(player, "waitingListPositionNotSetUp")).color(NamedTextColor.RED)
+                    .append(Component.text(tf.getTranslation(player, "yes")).color(NamedTextColor.GREEN).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/game setWaitingListPosition")))
+                    .append(Component.text(" / ").color(NamedTextColor.GOLD))
+                    .append(Component.text(tf.getTranslation(player, "no")).color(NamedTextColor.RED).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/game decidedNotToSetPosition"))));
+        }
 
         if(!config.checkIfPlayerInFile(player)) {
             config.addNewPlayer(player.getUniqueId());
