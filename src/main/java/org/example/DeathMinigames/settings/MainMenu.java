@@ -10,6 +10,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.example.DeathMinigames.deathMinigames.Config;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class MainMenu implements InventoryHolder {
     private Inventory inventory;
     public static GUI introduction = new GUI("Introduction", true);
@@ -87,7 +89,11 @@ public class MainMenu implements InventoryHolder {
             setUp.addClickableItemStack("Parcour length", Material.LADDER, 1, 1);
         }
         if(config.checkConfigLocation("WaitingListPosition")!=null) {
-            setUp.addClickableItemStack("WaitingListPosition", Material.GREEN_CONCRETE_POWDER, 1, 2);
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add("X: " + Integer.toString(config.checkConfigLocation("WaitingListPosition").getBlockX()));
+            lore.add("Y: " + Integer.toString(config.checkConfigLocation("WaitingListPosition").getBlockY()));
+            lore.add("Z: " + Integer.toString(config.checkConfigLocation("WaitingListPosition").getBlockZ()));
+            setUp.addClickableItemStack("WaitingListPosition", Material.GREEN_CONCRETE_POWDER, 1, 2, lore);
         }
         else {
             setUp.addClickableItemStack("WaitingListPosition", Material.RED_CONCRETE_POWDER, 1, 2);
