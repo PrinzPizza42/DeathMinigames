@@ -90,6 +90,7 @@ public class MainMenu implements InventoryHolder {
         }
         if(config.checkConfigLocation("WaitingListPosition")!=null) {
             ArrayList<String> lore = new ArrayList<>();
+            lore.add("Current position:");
             lore.add("X: " + Integer.toString(config.checkConfigLocation("WaitingListPosition").getBlockX()));
             lore.add("Y: " + Integer.toString(config.checkConfigLocation("WaitingListPosition").getBlockY()));
             lore.add("Z: " + Integer.toString(config.checkConfigLocation("WaitingListPosition").getBlockZ()));

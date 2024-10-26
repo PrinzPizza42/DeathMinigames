@@ -169,12 +169,12 @@ public class InventoryListener implements Listener {
                 }
             }
             else if (ID == MainMenu.parkourLength.getID()) {
-                minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
                 event.setCancelled(true);
                 if(slot == 53) {
                     mainMenu.showPlayerSettings(player);
                 }
                 else if (slot < 20) {
+                    minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
                     config.setParkourLength(slot);
                     reloadInventory("ParkourLength", mainMenu);
                 }

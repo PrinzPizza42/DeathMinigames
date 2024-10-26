@@ -58,7 +58,7 @@
       "youHaveToEnterANumber": "To change the difficulty you have to enter a number",
       "setDiffOfTo": "<gold>The difficulty of <red>%s <gold>got set to <red>%s",
       "didNotEnterKnownPlayer": "You did not enter a known player",
-      "introMessage": "I will give you a second chance, use it well. \n You can try to play a Minigame for you items. Because I want to have fun to the difficulty will rise when winning. \n When the time has come and the difficulty is to high for you, you can always lower it by paying me. \n Do you want to accept my offer?",
+      "introMessage": "I will give you a second chance, use it well. \n You can try to play a Minigame for you items. Because I want to have fun too, the difficulty will rise when winning. \n When the time has come and the difficulty is to high for you, you can always lower it by paying me. \n Do you want to accept my offer?",
       "yes": "Yes",
       "no": "No",
       "savedInv": "Inventory was saved",
