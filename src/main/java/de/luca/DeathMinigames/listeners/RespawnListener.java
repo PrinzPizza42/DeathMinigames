@@ -1,4 +1,4 @@
-package org.example.DeathMinigames.listeners;
+package de.luca.DeathMinigames.listeners;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
@@ -14,13 +14,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.example.DeathMinigames.deathMinigames.Config;
-import org.example.DeathMinigames.deathMinigames.Main;
+import de.luca.DeathMinigames.deathMinigames.Config;
+import de.luca.DeathMinigames.deathMinigames.Main;
 
 import java.time.Duration;
 
-import static org.example.DeathMinigames.listeners.DeathListener.deaths;
-import static org.example.DeathMinigames.listeners.DeathListener.inventories;
+import static de.luca.DeathMinigames.listeners.DeathListener.deaths;
+import static de.luca.DeathMinigames.listeners.DeathListener.inventories;
 
 public class RespawnListener implements Listener {
 

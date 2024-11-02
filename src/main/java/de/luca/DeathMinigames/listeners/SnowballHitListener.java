@@ -1,4 +1,4 @@
-package org.example.DeathMinigames.listeners;
+package de.luca.DeathMinigames.listeners;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Snowball;

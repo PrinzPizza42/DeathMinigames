@@ -1,4 +1,4 @@
-package org.example.DeathMinigames.deathMinigames;
+package de.luca.DeathMinigames.deathMinigames;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
@@ -8,12 +8,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.example.DeathMinigames.minigames.Minigame;
+import de.luca.DeathMinigames.minigames.Minigame;
 
 import java.util.ArrayList;
 
-import static org.example.DeathMinigames.listeners.DeathListener.deaths;
-import static org.example.DeathMinigames.listeners.DeathListener.inventories;
+import static de.luca.DeathMinigames.listeners.DeathListener.deaths;
+import static de.luca.DeathMinigames.listeners.DeathListener.inventories;
 
 public class Introduction {
     private static ArrayList<Location> blocks = new ArrayList<>();

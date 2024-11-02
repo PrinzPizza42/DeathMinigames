@@ -49,7 +49,7 @@ java {
 paper {
     name = "DeathMinigames"
     version = plversion
-    main = "org.example.DeathMinigames.deathMinigames.Main"
+    main = "de.luca.DeathMinigames.deathMinigames.Main"
     apiVersion = "1.21"
 
     serverDependencies {

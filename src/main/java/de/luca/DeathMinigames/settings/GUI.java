@@ -1,4 +1,4 @@
-package org.example.DeathMinigames.settings;
+package de.luca.DeathMinigames.settings;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
@@ -9,8 +9,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.example.DeathMinigames.deathMinigames.Config;
-import org.example.DeathMinigames.listeners.InventoryListener;
+import de.luca.DeathMinigames.deathMinigames.Config;
+import de.luca.DeathMinigames.listeners.InventoryListener;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.example.DeathMinigames.listeners;
+package de.luca.DeathMinigames.listeners;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
@@ -11,9 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.Inventory;
-import org.example.DeathMinigames.deathMinigames.Config;
-import org.example.DeathMinigames.deathMinigames.Introduction;
-import org.example.DeathMinigames.deathMinigames.Main;
+import de.luca.DeathMinigames.deathMinigames.Config;
 
 import java.util.*;
 
