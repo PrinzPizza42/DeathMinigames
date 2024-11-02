@@ -49,6 +49,7 @@ public class JumpAndRun {
         int z = 81;
         Location firstBlock = new Location(firstBlockPlayerTPLocation.getWorld(), x, y, z);
         firstBlock.getBlock().setType(Material.GREEN_CONCRETE);
+        blocksToDelete.add(firstBlock.getBlock());
 
         // check synchronously if the player looses or wins, false run the generator of the parkour
         parkourGenerator(firstBlock, heightToWin);
@@ -88,7 +89,7 @@ public class JumpAndRun {
      */
     private boolean checkIfPlayerWon(Player player) {
         Minigame mg = new Minigame();
-        if (checkIfOnGold(player) == true) {
+        if (checkIfOnGold(player)) {
             mg.winMessage(player);
             mg.showInv(player);
             woolPlaced = false;

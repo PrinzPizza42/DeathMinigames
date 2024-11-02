@@ -12,6 +12,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.example.DeathMinigames.deathMinigames.Config;
 import org.example.DeathMinigames.listeners.InventoryListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GUI implements InventoryHolder {
@@ -47,6 +49,18 @@ public class GUI implements InventoryHolder {
         ItemStack itemStack = new ItemStack(material, amount);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(name);
+        itemStack.setItemMeta(itemMeta);
+
+        inventory.setItem(slotWhereToPutTheItem, itemStack);
+    }
+
+    public void addClickableItemStack(String name, Material material, int amount, int slotWhereToPutTheItem, ArrayList<String> lore) {
+        // item has to be added in InventoryListener manually to make it clickable
+        List<String> loreList = lore;
+        ItemStack itemStack = new ItemStack(material, amount);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(name);
+        itemMeta.setLore(loreList);
         itemStack.setItemMeta(itemMeta);
 
         inventory.setItem(slotWhereToPutTheItem, itemStack);

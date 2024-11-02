@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.listeners;
 
+import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -125,7 +126,7 @@ public class InventoryListener implements Listener {
                 if(slot == 53) {
                     mainMenu.showPlayerSettings(player);
                 }
-                else if (slot <= 3){
+                else if (slot <= 4){
                     switch (slot) {
                         case 0:
                             reloadInventory("ParkourStartHeight", mainMenu);
@@ -138,11 +139,16 @@ public class InventoryListener implements Listener {
                             MainMenu.parkourLength.showInventory(player);
                             break;
                         case 2:
+                            config.setWaitingListPosition(player.getLocation());
+                            reloadInventory("SetUp", mainMenu);
+                            player.sendMessage(Component.text(new TranslationFactory().getTranslation(player, "setWaitingListPosition")).color(NamedTextColor.GREEN));
+                            break;
+                        case 3:
                             reloadInventory("CostToLowerTheDifficulty", mainMenu);
                             MainMenu.costToLowerTheDifficulty.addBackButton(player);
                             MainMenu.costToLowerTheDifficulty.showInventory(player);
                             break;
-                        case 3:
+                        case 4:
                             reloadInventory("TimeToDecideWhenRespawning", mainMenu);
                             MainMenu.timeToDecideWhenRespawning.addBackButton(player);
                             MainMenu.timeToDecideWhenRespawning.showInventory(player);
@@ -163,12 +169,12 @@ public class InventoryListener implements Listener {
                 }
             }
             else if (ID == MainMenu.parkourLength.getID()) {
-                minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
                 event.setCancelled(true);
                 if(slot == 53) {
                     mainMenu.showPlayerSettings(player);
                 }
                 else if (slot < 20) {
+                    minigame.playSoundToPlayer(player, 0.5F, Sound.BLOCK_ANVIL_USE);
                     config.setParkourLength(slot);
                     reloadInventory("ParkourLength", mainMenu);
                 }

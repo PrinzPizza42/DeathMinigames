@@ -1,5 +1,6 @@
 package org.example.DeathMinigames.deathMinigames;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Config {
     public static int configParkourLength;
     public static int configCostToLowerTheDifficulty;
     public static int configTimeToDecideWhenRespawning;
+    public static Location configWaitingListPosition;
 
 
     public void addPlayerInConfig(UUID playerUUID) {
@@ -28,8 +30,6 @@ public class Config {
     }
 
     private void fillKnownPlayersArrayList() {
-        
-
         for (String playerUUDIInString : Main.getPlugin().getConfig().getStringList("KnownPlayers")) {
             knownPlayers.add(UUID.fromString(playerUUDIInString));
             knownPlayersString.add(playerUUDIInString);
@@ -57,8 +57,6 @@ public class Config {
     }
 
     public void addPlayerInHashMap(UUID playerUUID) {
-        
-
         if(Main.getPlugin().getConfig().getBoolean(playerUUID + ".Introduction")) {
             configIntroduction.add(playerUUID);
         }
@@ -79,8 +77,6 @@ public class Config {
     }
 
     public boolean checkIfPlayerInFile(Player player_8) {
-        
-
         if(Main.getPlugin().getConfig().contains(player_8.getUniqueId().toString())) {
             return true;
         }
@@ -90,8 +86,6 @@ public class Config {
     }
 
     public void cloneConfigToHasMap() {
-        
-
         fillKnownPlayersArrayList();
         if(Main.getPlugin().getConfig().contains("SetUp")) {
             setSetUp(Main.getPlugin().getConfig().getBoolean("SetUp"));
@@ -123,6 +117,9 @@ public class Config {
         else {
             setTimeToDecideWhenRespawning(10);
         }
+        if(Main.getPlugin().getConfig().contains("WaitingListPosition")) {
+            setWaitingListPosition(Main.getPlugin().getConfig().getLocation("WaitingListPosition"));
+        }
 
         for(UUID playerUUID : knownPlayers) {
             if(Main.getPlugin().getConfig().contains(playerUUID.toString())) {
@@ -132,7 +129,6 @@ public class Config {
     }
 
     public void setIntroduction(Player player_9, boolean introduction) {
-        
         if(introduction) {
             if(!configIntroduction.contains(player_9.getUniqueId())) {
                 configIntroduction.add(player_9.getUniqueId());
@@ -146,7 +142,6 @@ public class Config {
     }
 
     public void setUsesPlugin(Player player_10, boolean usesPlugin) {
-        
         if(usesPlugin) {
             if(!configUsesPlugin.contains(player_10.getUniqueId())) {
                 configUsesPlugin.add(player_10.getUniqueId());
@@ -160,21 +155,18 @@ public class Config {
     }
 
     public void setDifficulty(Player player_11, int difficulty) {
-        
         configDifficulty.replace(player_11.getUniqueId(), difficulty);
         Main.getPlugin().getConfig().set(player_11.getUniqueId() + ".Difficulty", difficulty);
         Main.getPlugin().saveConfig();
     }
 
     public void setSetUp(boolean bool) {
-        
         configSetUp = bool;
         Main.getPlugin().getConfig().set("SetUp", bool);
         Main.getPlugin().saveConfig();
     }
 
     public void setParkourStartHeight(int height) {
-        
         configParkourStartHeight = height;
         Main.getPlugin().getConfig().set("ParkourStartHeight", height);
         Main.getPlugin().saveConfig();
@@ -198,6 +190,12 @@ public class Config {
         
         configTimeToDecideWhenRespawning = time;
         Main.getPlugin().getConfig().set("TimeToDecideWhenRespawning", time);
+        Main.getPlugin().saveConfig();
+    }
+
+    public void setWaitingListPosition(Location location) {
+        configWaitingListPosition = location;
+        Main.getPlugin().getConfig().set("WaitingListPosition", location);
         Main.getPlugin().saveConfig();
     }
 
@@ -257,5 +255,17 @@ public class Config {
                 return configTimeToDecideWhenRespawning;
         }
         return 404;
+    }
+
+    public Location checkConfigLocation(String topic) {
+        if(topic.equals("WaitingListPosition")) {
+            if(configWaitingListPosition != null) {
+                return configWaitingListPosition;
+            }
+            else {
+                Main.getPlugin().getLogger().warning("configWaitingListPosition is not setup");
+            }
+        }
+        return null;
     }
 }
