@@ -28,7 +28,7 @@ public class RespawnListener implements Listener {
     private static int timeForPlayerToDecide = 0;
 
     public void setPlayerDecided(boolean playerDecided) {
-        this.playerDecided = playerDecided;
+        RespawnListener.playerDecided = playerDecided;
     }
 
     private void dropInv(Player player) {
@@ -40,8 +40,6 @@ public class RespawnListener implements Listener {
         deaths.remove(player.getUniqueId());
         inventories.remove(player.getUniqueId());
     }
-
-    private Inventory respawnMenu = Bukkit.createInventory(null, 9, Component.text("Respawn Menu", NamedTextColor.GOLD));;
 
     private void timerWhilePlayerDecides(Player player) {
         TranslationFactory tf = new TranslationFactory();
@@ -86,25 +84,13 @@ public class RespawnListener implements Listener {
         Player player = event.getPlayer();
         player.getInventory().clear();
         if (inventories.containsKey(event.getPlayer().getUniqueId()) && config.checkConfigBoolean(player, "UsesPlugin")) {
-            TextComponent startMinigame = new TextComponent(tf.getTranslation(player, "playMinigame"));
-            TextComponent ignoreMinigame = new TextComponent(tf.getTranslation(player, "ignoreMinigame"));
-            TextComponent middlePart = new TextComponent(" / ");
-
             player.sendMessage(Component.text(tf.getTranslation(player, "decision")).color(NamedTextColor.GOLD));
-
-            //TODO: replace deprecated code
-            startMinigame.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/game start"));
-            startMinigame.setColor(net.md_5.bungee.api.ChatColor.GREEN);
-            startMinigame.setItalic(true);
-            startMinigame.setUnderlined(true);
-            ignoreMinigame.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/game ignore"));
-            ignoreMinigame.setColor(net.md_5.bungee.api.ChatColor.RED);
-            ignoreMinigame.setItalic(true);
-            ignoreMinigame.setUnderlined(true);
 
             timerWhilePlayerDecides(player);
 
-            event.getPlayer().spigot().sendMessage(startMinigame, middlePart, ignoreMinigame);
+            player.sendMessage(Component.text(tf.getTranslation(player, "playMinigame")).clickEvent(net.kyori.adventure.text.event.ClickEvent.clickEvent(net.kyori.adventure.text.event.ClickEvent.Action.RUN_COMMAND, "/game start")).color(NamedTextColor.GREEN)
+                    .append(Component.text(" / ").color(NamedTextColor.GOLD))
+                    .append(Component.text(tf.getTranslation(player, "ignoreMinigame")).clickEvent(net.kyori.adventure.text.event.ClickEvent.clickEvent(net.kyori.adventure.text.event.ClickEvent.Action.RUN_COMMAND, "/game ignore")).color(NamedTextColor.RED)));
         }
 
     }

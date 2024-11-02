@@ -112,17 +112,16 @@ public class GameCMD implements BasicCommand {
             if (inventories.containsKey(player.getUniqueId()) && !waitingListMinigame.contains(player) && playerInArena != player) {
                 switch (args[0].toLowerCase()) {
                     case "start":
-                        if(config.checkConfigBoolean(player, "UsesPlugin")) {
-                            minigame.playSoundAtLocation(player.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
-                            player.resetTitle();
-                            player.sendActionBar(Component.text(tf.getTranslation(player, "startingMinigame"))
-                                    .color(NamedTextColor.GOLD)
-                                    .decoration(TextDecoration.ITALIC, true));
-                            Location loc = new Location(player.getWorld(), 93, 73, 73);
-                            player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
-                            player.teleport(loc);
-                            waitingListMinigame.addLast(player);
-                        }
+                        minigame.playSoundAtLocation(player.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
+                        player.resetTitle();
+                        player.sendActionBar(Component.text(tf.getTranslation(player, "startingMinigame"))
+                                .color(NamedTextColor.GOLD)
+                                .decoration(TextDecoration.ITALIC, true));
+                        Location loc = new Location(player.getWorld(), 93, 73, 73);
+                        player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
+                        player.teleport(loc);
+                        waitingListMinigame.addLast(player);
+                        Main.getPlugin().getLogger().info("player does not use plugin but is trying to start ");
                         respawnListener.setPlayerDecided(true);
                         Main.minigameStart(player);
                         break;

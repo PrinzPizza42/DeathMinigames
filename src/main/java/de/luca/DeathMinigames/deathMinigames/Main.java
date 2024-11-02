@@ -44,7 +44,6 @@ public final class Main extends JavaPlugin {
             COMMANDS.register("game", "game related commands", new GameCMD());
         });
 
-        getServer().getPluginManager().registerEvents(new SnowballHitListener(), this);
         getServer().getPluginManager().registerEvents(new DeathListener(), this);
         getServer().getPluginManager().registerEvents(new RespawnListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
@@ -78,6 +77,7 @@ public final class Main extends JavaPlugin {
                 jumpAndRun.start();
             }
             else {
+                getPlugin().getLogger().info("arena is uses at the moment");
                 if(player.getUniqueId() != playerInArena.getUniqueId()) {
                     player.sendMessage(Component.text(tf.getTranslation(player, "arenaIsFull")).color(NamedTextColor.GOLD));
                     Location locationBox = config.checkConfigLocation("WaitingListPosition");

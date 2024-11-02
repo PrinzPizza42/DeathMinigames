@@ -76,7 +76,6 @@ public class Minigame {
         playerDeathInventory.clear();
         deaths.remove(player.getUniqueId());
         inventories.remove(player.getUniqueId());
-
     }
 
     /**
@@ -143,17 +142,12 @@ public class Minigame {
     }
 
     public boolean checkIfWaitinglistIsEmpty() {
-        if(waitingListMinigame.isEmpty()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return waitingListMinigame.isEmpty();
     }
 
     /**
      * send the player the statistics of the minigames
-     * @param player
+     * @param player the player which statistics should be sent
      */
     public void sendPlayerStatistics(Player player) {
 

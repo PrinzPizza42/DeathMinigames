@@ -1,7 +1,6 @@
 package de.luca.DeathMinigames.minigames;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
-import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -21,7 +20,6 @@ public class JumpAndRun {
     private static int _x = 0;
     private static int _y = 0;
     private static int _z = 0;
-    private static String ladderXZ = null;
 
     /**
      * runs the minigame JumpAndRun
@@ -63,12 +61,7 @@ public class JumpAndRun {
     private boolean checkIfOnConcrete(Player player) {
         Location block = player.getLocation();
         block.setY(block.getBlockY() - 1);
-        if (block.getBlock().getType() == Material.GREEN_CONCRETE) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return block.getBlock().getType() == Material.GREEN_CONCRETE;
     }
 
 
@@ -144,7 +137,7 @@ public class JumpAndRun {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (checkIfOnWool(player) == true) {
+                if (checkIfOnWool(player)) {
                     Location block = player.getLocation();
                     block.setY(block.getBlockY() - 1);
                     block.getBlock().setType(Material.GREEN_CONCRETE);
@@ -163,12 +156,7 @@ public class JumpAndRun {
     private boolean checkIfOnWool(Player player) {
         Location block = player.getLocation();
         block.setY(block.getBlockY() - 1);
-        if (block.getBlock().getType() == Material.GREEN_WOOL) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return block.getBlock().getType() == Material.GREEN_WOOL;
     }
 
     /**
@@ -179,28 +167,9 @@ public class JumpAndRun {
     private boolean checkIfOnGold(Player player) {
         Location block = player.getLocation();
         block.setY(block.getBlockY() - 1);
-        if (block.getBlock().getType() == Material.GOLD_BLOCK) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return block.getBlock().getType() == Material.GOLD_BLOCK;
     }
 
-    public void placeLadderJump(int _x, int _z) {
-        Location ladder = new Location(playerInArena.getWorld(), playerInArena.getX() + _x, playerInArena.getY(), playerInArena.getZ() + _z);
-        switch (ladderXZ.toLowerCase()) {
-            case "z":
-                ladder.setZ(playerInArena.getZ() + _z + 1);
-                break;
-            case "x":
-                ladder.setX(playerInArena.getX() + _x + 1);
-                break;
-        }
-        playerInArena.getWorld().getBlockAt(ladder).setType(Material.LADDER);
-        playerInArena.sendMessage(Component.text("Ladder placed at " + ladder));
-        ladderXZ = null;
-    }
     /**
      * handles the placing parkour-blocks in the right location and if the player won or lost
      * @param firstBLock    the location of the first block, base the next blocks on
@@ -293,29 +262,21 @@ public class JumpAndRun {
                                 // 4 Block jump north
                                 _z = 4 * -1;
                                 _x = 0;
-                                //ladderXZ = "z";
-                                //placeLadderJump(_x, _z);
                                 break;
                             case 6:
                                 // 4 Block jump east
                                 _z = 0;
                                 _x = 4 * -1;
-                                //ladderXZ = "x";
-                                //placeLadderJump(_x, _z);
                                 break;
                             case 7:
                                 // 4 Block jump south
                                 _z = 0;
                                 _x = 4;
-                                //ladderXZ = "x";
-                                //placeLadderJump(_x, _z);
                                 break;
                             case 8:
                                 // 4 Block jump west
                                 _z = 4;
                                 _x = 0;
-                                //ladderXZ = "x";
-                                //placeLadderJump(_x, _z);
                                 break;
                         }
                         _x = playerInArena.getLocation().getBlockX() + _x;
