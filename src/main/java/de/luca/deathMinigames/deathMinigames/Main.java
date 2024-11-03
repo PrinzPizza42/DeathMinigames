@@ -1,6 +1,6 @@
-package de.luca.DeathMinigames.deathMinigames;
+package de.luca.deathMinigames.deathMinigames;
 
-import de.luca.DeathMinigames.listeners.*;
+import de.luca.deathMinigames.listeners.*;
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -11,15 +11,15 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import de.luca.DeathMinigames.commands.GameCMD;
-import de.luca.DeathMinigames.minigames.JumpAndRun;
-import de.luca.DeathMinigames.minigames.Minigame;
+import de.luca.deathMinigames.commands.GameCMD;
+import de.luca.deathMinigames.minigames.JumpAndRun;
+import de.luca.deathMinigames.minigames.Minigame;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import static de.luca.DeathMinigames.listeners.DeathListener.playerInArena;
+import static de.luca.deathMinigames.listeners.DeathListener.playerInArena;
 
 public final class Main extends JavaPlugin {
 

@@ -1,17 +1,17 @@
-package de.luca.DeathMinigames.minigames;
+package de.luca.deathMinigames.minigames;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import de.luca.DeathMinigames.deathMinigames.Config;
-import de.luca.DeathMinigames.deathMinigames.Main;
+import de.luca.deathMinigames.deathMinigames.Config;
+import de.luca.deathMinigames.deathMinigames.Main;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static de.luca.DeathMinigames.listeners.DeathListener.playerInArena;
-import static de.luca.DeathMinigames.listeners.DeathListener.waitingListMinigame;
+import static de.luca.deathMinigames.listeners.DeathListener.playerInArena;
+import static de.luca.deathMinigames.listeners.DeathListener.waitingListMinigame;
 
 public class JumpAndRun {
     private static ArrayList<Block> blocksToDelete = new ArrayList<Block> ();

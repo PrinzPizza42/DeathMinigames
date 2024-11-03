@@ -1,20 +1,18 @@
-package de.luca.DeathMinigames.deathMinigames;
+package de.luca.deathMinigames.deathMinigames;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import de.luca.DeathMinigames.minigames.Minigame;
+import de.luca.deathMinigames.minigames.Minigame;
 
 import java.util.ArrayList;
 
-import static de.luca.DeathMinigames.listeners.DeathListener.deaths;
-import static de.luca.DeathMinigames.listeners.DeathListener.inventories;
+import static de.luca.deathMinigames.listeners.DeathListener.deaths;
+import static de.luca.deathMinigames.listeners.DeathListener.inventories;
 
 public class Introduction {
     private static ArrayList<Location> blocks = new ArrayList<>();

@@ -1,26 +1,22 @@
-package de.luca.DeathMinigames.listeners;
+package de.luca.deathMinigames.listeners;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
-import de.luca.DeathMinigames.deathMinigames.Config;
-import de.luca.DeathMinigames.deathMinigames.Main;
+import de.luca.deathMinigames.deathMinigames.Config;
+import de.luca.deathMinigames.deathMinigames.Main;
 
 import java.time.Duration;
 
-import static de.luca.DeathMinigames.listeners.DeathListener.deaths;
-import static de.luca.DeathMinigames.listeners.DeathListener.inventories;
+import static de.luca.deathMinigames.listeners.DeathListener.deaths;
+import static de.luca.deathMinigames.listeners.DeathListener.inventories;
 
 public class RespawnListener implements Listener {
 

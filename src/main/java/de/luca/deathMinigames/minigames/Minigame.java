@@ -1,4 +1,4 @@
-package de.luca.DeathMinigames.minigames;
+package de.luca.deathMinigames.minigames;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
@@ -7,9 +7,9 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import de.luca.DeathMinigames.deathMinigames.Config;
+import de.luca.deathMinigames.deathMinigames.Config;
 
-import static de.luca.DeathMinigames.listeners.DeathListener.*;
+import static de.luca.deathMinigames.listeners.DeathListener.*;
 
 public class Minigame {
 

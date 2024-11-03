@@ -1,4 +1,4 @@
-package de.luca.DeathMinigames.commands;
+package de.luca.deathMinigames.commands;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -12,18 +12,18 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import de.luca.DeathMinigames.deathMinigames.Config;
-import de.luca.DeathMinigames.deathMinigames.Introduction;
-import de.luca.DeathMinigames.deathMinigames.Main;
-import de.luca.DeathMinigames.listeners.RespawnListener;
-import de.luca.DeathMinigames.minigames.Difficulty;
-import de.luca.DeathMinigames.minigames.Minigame;
-import de.luca.DeathMinigames.settings.MainMenu;
+import de.luca.deathMinigames.deathMinigames.Config;
+import de.luca.deathMinigames.deathMinigames.Introduction;
+import de.luca.deathMinigames.deathMinigames.Main;
+import de.luca.deathMinigames.listeners.RespawnListener;
+import de.luca.deathMinigames.minigames.Difficulty;
+import de.luca.deathMinigames.minigames.Minigame;
+import de.luca.deathMinigames.settings.MainMenu;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static de.luca.DeathMinigames.listeners.DeathListener.*;
+import static de.luca.deathMinigames.listeners.DeathListener.*;
 
 public class GameCMD implements BasicCommand {
 

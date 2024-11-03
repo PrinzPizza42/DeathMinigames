@@ -1,4 +1,4 @@
-package de.luca.DeathMinigames.deathMinigames;
+package de.luca.deathMinigames.deathMinigames;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
