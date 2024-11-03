@@ -1,4 +1,4 @@
-package org.example.DeathMinigames.listeners;
+package de.luca.deathMinigames.listeners;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.example.DeathMinigames.deathMinigames.Config;
+import de.luca.deathMinigames.deathMinigames.Config;
 
 public class JoinListener implements Listener {
 

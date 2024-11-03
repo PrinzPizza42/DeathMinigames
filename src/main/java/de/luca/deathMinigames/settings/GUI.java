@@ -1,4 +1,4 @@
-package org.example.DeathMinigames.settings;
+package de.luca.deathMinigames.settings;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
@@ -9,8 +9,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.example.DeathMinigames.deathMinigames.Config;
-import org.example.DeathMinigames.listeners.InventoryListener;
+import de.luca.deathMinigames.deathMinigames.Config;
+import de.luca.deathMinigames.listeners.InventoryListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class GUI implements InventoryHolder {
         addClickableItemStack(new TranslationFactory().getTranslation(player, "backButton"), Material.RED_CONCRETE, 1, 53);
     }
 
-    public Inventory getInventory() {
+    public @NotNull Inventory getInventory() {
         return inventory;
     }
 

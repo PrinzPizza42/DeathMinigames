@@ -1,18 +1,15 @@
-package org.example.DeathMinigames.minigames;
+package de.luca.deathMinigames.minigames;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.example.DeathMinigames.deathMinigames.Config;
+import de.luca.deathMinigames.deathMinigames.Config;
 
-import static org.example.DeathMinigames.listeners.DeathListener.*;
+import static de.luca.deathMinigames.listeners.DeathListener.*;
 
 public class Minigame {
 
@@ -79,7 +76,6 @@ public class Minigame {
         playerDeathInventory.clear();
         deaths.remove(player.getUniqueId());
         inventories.remove(player.getUniqueId());
-
     }
 
     /**
@@ -146,17 +142,12 @@ public class Minigame {
     }
 
     public boolean checkIfWaitinglistIsEmpty() {
-        if(waitingListMinigame.isEmpty()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return waitingListMinigame.isEmpty();
     }
 
     /**
      * send the player the statistics of the minigames
-     * @param player
+     * @param player the player which statistics should be sent
      */
     public void sendPlayerStatistics(Player player) {
 

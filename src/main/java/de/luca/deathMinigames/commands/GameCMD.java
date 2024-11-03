@@ -1,4 +1,4 @@
-package org.example.DeathMinigames.commands;
+package de.luca.deathMinigames.commands;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -12,18 +12,18 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.example.DeathMinigames.deathMinigames.Config;
-import org.example.DeathMinigames.deathMinigames.Introduction;
-import org.example.DeathMinigames.deathMinigames.Main;
-import org.example.DeathMinigames.listeners.RespawnListener;
-import org.example.DeathMinigames.minigames.Difficulty;
-import org.example.DeathMinigames.minigames.Minigame;
-import org.example.DeathMinigames.settings.MainMenu;
+import de.luca.deathMinigames.deathMinigames.Config;
+import de.luca.deathMinigames.deathMinigames.Introduction;
+import de.luca.deathMinigames.deathMinigames.Main;
+import de.luca.deathMinigames.listeners.RespawnListener;
+import de.luca.deathMinigames.minigames.Difficulty;
+import de.luca.deathMinigames.minigames.Minigame;
+import de.luca.deathMinigames.settings.MainMenu;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static org.example.DeathMinigames.listeners.DeathListener.*;
+import static de.luca.deathMinigames.listeners.DeathListener.*;
 
 public class GameCMD implements BasicCommand {
 
@@ -112,17 +112,16 @@ public class GameCMD implements BasicCommand {
             if (inventories.containsKey(player.getUniqueId()) && !waitingListMinigame.contains(player) && playerInArena != player) {
                 switch (args[0].toLowerCase()) {
                     case "start":
-                        if(config.checkConfigBoolean(player, "UsesPlugin")) {
-                            minigame.playSoundAtLocation(player.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
-                            player.resetTitle();
-                            player.sendActionBar(Component.text(tf.getTranslation(player, "startingMinigame"))
-                                    .color(NamedTextColor.GOLD)
-                                    .decoration(TextDecoration.ITALIC, true));
-                            Location loc = new Location(player.getWorld(), 93, 73, 73);
-                            player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
-                            player.teleport(loc);
-                            waitingListMinigame.addLast(player);
-                        }
+                        minigame.playSoundAtLocation(player.getEyeLocation(), 0.5F, Sound.ENTITY_ENDER_EYE_DEATH);
+                        player.resetTitle();
+                        player.sendActionBar(Component.text(tf.getTranslation(player, "startingMinigame"))
+                                .color(NamedTextColor.GOLD)
+                                .decoration(TextDecoration.ITALIC, true));
+                        Location loc = new Location(player.getWorld(), 93, 73, 73);
+                        player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5F, 1.0F);
+                        player.teleport(loc);
+                        waitingListMinigame.addLast(player);
+                        Main.getPlugin().getLogger().info("player does not use plugin but is trying to start ");
                         respawnListener.setPlayerDecided(true);
                         Main.minigameStart(player);
                         break;

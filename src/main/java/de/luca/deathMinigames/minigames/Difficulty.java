@@ -1,4 +1,4 @@
-package org.example.DeathMinigames.minigames;
+package de.luca.deathMinigames.minigames;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
@@ -6,8 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.example.DeathMinigames.deathMinigames.Config;
-import org.example.DeathMinigames.deathMinigames.Main;
+import de.luca.deathMinigames.deathMinigames.Config;
 
 public class Difficulty {
 

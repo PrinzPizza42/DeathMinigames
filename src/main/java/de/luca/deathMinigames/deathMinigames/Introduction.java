@@ -1,19 +1,18 @@
-package org.example.DeathMinigames.deathMinigames;
+package de.luca.deathMinigames.deathMinigames;
 
 import de.j.stationofdoom.util.translations.TranslationFactory;
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.example.DeathMinigames.minigames.Minigame;
+import de.luca.deathMinigames.minigames.Minigame;
 
 import java.util.ArrayList;
 
-import static org.example.DeathMinigames.listeners.DeathListener.deaths;
-import static org.example.DeathMinigames.listeners.DeathListener.inventories;
+import static de.luca.deathMinigames.listeners.DeathListener.deaths;
+import static de.luca.deathMinigames.listeners.DeathListener.inventories;
 
 public class Introduction {
     private static ArrayList<Location> blocks = new ArrayList<>();
@@ -40,21 +39,9 @@ public class Introduction {
         TranslationFactory tf = new TranslationFactory();
         player.sendMessage(Component.text(tf.getTranslation(player, "introMessage")));
 
-        TextComponent decideForPlugin = new TextComponent(tf.getTranslation(player, "yes"));
-        TextComponent decideNotForPlugin = new TextComponent(tf.getTranslation(player, "no"));
-        TextComponent middlePart = new TextComponent(" / ");
-
-        //TODO: replace deprecated code
-        decideForPlugin.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/game introPlayerDecidesToUseFeatures"));
-        decideForPlugin.setColor(net.md_5.bungee.api.ChatColor.GREEN);
-        decideForPlugin.setItalic(true);
-        decideForPlugin.setUnderlined(true);
-        decideNotForPlugin.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/game introPlayerDecidesToNotUseFeatures"));
-        decideNotForPlugin.setColor(net.md_5.bungee.api.ChatColor.RED);
-        decideNotForPlugin.setItalic(true);
-        decideNotForPlugin.setUnderlined(true);
-
-        player.sendMessage(decideForPlugin, middlePart, decideNotForPlugin);
+        player.sendMessage(Component.text(tf.getTranslation(player, "yes")).clickEvent(net.kyori.adventure.text.event.ClickEvent.clickEvent(net.kyori.adventure.text.event.ClickEvent.Action.RUN_COMMAND, "/game introPlayerDecidesToUseFeatures")).color(NamedTextColor.GREEN)
+                .append(Component.text(" / ").color(NamedTextColor.GOLD))
+                .append(Component.text(tf.getTranslation(player, "no")).clickEvent(net.kyori.adventure.text.event.ClickEvent.clickEvent(net.kyori.adventure.text.event.ClickEvent.Action.RUN_COMMAND, "/game introPlayerDecidesToNotUseFeatures")).color(NamedTextColor.RED)));
     }
 
     private void teleportPlayerToGod(Player player, Location location) {

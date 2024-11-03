@@ -1,7 +1,7 @@
-package org.example.DeathMinigames.deathMinigames;
+package de.luca.deathMinigames.deathMinigames;
 
+import de.luca.deathMinigames.listeners.*;
 import de.j.stationofdoom.util.translations.TranslationFactory;
-import org.example.DeathMinigames.listeners.*;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -11,16 +11,15 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.example.DeathMinigames.commands.GameCMD;
-import org.example.DeathMinigames.minigames.JumpAndRun;
-import org.example.DeathMinigames.minigames.Minigame;
+import de.luca.deathMinigames.commands.GameCMD;
+import de.luca.deathMinigames.minigames.JumpAndRun;
+import de.luca.deathMinigames.minigames.Minigame;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
-import static org.example.DeathMinigames.listeners.DeathListener.playerInArena;
+import static de.luca.deathMinigames.listeners.DeathListener.playerInArena;
 
 public final class Main extends JavaPlugin {
 
@@ -45,7 +44,6 @@ public final class Main extends JavaPlugin {
             COMMANDS.register("game", "game related commands", new GameCMD());
         });
 
-        getServer().getPluginManager().registerEvents(new SnowballHitListener(), this);
         getServer().getPluginManager().registerEvents(new DeathListener(), this);
         getServer().getPluginManager().registerEvents(new RespawnListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
@@ -79,6 +77,7 @@ public final class Main extends JavaPlugin {
                 jumpAndRun.start();
             }
             else {
+                getPlugin().getLogger().info("arena is uses at the moment");
                 if(player.getUniqueId() != playerInArena.getUniqueId()) {
                     player.sendMessage(Component.text(tf.getTranslation(player, "arenaIsFull")).color(NamedTextColor.GOLD));
                     Location locationBox = config.checkConfigLocation("WaitingListPosition");

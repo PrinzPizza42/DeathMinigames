@@ -1,4 +1,4 @@
-package org.example.DeathMinigames.deathMinigames;
+package de.luca.deathMinigames.deathMinigames;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -76,13 +76,8 @@ public class Config {
         addPlayerInConfig(playerUUID);
     }
 
-    public boolean checkIfPlayerInFile(Player player_8) {
-        if(Main.getPlugin().getConfig().contains(player_8.getUniqueId().toString())) {
-            return true;
-        }
-        else{
-            return false;
-        }
+    public boolean checkIfPlayerInFile(Player player) {
+        return Main.getPlugin().getConfig().contains(player.getUniqueId().toString());
     }
 
     public void cloneConfigToHasMap() {
@@ -128,35 +123,35 @@ public class Config {
         }
     }
 
-    public void setIntroduction(Player player_9, boolean introduction) {
+    public void setIntroduction(Player player, boolean introduction) {
         if(introduction) {
-            if(!configIntroduction.contains(player_9.getUniqueId())) {
-                configIntroduction.add(player_9.getUniqueId());
+            if(!configIntroduction.contains(player.getUniqueId())) {
+                configIntroduction.add(player.getUniqueId());
             }
         }
         else {
-            configIntroduction.remove(player_9.getUniqueId());
+            configIntroduction.remove(player.getUniqueId());
         }
-        Main.getPlugin().getConfig().set(player_9.getUniqueId() + ".Introduction", introduction);
+        Main.getPlugin().getConfig().set(player.getUniqueId() + ".Introduction", introduction);
         Main.getPlugin().saveConfig();
     }
 
-    public void setUsesPlugin(Player player_10, boolean usesPlugin) {
+    public void setUsesPlugin(Player player, boolean usesPlugin) {
         if(usesPlugin) {
-            if(!configUsesPlugin.contains(player_10.getUniqueId())) {
-                configUsesPlugin.add(player_10.getUniqueId());
+            if(!configUsesPlugin.contains(player.getUniqueId())) {
+                configUsesPlugin.add(player.getUniqueId());
             }
         }
         else {
-            configUsesPlugin.remove(player_10.getUniqueId());
+            configUsesPlugin.remove(player.getUniqueId());
         }
-        Main.getPlugin().getConfig().set(player_10.getUniqueId() + ".UsesPlugin", usesPlugin);
+        Main.getPlugin().getConfig().set(player.getUniqueId() + ".UsesPlugin", usesPlugin);
         Main.getPlugin().saveConfig();
     }
 
-    public void setDifficulty(Player player_11, int difficulty) {
-        configDifficulty.replace(player_11.getUniqueId(), difficulty);
-        Main.getPlugin().getConfig().set(player_11.getUniqueId() + ".Difficulty", difficulty);
+    public void setDifficulty(Player player, int difficulty) {
+        configDifficulty.replace(player.getUniqueId(), difficulty);
+        Main.getPlugin().getConfig().set(player.getUniqueId() + ".Difficulty", difficulty);
         Main.getPlugin().saveConfig();
     }
 
@@ -203,15 +198,9 @@ public class Config {
         try {
             switch (topic) {
                 case "Introduction":
-                    if (configIntroduction.contains(player.getUniqueId())) {
-                        return true;
-                    }
-                    return false;
+                    return configIntroduction.contains(player.getUniqueId());
                 case "UsesPlugin":
-                    if (configUsesPlugin.contains(player.getUniqueId())) {
-                        return true;
-                    }
-                    return false;
+                    return configUsesPlugin.contains(player.getUniqueId());
             }
         }
         catch(NullPointerException e){
